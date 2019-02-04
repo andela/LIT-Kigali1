@@ -1,0 +1,17 @@
+sudo: false
+env:
+  global:
+    - NODE_ENV=development
+language: node_js
+node_js:
+  - "10.15.1"
+cache:
+  directories:
+    - node_modules
+branches:
+  only:
+    - develop
+install:
+  - npm install
+script:
+  - npm run test

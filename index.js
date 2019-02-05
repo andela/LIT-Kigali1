@@ -1,14 +1,14 @@
 const fs = require("fs"),
-    http = require("http"),
-    path = require("path"),
-    methods = require("methods"),
-    express = require("express"),
-    bodyParser = require("body-parser"),
-    session = require("express-session"),
-    cors = require("cors"),
-    passport = require("passport"),
-    errorhandler = require("errorhandler"),
-    mongoose = require("mongoose");
+  http = require("http"),
+  path = require("path"),
+  methods = require("methods"),
+  express = require("express"),
+  bodyParser = require("body-parser"),
+  session = require("express-session"),
+  cors = require("cors"),
+  passport = require("passport"),
+  errorhandler = require("errorhandler"),
+  mongoose = require("mongoose");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -26,34 +26,41 @@ app.use(require("method-override")());
 app.use(express.static(__dirname + "/public"));
 
 app.use(
-    session({
-        secret: "authorshaven",
-        cookie: { maxAge: 60000 },
-        resave: false,
-        saveUninitialized: false
-    })
+  session({
+    secret: "authorshaven",
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false
+  })
 );
 
 if (!isProduction) {
-    app.use(errorhandler());
+  app.use(errorhandler());
 }
 
 if (isProduction) {
-    mongoose.connect(process.env.MONGODB_URI);
+  mongoose.connect(process.env.MONGODB_URI);
 } else {
-    mongoose.connect("mongodb://localhost/conduit");
-    mongoose.set("debug", true);
+  mongoose.connect("mongodb://localhost/conduit");
+  mongoose.set("debug", true);
 }
 
 require("./models/User");
 
 app.use(require("./routes"));
 
+//Heroku temporary landing message
+app.get("/", (req, res) => {
+  res.send(
+    "Welcome to Authors Haven API - A Social platform for the creative at heart"
+  );
+});
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    const err = new Error("Not Found");
-    err.status = 404;
-    next(err);
+  const err = new Error("Not Found");
+  err.status = 404;
+  next(err);
 });
 
 /// error handlers
@@ -61,33 +68,33 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-    app.use(function(err, req, res, next) {
-        console.log(err.stack);
+  app.use(function(err, req, res, next) {
+    console.log(err.stack);
 
-        res.status(err.status || 500);
+    res.status(err.status || 500);
 
-        res.json({
-            errors: {
-                message: err.message,
-                error: err
-            }
-        });
+    res.json({
+      errors: {
+        message: err.message,
+        error: err
+      }
     });
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.json({
-        errors: {
-            message: err.message,
-            error: {}
-        }
-    });
+  res.status(err.status || 500);
+  res.json({
+    errors: {
+      message: err.message,
+      error: {}
+    }
+  });
 });
 
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, function() {
-    console.log("Listening on port " + server.address().port);
+  console.log("Listening on port " + server.address().port);
 });

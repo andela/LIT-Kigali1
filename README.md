@@ -1,6 +1,7 @@
 # Authors Haven - A Social platform for the creative at heart.
 
 [![Coverage Status](https://coveralls.io/repos/github/andela/LIT-Kigali1/badge.svg?branch=develop)](https://coveralls.io/github/andela/LIT-Kigali1?branch=develop)
+[![Reviewed by Hound](https://img.shields.io/badge/reviewed%20by-Hound-%23a873d1.svg)](https://houndci.com/repos)
 
 ## Vision
 

@@ -42,3 +42,5 @@ node_modules
 
 yarn.lock
 
+#Environment Variables
+.env

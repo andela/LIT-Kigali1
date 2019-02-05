@@ -1,6 +1,8 @@
 Authors Haven - A Social platform for the creative at heart.
 =======
 
+[![Reviewed by Hound](https://img.shields.io/badge/reviewed%20by-Hound-%23a873d1.svg)](https://houndci.com/repos)
+
 ## Vision
 Create a community of like minded authors to foster inspiration and innovation
 by leveraging the modern web.

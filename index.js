@@ -9,12 +9,14 @@ const fs = require("fs"),
     passport = require("passport"),
     errorhandler = require("errorhandler"),
     mongoose = require("mongoose");
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
 
 const isProduction = process.env.NODE_ENV === "production";
 
 // Create global app object
 const app = express();
-
+const swaggerYAMLDocs = YAML.load('./docs/swagger.yml');
 app.use(cors());
 
 // Normal express config defaults
@@ -48,6 +50,8 @@ if (isProduction) {
 require("./models/User");
 
 app.use(require("./routes"));
+
+app.use('/api-documentation', swaggerUI.server, swaggerUI.setup(swaggerYAMLDocs));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

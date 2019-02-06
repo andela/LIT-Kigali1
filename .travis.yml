@@ -1,0 +1,2 @@
+script: "make test-cov"
+after_success: "make coveralls"

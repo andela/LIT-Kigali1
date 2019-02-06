@@ -41,9 +41,10 @@ node_modules
 
 .coveralls.yml
 
-# Yarn lock file 
+# NPM and Yarn lock file 
 
 yarn.lock
+package-lock.json
 
 # Winston logger files
 

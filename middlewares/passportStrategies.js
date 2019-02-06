@@ -3,9 +3,8 @@ import passport from 'passport';
 import { Op } from 'sequelize';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy } from 'passport-jwt';
-import { User } from '../database/models';
-
 import 'dotenv/config';
+import { User } from '../database/models';
 
 const { JWT_SECRET } = process.env;
 
@@ -25,7 +24,10 @@ passport.use(
         if (!user) {
           return done(new Error('Email or Password is incorrect'));
         }
-        const passwordMatch = await bcrypt.compare(password, user.get().password);
+        const passwordMatch = await bcrypt.compare(
+          password,
+          user.get().password
+        );
         if (!passwordMatch) {
           return done(new Error('Email or Password is incorrect'));
         }

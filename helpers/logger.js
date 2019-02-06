@@ -4,7 +4,6 @@ import 'dotenv/config';
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
-  //   defaultMeta: { service: 'ah-api' },
   transports: [
     //
     // - Write to all logs with level `info` and below to `combined.log`

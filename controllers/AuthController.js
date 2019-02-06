@@ -20,8 +20,7 @@ class AuthController {
     passport.authenticate('login', async (err, user) => {
       try {
         if (err || !user) {
-          const error = new Error('An Error occured');
-          return next(error);
+          return res.status(404).json({ message: err.message });
         }
         req.login(user, { session: false }, async (error) => {
           if (error) return next(error);

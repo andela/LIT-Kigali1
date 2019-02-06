@@ -5,7 +5,6 @@ import { authValidator } from '../validators';
 const { AuthController } = require('../../controllers');
 
 const router = express.Router();
-
 router.post(
   '/login',
   celebrate({

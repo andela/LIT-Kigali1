@@ -1,4 +1,4 @@
-import { Joi } from "celebrate";
+import { Joi } from 'celebrate';
 
 const signup = {
   firstName: Joi.string()
@@ -14,7 +14,7 @@ const signup = {
     .email()
     .required()
     .trim(),
-  gender: Joi.string().valid("Male", "Female"),
+  gender: Joi.string().valid('Male', 'Female'),
   birthDate: Joi.date()
 };
 const login = {

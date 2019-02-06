@@ -45,3 +45,7 @@ node_modules
 
 yarn.lock
 
+# Winston logger files
+
+error.log
+combined

@@ -1,7 +1,8 @@
-import express from "express";
-const router = express.Router();
-import { passportStrategies } from "../middlewares";
+import express from 'express';
+import '../middlewares/passportStrategies';
 
-router.use("/api/v1", require("./api"));
+const router = express.Router();
+
+router.use('/api/v1', require('./api'));
 
 module.exports = router;

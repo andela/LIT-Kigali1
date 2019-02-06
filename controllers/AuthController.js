@@ -1,34 +1,38 @@
-import passport from "passport";
-import jwt from "jsonwebtoken";
-import "dotenv/config";
-import { Op } from "sequelize";
-import { User } from "../database/models";
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
+
 const { JWT_SECRET } = process.env;
 
+/**
+ * @description Authentication class
+ */
 class AuthController {
   /**
    * @author Chris
    * @author Olivier
-   * @description Log In the user
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
    */
   static async login(req, res, next) {
-    const { username, password } = req.body;
-    passport.authenticate("login", async (err, user, info) => {
+    passport.authenticate('login', async (err, user) => {
       try {
         if (err || !user) {
-          const error = new Error("An Error occured");
+          const error = new Error('An Error occured');
           return next(error);
         }
-        req.login(user, { session: false }, async error => {
+        req.login(user, { session: false }, async (error) => {
           if (error) return next(error);
-          //user password in the token so we pick only the email and id
-          const body = { _id: user._id, email: user.email };
-          //Sign the JWT token and populate the payload with the user email and id
+          // user password in the token so we pick only the username and id
+          const body = { id: user.id, username: user.username };
+          // Sign the JWT token and populate the payload with the user email and id
           const token = jwt.sign({ user: body }, JWT_SECRET);
 
           // assign our jwt to the cookie
-          res.cookie("jwt", jwt, { httpOnly: true, secure: true });
-          //Send back the token to the user
+          res.cookie('jwt', jwt, { httpOnly: true, secure: true });
+          // Send back the token to the user
           return res.json({ token, user });
         });
       } catch (error) {

@@ -7,7 +7,9 @@
     "mocha": true
   },
   "rules": {
+    "parser": "babel-eslint",
     "parserOptions": {
+      "allowImportExportEverywhere": true,
       "sourceType": "module"
     },
     "import/prefer-default-export": "off",

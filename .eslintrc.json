@@ -8,9 +8,8 @@
   },
   "rules": {
     "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "allowImportExportEverywhere": true
+      "ecmaVersion": 7,
+      "sourceType": "module"
     },
     "import/prefer-default-export": "off",
     "one-var": 0,

@@ -1,10 +1,7 @@
 import { Joi } from 'celebrate';
 
 const signup = {
-  firstName: Joi.string()
-    .required()
-    .trim(),
-  lastName: Joi.string()
+  username: Joi.string()
     .required()
     .trim(),
   password: Joi.string()
@@ -13,9 +10,7 @@ const signup = {
   email: Joi.string()
     .email()
     .required()
-    .trim(),
-  gender: Joi.string().valid('Male', 'Female'),
-  birthDate: Joi.date()
+    .trim()
 };
 const login = {
   password: Joi.string()

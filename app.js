@@ -33,6 +33,8 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
+app.use(joiErrors());
+
 app.use(require('./routes'));
 
 app.use(joiErrors());

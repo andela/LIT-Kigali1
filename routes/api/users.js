@@ -1,8 +1,7 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import { authValidator } from '../validators';
-
-const { AuthController } = require('../../controllers');
+import { AuthController } from '../../controllers';
 
 const router = express.Router();
 router.post(
@@ -11,6 +10,14 @@ router.post(
     body: authValidator.login
   }),
   AuthController.login
+);
+
+router.post(
+  '/signup',
+  celebrate({
+    body: authValidator.signup
+  }),
+  AuthController.signup
 );
 
 module.exports = router;

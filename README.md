@@ -3,6 +3,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/andela/LIT-Kigali1/badge.svg?branch=develop)](https://coveralls.io/github/andela/LIT-Kigali1?branch=develop)
 [![Reviewed by Hound](https://img.shields.io/badge/reviewed%20by-Hound-%23a873d1.svg)](https://houndci.com/repos)
 
+[![Build Status](https://travis-ci.org/andela/LIT-Kigali1.svg?branch=develop)](https://travis-ci.org/andela/LIT-Kigali1)
+
 ## Vision
 
 Create a community of like minded authors to foster inspiration and innovation

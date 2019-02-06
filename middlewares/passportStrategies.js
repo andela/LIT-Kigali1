@@ -3,9 +3,8 @@ import passport from 'passport';
 import { Op } from 'sequelize';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy } from 'passport-jwt';
-import { User } from '../database/models';
-
 import 'dotenv/config';
+import { User } from '../database/models';
 
 const { JWT_SECRET } = process.env;
 

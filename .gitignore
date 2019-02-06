@@ -37,15 +37,5 @@ node_modules
 #Environment Variables
 .env
 
-# Coveralls repo token
-
-.coveralls.yml
-
-# Yarn lock file 
-
-yarn.lock
-
-# Winston logger files
-
-error.log
-combined
+# Pnpm package generator
+shrinkwrap.yaml

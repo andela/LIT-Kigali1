@@ -8,7 +8,8 @@
   },
   "rules": {
     "parserOptions": {
-      "sourceType": "module"
+      "sourceType": "module",
+      "allowImportExportEverywhere": true
     },
     "import/prefer-default-export": "off",
     "one-var": 0,

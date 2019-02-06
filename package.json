@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "node_modules/.bin/eslint .",
-    "lint:fix": "prettier-eslint --write '**/*.js'",
-    "start": "nodemon --exec babel-node index.js",
-    "dev": "nodemon  index.js  --exec 'npm run lint && babel-node'",
+    "dev": "node index.js",
     "migrate": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate",
     "migrate:seed": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all",
     "seed": "node_modules/.bin/sequelize db:seed:all"
@@ -16,13 +13,9 @@
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/node": "^7.2.2",
-    "babel-preset-airbnb": "^3.2.0",
     "bcrypt": "^3.0.3",
-    "celebrate": "^9.0.2",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "coveralls": "^3.0.2",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
@@ -30,14 +23,12 @@
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.3.0",
-    "logger": "0.0.1",
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
     "moment": "^2.24.0",
     "mongoose": "^5.2.2",
     "mongoose-unique-validator": "^2.0.1",
     "morgan": "^1.9.0",
-    "nodemon": "^1.18.9",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -46,14 +37,12 @@
     "request": "^2.87.0",
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
-    "slug": "^0.9.3",
-    "underscore": "^1.9.1",
-    "winston": "^3.2.1"
+    "slug": "^0.9.1",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "prettier-eslint-cli": "^4.7.1"
+    "eslint-plugin-import": "^2.16.0"
   }
 }

@@ -37,6 +37,8 @@ node_modules
 #Environment Variables
 .env
 
+# Pnpm package generator
+shrinkwrap.yaml
 # Coveralls repo token
 
 .coveralls.yml

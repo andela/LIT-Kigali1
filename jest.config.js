@@ -5,7 +5,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'node_modules',
     'index.js',
-    'spp.js',
+    'app.js',
     'database',
     '__tests__'
   ],

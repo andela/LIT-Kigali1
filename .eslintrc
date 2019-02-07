@@ -1,12 +1,19 @@
 {
   "root": true,
-  "extends": "airbnb-base",
+  "extends": ["airbnb-base", "prettier"],
   "env": {
     "node": true,
     "es6": true,
-    "mocha": true
+    "jest/globals": true
   },
+  "plugins": ["jest", "prettier"],
   "rules": {
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "allowImportExportEverywhere": true,
+      "sourceType": "module"
+    },
+    "import/prefer-default-export": "off",
     "one-var": 0,
     "one-var-declaration-per-line": 0,
     "new-cap": 0,

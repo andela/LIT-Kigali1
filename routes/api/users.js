@@ -4,7 +4,6 @@ import { authValidator } from '../validators';
 import { AuthController } from '../../controllers';
 
 const router = express.Router();
-
 router.post(
   '/login',
   celebrate({
@@ -21,4 +20,4 @@ router.post(
   AuthController.signup
 );
 
-module.exports = router;
+export default router;

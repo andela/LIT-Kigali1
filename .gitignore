@@ -46,6 +46,7 @@ shrinkwrap.yaml
 # NPM and Yarn lock file 
 
 yarn.lock
+
 package-lock.json
 
 # Winston logger files

@@ -8,7 +8,7 @@
     "coveralls": "jest --runInBand --coverage --detectOpenHandles --forceExit && cat ./coverage/lcov.info | coveralls",
     "lint": "node_modules/.bin/eslint .",
     "lint:fix": "prettier-eslint --write '**/*.js'",
-    "start": "nodemon --exec babel-node index.js",
+    "start": "babel-node index.js",
     "dev": "nodemon  index.js  --exec 'npm run lint && babel-node'",
     "migrate": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate",
     "migrate:seed": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all",

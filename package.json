@@ -47,7 +47,8 @@
     "slug": "^0.9.3",
     "swagger-ui-express": "^4.0.2",
     "underscore": "^1.9.1",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",

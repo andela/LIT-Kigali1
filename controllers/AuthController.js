@@ -26,18 +26,14 @@ class AuthController {
     try {
       user = await User.findOne({
         where: { [Op.or]: [{ email: body.email }, { username: body.username }] }
-        // Checking if Username or Email provided is not already provided
       });
       if (user) {
-        // Throw message if account already exist
         return res.status(401).json({ status: 401, message: 'Account already exist' });
       }
       const password = await bcrypt.hash(body.password, 10);
-      // Hashing password before sending it to database
 
       user = await User.create({ ...body, password });
 
-      // Generate token after creating a user
       token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
     } catch (error) {
       return res.status(401).json({ status: 401, message: 'Please try again' });
@@ -69,14 +65,13 @@ class AuthController {
         }
         req.login(user, { session: false }, async error => {
           if (error) return next(error);
-          // user password in the token so we pick only the username and id
+
           const body = { id: user.id, username: user.username };
-          // Sign the JWT token and populate the payload with the user email and id
+
           const token = jwt.sign({ user: body }, JWT_SECRET);
 
-          // assign our jwt to the cookie
           res.cookie('jwt', jwt, { httpOnly: true, secure: true });
-          // Send back the token to the user
+
           return res.json({ token, user });
         });
       } catch (error) {

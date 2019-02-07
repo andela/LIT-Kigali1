@@ -65,9 +65,7 @@ class AuthController {
         }
         req.login(user, { session: false }, async error => {
           if (error) return next(error);
-
           const body = { id: user.id, username: user.username };
-
           const token = jwt.sign({ user: body }, JWT_SECRET);
 
           res.cookie('jwt', jwt, { httpOnly: true, secure: true });

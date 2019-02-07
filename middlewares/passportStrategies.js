@@ -24,14 +24,10 @@ passport.use(
         if (!user) {
           return done(new Error('Email or Password is incorrect'));
         }
-        const passwordMatch = await bcrypt.compare(
-          password,
-          user.get().password
-        );
+        const passwordMatch = await bcrypt.compare(password, user.get().password);
         if (!passwordMatch) {
           return done(new Error('Email or Password is incorrect'));
         }
-        // Send the user information to the next middleware
         return done(null, { ...user.get(), password: undefined });
       } catch (error) {
         done(error);

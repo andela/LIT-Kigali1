@@ -1,0 +1,13 @@
+{
+  "signupUser": {
+    "username": "test",
+    "email": "test@email.com",
+    "password": "test@test",
+    "firstName": "test",
+    "lastName": "test"
+  },
+  "loginUser": {
+    "email": "manzi@email.com",
+    "password": "123456"
+  }
+}

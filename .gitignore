@@ -34,13 +34,21 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
+#Environment Variables
+.env
+
+# Pnpm package generator
+shrinkwrap.yaml
 # Coveralls repo token
 
 .coveralls.yml
 
-# Yarn lock file 
+# NPM and Yarn lock file 
 
 yarn.lock
+package-lock.json
 
-#Environment Variables
-.env
+# Winston logger files
+
+error.log
+combined

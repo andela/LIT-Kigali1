@@ -1,5 +1,8 @@
-const router = require('express').Router();
+import express from 'express';
+import '../middlewares/passportStrategies';
 
-router.use('/api', require('./api'));
+const router = express.Router();
 
-module.exports = router;
+router.use('/api/v1', require('./api'));
+
+export default router;

@@ -20,4 +20,4 @@ router.post(
   AuthController.signup
 );
 
-module.exports = router;
+export default router;

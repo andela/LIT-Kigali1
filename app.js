@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(routes);
 app.use(joiErrors());
-app.use('/api-documentation', swaggerUI.server, swaggerUI.setup(swaggerYAMLDocs));
+app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs));
 
 
 // development error handler

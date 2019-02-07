@@ -1,10 +1,16 @@
 sudo: false
+services:
+  - postgresql
+addons:
+  postgresql: '9.5'
 env:
   global:
     - NODE_ENV=development
+    - JWT_SECRET=authors_haven@secret
+    - DATABASE_URL=postgresql://authors_haven:authors_haven@localhost/authors_haven
 language: node_js
 node_js:
-  - "10.15.1"
+  - '10.15.1'
 cache:
   directories:
     - node_modules
@@ -13,8 +19,11 @@ branches:
     - develop
 install:
   - npm install
+before_script:
+  - psql -c 'create database authors_haven;' -U postgres
+  - psql -c "CREATE USER authors_haven WITH PASSWORD 'authors_haven';" -U postgres
+  - npm run migrate:seed
 script:
   - npm run test
-  - make test-cov
-
-after_success: "make coveralls"
+after_success:
+  - npm run coveralls

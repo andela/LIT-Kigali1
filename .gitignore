@@ -39,3 +39,16 @@ node_modules
 
 # Pnpm package generator
 shrinkwrap.yaml
+# Coveralls repo token
+
+.coveralls.yml
+
+# NPM and Yarn lock file 
+
+yarn.lock
+package-lock.json
+
+# Winston logger files
+
+error.log
+combined

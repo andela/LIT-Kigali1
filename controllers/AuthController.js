@@ -67,7 +67,7 @@ class AuthController {
         if (err || !user) {
           return res.status(404).json({ message: err.message });
         }
-        req.login(user, { session: false }, async (error) => {
+        req.login(user, { session: false }, async error => {
           if (error) return next(error);
           // user password in the token so we pick only the username and id
           const body = { id: user.id, username: user.username };

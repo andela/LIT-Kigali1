@@ -7,12 +7,10 @@ import routes from './routes';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Create global app object
 const app = express();
 
 app.use(cors());
 
-// Normal express config defaults
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

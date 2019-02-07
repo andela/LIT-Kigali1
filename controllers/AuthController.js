@@ -24,14 +24,11 @@ class AuthController {
         }
         req.login(user, { session: false }, async error => {
           if (error) return next(error);
-          // user password in the token so we pick only the username and id
           const body = { id: user.id, username: user.username };
-          // Sign the JWT token and populate the payload with the user email and id
           const token = jwt.sign({ user: body }, JWT_SECRET);
 
-          // assign our jwt to the cookie
           res.cookie('jwt', jwt, { httpOnly: true, secure: true });
-          // Send back the token to the user
+
           return res.json({ token, user });
         });
       } catch (error) {

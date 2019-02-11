@@ -45,7 +45,7 @@ class AuthController {
     }
 
     res.cookie('jwt', jwt, { httpOnly: true, secure: true });
-    const { password, ...userData } = userModel.get();
+    const { password, confirmationCode, ...userData } = user.get();
 
     return res.status(201).json({
       status: 201,

@@ -49,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'user'
       },
+      confirmationCode: {
+        type: DataTypes.STRING,
+        defaultValue: DataTypes.UUIDV4
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
@@ -60,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  User.associate = function (models) {
+  User.associate = function(models) {
     // Association
   };
   return User;

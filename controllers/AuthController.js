@@ -4,6 +4,7 @@ import 'dotenv/config';
 import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { User } from '../database/models';
+import { sendConfirmationEmail } from './MailController';
 
 const { JWT_SECRET } = process.env;
 
@@ -37,15 +38,19 @@ class AuthController {
       userModel = await User.create({ ...user, password });
 
       token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
+
+      await sendConfirmationEmail({ ...user.get() });
     } catch (error) {
       return res.status(401).json({ status: 401, message: 'Please try again' });
     }
 
     res.cookie('jwt', jwt, { httpOnly: true, secure: true });
     const { password, ...userData } = userModel.get();
+
     return res.status(201).json({
       status: 201,
-      message: 'Account created sucessfully',
+      message: 'Account created sucessfully. Please check your email for confirmation',
+      token,
       user: { ...userData, ...token }
     });
   }

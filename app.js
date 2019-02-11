@@ -23,7 +23,6 @@ app.use(routes);
 app.use(joiErrors());
 app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs));
 
-
 // development error handler
 if (!isProduction) {
   app.use('*', (req, res) => {

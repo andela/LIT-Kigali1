@@ -38,6 +38,9 @@ describe('auth', () => {
     expect(res.status).toBe(201);
     expect(res.body).toBeDefined();
     expect(res.body.user).toBeDefined();
+    expect(res.body.message).toBe(
+      'Account created sucessfully. Please check your email for confirmation'
+    );
   });
 
   test('Signup- account already exist', async () => {

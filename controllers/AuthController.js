@@ -30,7 +30,7 @@ class AuthController {
         where: { [Op.or]: [{ email: user.email }, { username: user.username }] }
       });
       if (userModel) {
-        return res.status(401).json({ message: 'Account already exist' });
+        return res.status(401).json({ status: 401, message: 'Account already exist' });
       }
       const password = await bcrypt.hash(user.password, 10);
 
@@ -38,12 +38,14 @@ class AuthController {
 
       token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
     } catch (error) {
-      return res.status(401).json({ message: 'Please try again' });
+      return res.status(401).json({ status: 401, message: 'Please try again' });
     }
 
     res.cookie('jwt', jwt, { httpOnly: true, secure: true });
     const { password, ...userData } = userModel.get();
     return res.status(201).json({
+      status: 201,
+      message: 'Account created sucessfully',
       user: { ...userData, ...token }
     });
   }
@@ -63,7 +65,7 @@ class AuthController {
     passport.authenticate('login', async (err, user) => {
       try {
         if (err || !user) {
-          return res.status(404).json({ message: err.message });
+          return res.status(404).json({ status: 404, message: err.message });
         }
         req.login(user, { session: false }, async error => {
           if (error) return next(error);
@@ -72,7 +74,7 @@ class AuthController {
 
           res.cookie('jwt', jwt, { httpOnly: true, secure: true });
 
-          return res.json({ user: { ...user, token } });
+          return res.json({ status: 200, user: { ...user, token } });
         });
       } catch (error) {
         return next(error);

@@ -13,7 +13,7 @@ router.post(
 );
 
 router.post(
-  '/signup',
+  '/',
   celebrate({
     body: authValidator.signup
   }),

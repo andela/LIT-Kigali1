@@ -1,53 +1,53 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "This is documentation for Authors Haven - A Social platform for the creative at heart."
-  version: "1.0.0"
-  title: "LIT-Kigali1"
-  termsOfService: "http://swagger.io/terms/"
+  description: 'This is documentation for Authors Haven - A Social platform for the creative at heart.'
+  version: '1.0.0'
+  title: 'LIT-Kigali1'
+  termsOfService: 'http://swagger.io/terms/'
   contact:
-    email: "team.email@andela.com"
+    email: 'team.email@andela.com'
   license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "localhost:3000"
-basePath: "/api/v1"
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: 'localhost:3000'
+basePath: '/api/v1'
 tags:
-- name: "Auth"
-  description: "Get access to the protected resources"
-- name: "Articles"
-  description: "Access to the articles resources"
-- name: "Users"
-  description: "Access to the users resources"
-- name: "Profiles"
-  description: "Acess to the profile resources"
-- name: "Tags"
-  description: "Acess to the tag resources"
+  - name: 'Auth'
+    description: 'Get access to the protected resources'
+  - name: 'Articles'
+    description: 'Access to the articles resources'
+  - name: 'Users'
+    description: 'Access to the users resources'
+  - name: 'Profiles'
+    description: 'Acess to the profile resources'
+  - name: 'Tags'
+    description: 'Acess to the tag resources'
 schemes:
-- "https"
-- "http"
+  - 'https'
+  - 'http'
 consumes:
   - application/json
 produces:
   - application/json
 securityDefinitions:
-  bearerAuth:           
+  bearerAuth:
     type: apiKey
     in: header
     name: Authorization
 paths:
   /users/login:
     post:
-      summary: "Logs in registered user"
+      summary: 'Logs in registered user'
       tags:
-        - "Auth"
+        - 'Auth'
       operationId: userLogin
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Created user object"
+        - in: 'body'
+          name: 'body'
+          description: 'Created user object'
           required: true
           schema:
-            $ref: "#/definitions/userLogin"
+            $ref: '#/definitions/userLogin'
       responses:
         '200':
           description: returns user infromation
@@ -55,7 +55,7 @@ paths:
             type: object
             properties:
               user:
-                $ref: "#/definitions/user"
+                $ref: '#/definitions/user'
         '404':
           description: Unregistered user
           schema:
@@ -65,35 +65,35 @@ paths:
                 type: object
                 properties:
                   body:
-                   type: array
-                   items:
-                     type: string
-                     example: "user not found"
+                    type: array
+                    items:
+                      type: string
+                      example: 'user not found'
         '401':
           description: Email and password don't match
           schema:
             type: object
             properties:
               error:
-               type: object
-               properties:
-                body:
-                  type: array
-                  items:
-                   type: string
-                   example: "Email and password don't match"
+                type: object
+                properties:
+                  body:
+                    type: array
+                    items:
+                      type: string
+                      example: "Email and password don't match"
   /users:
     post:
-      summary: "Register a new user"
+      summary: 'Register a new user'
       tags:
-        - "Auth"
+        - 'Auth'
       operationId: authSignup
       parameters:
         - in: body
           name: body
           required: true
           schema:
-            $ref: "#/definitions/userSignup"
+            $ref: '#/definitions/userSignup'
       responses:
         '201':
           description: returns user information
@@ -101,16 +101,16 @@ paths:
             type: object
             properties:
               user:
-                $ref: "#/definitions/user"
+                $ref: '#/definitions/user'
   /user:
     get:
-      summary: "Get the current user"
+      summary: 'Get the current user'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Users"
+        - 'Users'
       operationId: getUser
-      parameters: 
+      parameters:
         - name: Authorization
           in: header
           required: true
@@ -119,20 +119,20 @@ paths:
         '200':
           description: return current user
           schema:
-           $ref: "#/definitions/user"
+            $ref: '#/definitions/user'
     put:
-      summary: "Update user profile"
+      summary: 'Update user profile'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Users"
+        - 'Users'
       operationId: updateUser
-      parameters: 
+      parameters:
         - name: body
           in: body
           required: true
           schema:
-           $ref: "#/definitions/updateUser"
+            $ref: '#/definitions/updateUser'
       responses:
         '200':
           description: returns user information
@@ -140,16 +140,16 @@ paths:
             type: object
             properties:
               user:
-               $ref: "#/definitions/user"
+                $ref: '#/definitions/user'
   /profiles/{username}:
     put:
-      summary: "Update user profile"
+      summary: 'Update user profile'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Profiles"
+        - 'Profiles'
       operationId: updateProfile
-      parameters: 
+      parameters:
         - name: username
           in: path
           required: true
@@ -158,22 +158,22 @@ paths:
           in: body
           required: true
           schema:
-           $ref: "#/definitions/updateUser"
+            $ref: '#/definitions/updateUser'
       responses:
         '200':
           description: return update user information
           schema:
-            $ref: "#/definitions/profile"
-            
+            $ref: '#/definitions/profile'
+
   /profile/{username}/follow:
     post:
-      summary: "Follow a specific user"
+      summary: 'Follow a specific user'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Profiles"
+        - 'Profiles'
       operationId: followUser
-      parameters: 
+      parameters:
         - name: username
           in: path
           required: true
@@ -182,15 +182,15 @@ paths:
         '200':
           description: return a user profile
           schema:
-            $ref: "#/definitions/profile"
+            $ref: '#/definitions/profile'
     delete:
-      summary: "Follow a specific user"
+      summary: 'Follow a specific user'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Profiles"
+        - 'Profiles'
       operationId: unFollowUser
-      parameters: 
+      parameters:
         - name: username
           in: path
           required: true
@@ -199,24 +199,24 @@ paths:
         '200':
           description: return a user profile
           schema:
-            $ref: "#/definitions/profile"
+            $ref: '#/definitions/profile'
   /articles:
     get:
-      summary: "Fetch all the articles"
+      summary: 'Fetch all the articles'
       tags:
-        - "Articles"
+        - 'Articles'
       operationId: getArticles
       responses:
         '200':
           description: returns multiple articles of parcels
           schema:
-            $ref: "#/definitions/multipleArticles"
+            $ref: '#/definitions/multipleArticles'
     post:
-      summary: "Create a new article"
+      summary: 'Create a new article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Articles"
+        - 'Articles'
       description: add a new parcel
       operationId: postArticle
       parameters:
@@ -228,7 +228,7 @@ paths:
         - in: body
           name: body
           schema:
-            $ref: "#/definitions/createArticle"
+            $ref: '#/definitions/createArticle'
       responses:
         '201':
           description: returns the created article
@@ -240,26 +240,26 @@ paths:
               message:
                 type: string
               data:
-                $ref: "#/definitions/article"
+                $ref: '#/definitions/article'
   /articles/feed:
     get:
-      summary: "Fetch all articles created by followed users"
+      summary: 'Fetch all articles created by followed users'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-        - "Articles"
+        - 'Articles'
       operationId: getArticlesFollowedUser
       responses:
         '200':
           description: returns multiple articles created by followed users
           schema:
-            $ref: "#/definitions/article"
-    
+            $ref: '#/definitions/article'
+
   /articles/{slug}:
     get:
-      summary: "Fetch a single article"
+      summary: 'Fetch a single article'
       tags:
-       - "Articles"
+        - 'Articles'
       parameters:
         - in: path
           name: slug
@@ -269,13 +269,13 @@ paths:
         '200':
           description: returns a single article
           schema:
-           $ref: "#/definitions/article"
+            $ref: '#/definitions/article'
     put:
       tags:
-        - "Articles"
-      summary: "Update a specific article"
+        - 'Articles'
+      summary: 'Update a specific article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       operationId: updateArticle
       parameters:
         - name: slug
@@ -286,18 +286,18 @@ paths:
           in: body
           required: true
           schema:
-           $ref: "#/definitions/updateArticle"
+            $ref: '#/definitions/updateArticle'
       responses:
         '200':
           description: returns an updated article
           schema:
-            $ref: "#/definitions/article"
+            $ref: '#/definitions/article'
     delete:
       tags:
-        - "Articles"
-      summary: "Delete a specific article"
+        - 'Articles'
+      summary: 'Delete a specific article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       operationId: deleteArticle
       parameters:
         - name: slug
@@ -308,14 +308,14 @@ paths:
         '200':
           description: returns a delete article
           schema:
-            $ref: "#/definitions/article"
+            $ref: '#/definitions/article'
   /articles/{slug}/comments:
     post:
-      summary: "Add comment to an article"
+      summary: 'Add comment to an article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-      - "Articles"
+        - 'Articles'
       description: Add Comments to an Article
       operationId: commentArticle
       parameters:
@@ -327,18 +327,18 @@ paths:
           in: body
           required: true
           schema:
-           $ref: "#/definitions/createComment"
+            $ref: '#/definitions/createComment'
       responses:
         '200':
           description: returns the created Comment
           schema:
-           $ref: "#/definitions/comment"
+            $ref: '#/definitions/comment'
     get:
-      summary: "Fetch all the comments"
+      summary: 'Fetch all the comments'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       tags:
-      - "Articles"
+        - 'Articles'
       description: Add Comments to an Article
       operationId: fetchComment
       parameters:
@@ -350,15 +350,15 @@ paths:
         '200':
           description: returns the created Comment
           schema:
-           $ref: "#/definitions/multipleComments"
-          
+            $ref: '#/definitions/multipleComments'
+
   /articles/{slug}/comments/{id}:
     delete:
       tags:
-        - "Articles"
-      summary: "Delete comment from an article"
+        - 'Articles'
+      summary: 'Delete comment from an article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       operationId: deleteComment
       parameters:
         - name: slug
@@ -374,15 +374,15 @@ paths:
         '200':
           description: return a delete comment
           schema:
-            $ref: "#/definitions/comment"
+            $ref: '#/definitions/comment'
 
   /articles/{slug}/favorite:
     post:
       tags:
-        - "Articles"
-      summary:  "Favorite a specific article"
+        - 'Articles'
+      summary: 'Favorite a specific article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       operationId: favoriteArticle
       parameters:
         - name: slug
@@ -393,13 +393,13 @@ paths:
         '200':
           description: return a favorited article
           schema:
-           $ref: "#/definitions/article"
+            $ref: '#/definitions/article'
     delete:
       tags:
-        - "Articles"
-      summary:  "Unfavorite a specific article"
+        - 'Articles'
+      summary: 'Unfavorite a specific article'
       security:
-       - bearerAuth: [] 
+        - bearerAuth: []
       operationId: unFavoriteArticle
       parameters:
         - name: slug
@@ -410,18 +410,18 @@ paths:
         '200':
           description: return an unfavorited article
           schema:
-           $ref: "#/definitions/article"
+            $ref: '#/definitions/article'
   /tags:
-   get:
-    tags:
-     - "Tags"
-    summary: Get all the tags
-    operationId: getTags
-    responses:
-     '200':
-      description: returns an array of all the tags
-      schema:
-       $ref: "#/definitions/tags"
+    get:
+      tags:
+        - 'Tags'
+      summary: Get all the tags
+      operationId: getTags
+      responses:
+        '200':
+          description: returns an array of all the tags
+          schema:
+            $ref: '#/definitions/tags'
 definitions:
   user:
     type: object
@@ -434,99 +434,113 @@ definitions:
         format: email
       username:
         type: string
+      firstName:
+        type: string
+        example: 'Jake'
+      lastName:
+        type: string
+        example: 'Jake'
+      gender:
+        type: string
+      birthDate:
+        type: date
+        example: '2019-01-07'
       bio:
         type: string
       image:
         type: string
+      cover:
+        type: string
+      status:
+        type: string
+        example: 'active'
       token:
         type: string
-    required: 
+    required:
       - id
       - email
       - username
-      - bio
       - token
-      - image
   userSignup:
     type: object
     properties:
       user:
         type: object
         properties:
-         username:
-          type: string
-         email:
-          type: string
-          format: email
-         password:
-          type: string
-          example: 'Ab@123456'
-        required: 
-         - username
-         - email
-         - password
+          username:
+            type: string
+          email:
+            type: string
+            format: email
+          password:
+            type: string
+            example: 'Ab@123456'
+        required:
+          - username
+          - email
+          - password
   userLogin:
     type: object
     properties:
-     user:
-      type: object
-      properties:
-       email:
-        type: string
-        format: email
-        example: "user@email.com"
-       password:
-        type: string
-        example: "user@user"
-      required: 
-       - email
-       - password
+      user:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            example: 'user@email.com'
+          password:
+            type: string
+            example: 'user@user'
+        required:
+          - email
+          - password
   article:
     type: object
     properties:
       article:
-       type: object
-       properties:
-         slug:
-          type: string
-         title:
-          type: string
-         description:
-          type: string
-         body:
-          type: string
-         tagList:
-          type: array
-          items:
-           type: string
-         createdAt:
-          type: string
-         updatedAt:
-          type: string
-         favorited:
-          type: boolean
-         favoriteCount:
-          type: number
-         author: 
-          type: object
-          properties:
-           username:
+        type: object
+        properties:
+          slug:
             type: string
-           bio:
+          title:
             type: string
-           image: 
+          description:
             type: string
-           following:
+          body:
+            type: string
+          tagList:
+            type: array
+            items:
+              type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          favorited:
             type: boolean
+          favoriteCount:
+            type: number
+          author:
+            type: object
+            properties:
+              username:
+                type: string
+              bio:
+                type: string
+              image:
+                type: string
+              following:
+                type: boolean
   multipleArticles:
-   type: object
-   properties:
-     articles:
-      type: array
-      items:
-       type: object
-     articlesCount:
-      type: number
+    type: object
+    properties:
+      articles:
+        type: array
+        items:
+          type: object
+      articlesCount:
+        type: number
   profile:
     type: object
     properties:
@@ -534,101 +548,101 @@ definitions:
         type: object
         properties:
           username:
-           type: string
+            type: string
           bio:
-           type: string
+            type: string
           image:
-           type: string
+            type: string
           following:
-           type: boolean
+            type: boolean
   comment:
     type: object
     properties:
       comment:
-       type: object
-       properties:
-         id:
-          type: string
-         createdAt:
-          type: string
-         updatedAt:
-          type: string
-         body:
-          type: string
-         author:
-          type: object
-          properties:
-            username:
-             type: string
-            bio:
-             type: string
-            image:
-             type: string
-            following:
-             type: boolean
+        type: object
+        properties:
+          id:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          body:
+            type: string
+          author:
+            type: object
+            properties:
+              username:
+                type: string
+              bio:
+                type: string
+              image:
+                type: string
+              following:
+                type: boolean
   multipleComments:
-   type: object
-   properties:
-     comments:
-      type: array
-      items:
-       type: object
-     commentsCount:
-      type: number
+    type: object
+    properties:
+      comments:
+        type: array
+        items:
+          type: object
+      commentsCount:
+        type: number
   tags:
     type: object
     properties:
       tags:
         type: array
         items:
-         type: string
+          type: string
   updateUser:
-   type: object
-   properties:
-    user:
-     type: object
-     properties:
-       email:
-        type: string
-       bio:
-        type: string
-       image:
-        type: string
+    type: object
+    properties:
+      user:
+        type: object
+        properties:
+          email:
+            type: string
+          bio:
+            type: string
+          image:
+            type: string
   createArticle:
-   type: object
-   properties:
-    article:
-     type: object
-     properties:
-      title:
-       type: string
-      description:
-       type: string
-      body:
-       type: string
-      tagList:
-       type: array
-       items:
-        type: string
-   required:
-    - title
-    - description
-    - body
+    type: object
+    properties:
+      article:
+        type: object
+        properties:
+          title:
+            type: string
+          description:
+            type: string
+          body:
+            type: string
+          tagList:
+            type: array
+            items:
+              type: string
+    required:
+      - title
+      - description
+      - body
   updateArticle:
-   type: object
-   properties:
-    article:
-     type: object
-     properties:
-      title:
-       type: string
+    type: object
+    properties:
+      article:
+        type: object
+        properties:
+          title:
+            type: string
   createComment:
-   type: object
-   properties:
-     comment:
-      type: object
-      properties:
-       body:
-        type: string
-   required:
-     - comment
+    type: object
+    properties:
+      comment:
+        type: object
+        properties:
+          body:
+            type: string
+    required:
+      - comment

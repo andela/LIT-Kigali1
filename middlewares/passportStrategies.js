@@ -22,11 +22,11 @@ passport.use(
           where: { [Op.or]: [{ email: username }, { username }] }
         });
         if (!user) {
-          return done(new Error('Email or Password is incorrect'));
+          return done(new Error("Email and password don't match"));
         }
         const passwordMatch = await bcrypt.compare(password, user.get().password);
         if (!passwordMatch) {
-          return done(new Error('Email or Password is incorrect'));
+          return done(new Error("Email and password don't match"));
         }
         return done(null, { ...user.get(), password: undefined });
       } catch (error) {

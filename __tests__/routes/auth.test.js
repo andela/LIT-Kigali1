@@ -24,27 +24,29 @@ describe('auth', () => {
   test('Signup- bad request', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .post(`${urlPrefix}/users/signup`)
-      .send({ email: 'test@email.com', password: 'test@test' });
+      .post(`${urlPrefix}/users`)
+      .send({ user: { email: 'test@email.com', password: 'test@test' } });
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('Bad Request');
   });
 
   test('Signup- success', async () => {
-    expect.assertions(2);
+    expect.assertions(3);
     const res = await request(app)
-      .post(`${urlPrefix}/users/signup`)
-      .send({ username: 'test', email: 'test@email.com', password: 'test@test' });
+      .post(`${urlPrefix}/users`)
+      .send({ user: { username: 'test', email: 'test@email.com', password: 'test@test' } });
     expect(res.status).toBe(201);
-    expect(res.body.message).toBe('Account created sucessfully');
+    expect(res.body).toBeDefined();
+    expect(res.body.user).toBeDefined();
   });
 
   test('Signup- account already exist', async () => {
-    expect.assertions(2);
+    expect.assertions(3);
     const res = await request(app)
-      .post(`${urlPrefix}/users/signup`)
-      .send({ username: 'test', email: 'test@email.com', password: 'test@test' });
+      .post(`${urlPrefix}/users`)
+      .send({ user: { username: 'test', email: 'test@email.com', password: 'test@test' } });
     expect(res.status).toBe(401);
+    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Account already exist');
   });
 
@@ -52,7 +54,7 @@ describe('auth', () => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
-      .send({ email: 'fake@email.com', password: 'test@test' });
+      .send({ user: { email: 'fake@email.com', password: 'test@test' } });
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('Bad Request');
   });
@@ -61,9 +63,9 @@ describe('auth', () => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
-      .send({ username: 'fake@email.com', password: 'test@test' });
+      .send({ user: { username: 'fake@email.com', password: 'test@test' } });
     expect(res.status).toBe(404);
-    expect(res.body.message).toBe('Email or Password is incorrect');
+    expect(res.body.message).toBe("Email and password don't match");
   });
 
   test('should return user data and token', async () => {
@@ -78,9 +80,9 @@ describe('auth', () => {
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
-      .send({ username, password });
+      .send({ user: { username, password } });
     expect(res.status).toBe(200);
-    expect(res.body.token).toBeDefined();
     expect(res.body.user).toBeDefined();
+    expect(res.body.user.token).toBeDefined();
   });
 });

@@ -22,11 +22,12 @@ app.use(routes);
 app.use(joiErrors());
 app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs));
 
+app.use('/', (req, res) => {
+  return res.send('<h1>Welcome to LIT Authors Haven</h1>');
+});
+
 // development error handler
 if (!isProduction) {
-  app.use('*', (req, res) => {
-    res.send('<h1>Welcome to LIT Authors Haven</h1>');
-  });
   app.use((err, req, res) => {
     res.status(err.status || 500).json({
       errors: {
@@ -37,13 +38,8 @@ if (!isProduction) {
   });
 } else {
   // production error handler
-  app.use((err, req, res) => {
-    res.status(err.status || 500).json({
-      errors: {
-        message: err.message,
-        error: {}
-      }
-    });
+  app.use('*', (req, res) => {
+    return res.send('<h1>Welcome to LIT Authors Haven</h1>');
   });
 }
 

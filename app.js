@@ -14,7 +14,6 @@ const app = express();
 const swaggerYAMLDocs = YAML.load('./docs/swagger.yml');
 
 app.use(cors());
-
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

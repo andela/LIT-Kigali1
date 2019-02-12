@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
+import cookie from 'cookie-parser';
 import methodOverride from 'method-override';
 import { joiErrors } from './middlewares';
 import routes from './routes';
@@ -14,6 +15,8 @@ const app = express();
 const swaggerYAMLDocs = YAML.load('./docs/swagger.yml');
 
 app.use(cors());
+app.use(cookie());
+
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

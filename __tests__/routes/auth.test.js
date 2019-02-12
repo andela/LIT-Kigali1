@@ -11,13 +11,13 @@ const username = 'test_login';
 describe('auth', () => {
   beforeAll(async () => {
     await User.destroy({
-      where: { [Op.or]: [{ email: signupUser.email }, { email }] }
+      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] }
     }).then(() => true);
   });
 
   afterAll(async () => {
     await User.destroy({
-      where: { [Op.or]: [{ email: signupUser.email }, { email }] }
+      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] }
     }).then(() => true);
   });
 
@@ -31,7 +31,7 @@ describe('auth', () => {
   });
 
   test('Signup- success', async () => {
-    expect.assertions(3);
+    expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/users`)
       .send({ user: { username: 'test', email: 'test@email.com', password: 'test@test' } });
@@ -41,7 +41,7 @@ describe('auth', () => {
     expect(res.body.message).toBe(
       'Account created sucessfully. Please check your email for confirmation'
     );
-  });
+  }, 30000);
 
   test('Signup- account already exist', async () => {
     expect.assertions(3);

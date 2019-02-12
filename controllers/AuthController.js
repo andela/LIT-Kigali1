@@ -20,32 +20,33 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async signup(req, res) {
-    let user;
+    let userModel;
     let token;
-    const { body } = req;
+    const {
+      body: { user }
+    } = req;
     try {
-      user = await User.findOne({
-        where: { [Op.or]: [{ email: body.email }, { username: body.username }] }
+      userModel = await User.findOne({
+        where: { [Op.or]: [{ email: user.email }, { username: user.username }] }
       });
-      if (user) {
+      if (userModel) {
         return res.status(401).json({ status: 401, message: 'Account already exist' });
       }
-      const password = await bcrypt.hash(body.password, 10);
+      const password = await bcrypt.hash(user.password, 10);
 
-      user = await User.create({ ...body, password });
+      userModel = await User.create({ ...user, password });
 
-      token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
+      token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
     } catch (error) {
       return res.status(401).json({ status: 401, message: 'Please try again' });
     }
 
     res.cookie('jwt', jwt, { httpOnly: true, secure: true });
-    const { password, ...userData } = user.get();
+    const { password, ...userData } = userModel.get();
     return res.status(201).json({
       status: 201,
       message: 'Account created sucessfully',
-      token,
-      User: userData
+      user: { ...userData, ...token }
     });
   }
 
@@ -58,10 +59,13 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async login(req, res, next) {
+    const { user: loginUser } = req.body;
+    req.body.username = loginUser.username;
+    req.body.password = loginUser.password;
     passport.authenticate('login', async (err, user) => {
       try {
         if (err || !user) {
-          return res.status(404).json({ message: err.message });
+          return res.status(404).json({ status: 404, message: err.message });
         }
         req.login(user, { session: false }, async error => {
           if (error) return next(error);
@@ -70,7 +74,7 @@ class AuthController {
 
           res.cookie('jwt', jwt, { httpOnly: true, secure: true });
 
-          return res.json({ token, user });
+          return res.json({ status: 200, user: { ...user, token } });
         });
       } catch (error) {
         return next(error);

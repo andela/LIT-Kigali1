@@ -8,7 +8,6 @@
   },
   "plugins": ["jest", "prettier"],
   "rules": {
-    "parser": "babel-eslint",
     "parserOptions": {
       "allowImportExportEverywhere": true,
       "sourceType": "module"

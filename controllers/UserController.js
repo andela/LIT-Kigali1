@@ -23,11 +23,11 @@ class UserController {
       }
       if (user.confirmed === 'confirmed') {
         return res
-          .status(404)
-          .json({ status: 404, message: `${user.email} has already been confirmed` });
+          .status(401)
+          .json({ status: 401, message: `${user.email} has already been confirmed` });
       }
       if (user.confirmationCode !== confirmationCode) {
-        return res.status(404).json({ status: 404, message: 'Invalid confirmation code' });
+        return res.status(401).json({ status: 401, message: 'Invalid confirmation code' });
       }
 
       await user.update({ confirmed: 'confirmed', confirmationCode: null });

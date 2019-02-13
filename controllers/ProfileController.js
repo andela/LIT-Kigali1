@@ -1,4 +1,3 @@
-import { Op } from 'sequelize';
 import { User } from '../database/models';
 
 /**
@@ -9,19 +8,28 @@ class ProfileController {
      * @author Daniel
      * @param {*} req 
      * @param {*} res
-     * @returns{*} profile object
+     * @returns{*} user object
      */
   static async createProfile(req, res) {
       const{ user } = req.body;
-      const { id } = req.body.currentUser;
+      const { id } = req.currentUser;
+      try {
       const profile = await User.findOne({
-          attributes:{ exclude: ['password', 'status', 'following','userType','createdAt','updateAt']}, 
+          attributes:{ exclude: ['password', 'status', 'following','userType','createdAt']}, 
           where:{id}});
-          console.log(profile);
-      profile.update(user);
+      profile.update({updateAt: new Date(),...user});
       return res.status(200).send({
               user: profile.get()
       })
+    } catch(error) {
+        return res.status(520).send({
+            errors:{
+                body:[
+                    error.message
+                ]
+            }
+        })
+    }
   }
 }
 

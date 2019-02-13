@@ -1,6 +1,8 @@
 import express from 'express';
 import passport from 'passport';
+import { celebrate } from 'celebrate';
 import { ProfileController } from '../../controllers';
+import { profileValidator } from '../validators'
 
 
 const router = express.Router();
@@ -18,11 +20,13 @@ router.put('/', (req, res, next) => {
         if (err) { return res.status(520).send({errors: {
             body:[err.message]
         }}); }
-        req.body.currentUser = user;
+        req.currentUser = user;
         return next();
       });
     })(req, res, next);
-  }, ProfileController.createProfile);
+  }, 
+  celebrate({ body: profileValidator }),
+  ProfileController.createProfile);
 
 
 export default router;

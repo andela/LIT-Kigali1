@@ -4,6 +4,7 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|js)x?$',
   coveragePathIgnorePatterns: [
     'node_modules',
+    'middlewares',
     'index.js',
     'app.js',
     'database',

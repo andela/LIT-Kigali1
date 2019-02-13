@@ -4,6 +4,7 @@ import 'dotenv/config';
 import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { User } from '../database/models';
+import { sendEmailConfirmationLink } from './MailController';
 
 const { JWT_SECRET } = process.env;
 
@@ -41,12 +42,14 @@ class AuthController {
       return res.status(401).json({ status: 401, message: 'Please try again' });
     }
 
-    res.cookie('jwt', jwt, { httpOnly: true, secure: true });
-    const { password, ...userData } = userModel.get();
+    await sendEmailConfirmationLink({ ...userModel.get() });
+
+    const { password, confirmationCode, ...userData } = userModel.get();
+
     return res.status(201).json({
       status: 201,
-      message: 'Account created sucessfully',
-      user: { ...userData, ...token }
+      message: 'Account created sucessfully. Please check your email for confirmation',
+      user: { ...userData, token }
     });
   }
 
@@ -67,15 +70,9 @@ class AuthController {
         if (err || !user) {
           return res.status(404).json({ status: 404, message: err.message });
         }
-        req.login(user, { session: false }, async error => {
-          if (error) return next(error);
-          const body = { id: user.id, username: user.username };
-          const token = jwt.sign({ user: body }, JWT_SECRET);
-
-          res.cookie('jwt', jwt, { httpOnly: true, secure: true });
-
-          return res.json({ status: 200, user: { ...user, token } });
-        });
+        const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
+        const { confirmationCode, ...userData } = user;
+        return res.json({ status: 200, user: { ...userData, token } });
       } catch (error) {
         return next(error);
       }

@@ -31,7 +31,7 @@ describe('User model', () => {
 
   test('Delete a user', async () => {
     expect.assertions(1);
-    const res = await await User.destroy({ where: { email: signupUser.email } });
+    const res = await User.destroy({ where: { email: signupUser.email } });
     expect(res).toBe(1);
   });
 });

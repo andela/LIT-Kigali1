@@ -51,6 +51,10 @@ module.exports = {
       confirmationCode: {
         type: Sequelize.STRING
       },
+      confirmed: {
+        type: Sequelize.STRING,
+        defaultValue: 'pending'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

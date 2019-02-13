@@ -31,13 +31,14 @@ describe('auth', () => {
   });
 
   test('Signup- success', async () => {
-    expect.assertions(4);
+    expect.assertions(5);
     const res = await request(app)
       .post(`${urlPrefix}/users`)
       .send({ user: { username: 'test', email: 'test@email.com', password: 'test@test' } });
     expect(res.status).toBe(201);
     expect(res.body).toBeDefined();
     expect(res.body.user).toBeDefined();
+    expect(res.body.user.token).toBeDefined();
     expect(res.body.message).toBe(
       'Account created sucessfully. Please check your email for confirmation'
     );

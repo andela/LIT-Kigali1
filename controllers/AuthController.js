@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { User } from '../database/models';
-import { sendConfirmationEmail } from './MailController';
+import { sendEmailConfirmationLink } from './MailController';
 
 const { JWT_SECRET } = process.env;
 
@@ -42,7 +42,7 @@ class AuthController {
       return res.status(401).json({ status: 401, message: 'Please try again' });
     }
 
-    await sendConfirmationEmail({ ...userModel.get() });
+    await sendEmailConfirmationLink({ ...userModel.get() });
 
     const { password, confirmationCode, ...userData } = userModel.get();
 

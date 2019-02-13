@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: DataTypes.UUIDV4
       },
+      confirmed: {
+        type: DataTypes.STRING,
+        defaultValue: 'pending'
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

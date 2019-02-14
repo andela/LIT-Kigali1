@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   User.associate = function(models) {
-    // Association
+    User.hasMany(models.ResetPassword, { foreignKey: 'userId' });
   };
   return User;
 };

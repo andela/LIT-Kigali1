@@ -42,7 +42,6 @@ class AuthController {
       return res.status(401).json({ status: 401, message: 'Please try again' });
     }
 
-<<<<<<< HEAD
     await sendEmailConfirmationLink({ ...userModel.get() });
 
     const { password, confirmationCode, ...userData } = userModel.get();
@@ -50,12 +49,6 @@ class AuthController {
     return res.status(201).json({
       status: 201,
       message: 'Account created sucessfully. Please check your email for confirmation',
-=======
-    const { password, ...userData } = userModel.get();
-    return res.status(201).json({
-      status: 201,
-      message: 'Account created sucessfully',
->>>>>>> feat(profile) create profile
       user: { ...userData, token }
     });
   }

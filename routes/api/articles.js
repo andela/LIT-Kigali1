@@ -18,6 +18,18 @@ router.post(
   fileParser.single('cover'),
   ArticleController.createArticle
 );
+
 router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
+
+router.get(
+  '/',
+  celebrate({
+    query: articleValidator.getArticlesQuery
+  }),
+  verifyJwt({ tokenRequired: false }),
+  ArticleController.getArticles
+);
+
+router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
 
 export default router;

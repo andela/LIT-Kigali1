@@ -23,6 +23,17 @@ const createArticle = {
   cover: Joi.any()
 };
 
+const getArticlesQuery = {
+  tag: Joi.string().trim(),
+  author: Joi.string().trim(),
+  limit: Joi.number()
+    .min(1)
+    .max(25),
+  offset: Joi.number().min(1),
+  favorited: Joi.string()
+};
+
 export default {
-  createArticle
+  createArticle,
+  getArticlesQuery
 };

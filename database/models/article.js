@@ -28,15 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       tagList: {
-        type: DataTypes.ARRAY(DataTypes.STRING)
-      },
-      favorited: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      favoritesCount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: []
       },
       images: {
         type: DataTypes.ARRAY(DataTypes.TEXT)
@@ -44,6 +37,17 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.STRING,
         defaultValue: 'unpublished'
+      },
+      cover: {
+        type: DataTypes.STRING
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE
       }
     },
     {}

@@ -52,6 +52,7 @@
     "slug": "^0.9.3",
     "swagger-ui-express": "^4.0.2",
     "underscore": "^1.9.1",
+    "unique-slug": "^2.0.1",
     "winston": "^3.2.1",
     "yamljs": "^0.3.0"
   },

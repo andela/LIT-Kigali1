@@ -33,6 +33,9 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: 'unpublished'
       },
+      cover: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

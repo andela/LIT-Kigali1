@@ -1,5 +1,6 @@
+import uuid from 'uuid';
 import { User } from '../database/models';
-
+import { sendEmailConfirmationLink } from './MailController';
 /**
  * @description ProfileContoller class
  */
@@ -78,9 +79,19 @@ class ProfileController {
       const profile = await User.findOne({
           attributes:{ exclude: ['password', 'status', 'following','userType','createdAt']}, 
           where:{id}});
-      profile.update({updateAt: new Date(),...user});
+      profile.update({updateAt: new Date(),...user, confirmationCode: uuid.v4(), confirmed: 'pending'});
+      let message;
+      if(user.email){
+        await sendEmailConfirmationLink({ ...profile.get() });
+         message = 'Your email is changed. Please check your email for confirmation'
+      }else {
+        message = 'The information was updated successful'
+      }
+      const{ confirmationCode, ...userData } = profile.get();
       return res.status(200).send({
-        user: profile.get()
+        statu: 200,
+        message,
+        user: userData
       })
     } catch(error) {
       return res.status(520).send({

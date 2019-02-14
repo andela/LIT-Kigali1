@@ -14,7 +14,8 @@ router.post(
   celebrate({
     body: articleValidator.createArticle
   }),
-  fileParser.array('images'),
+  verifyJwt(),
+  fileParser.single('cover'),
   ArticleController.createArticle
 );
 router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);

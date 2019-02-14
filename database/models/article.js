@@ -30,23 +30,20 @@ module.exports = (sequelize, DataTypes) => {
       tagList: {
         type: DataTypes.ARRAY(DataTypes.STRING)
       },
-      coverImage: {
-        type: DataTypes.TEXT
-      },
-      // favorited: {
-      //   type: DataTypes.BOOLEAN,
-      //   defaultValue: false
-      // },
-      // favoritesCount: {
-      //   type: DataTypes.INTEGER,
-      //   defaultValue: 0
-      // },
-      // images: {
-      //   type: DataTypes.ARRAY(DataTypes.TEXT)
-      // },
       status: {
         type: DataTypes.STRING,
         defaultValue: 'unpublished'
+      },
+      cover: {
+        type: DataTypes.STRING
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE
       }
     },
     {}

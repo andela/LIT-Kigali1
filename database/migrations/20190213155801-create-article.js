@@ -29,12 +29,12 @@ module.exports = {
       tagList: {
         type: Sequelize.ARRAY(Sequelize.STRING)
       },
-      coverImage: {
-        type: Sequelize.TEXT
-      },
       status: {
         type: Sequelize.STRING,
         defaultValue: 'unpublished'
+      },
+      cover: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

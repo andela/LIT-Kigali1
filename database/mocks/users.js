@@ -56,6 +56,7 @@ module.exports = [
     lastName: 'olivier',
     username: 'Olivier',
     email: 'olivier@email.com',
+    confirmed: 'confirmed',
     password,
     gender,
     createdAt,

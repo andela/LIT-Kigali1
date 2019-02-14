@@ -16,13 +16,8 @@ router.put('/', (req, res, next) => {
       return res.status(status).send({ errors: {
           body: [info.message]
       }}); }
-      req.logIn(user,{ session: false }, (err) => {
-        if (err) { return res.status(520).send({errors: {
-            body:[err.message]
-        }}); }
         req.currentUser = user;
         return next();
-      });
     })(req, res, next);
   }, 
   celebrate({ body: profileValidator }),

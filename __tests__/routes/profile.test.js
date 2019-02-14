@@ -1,8 +1,11 @@
 import request from 'supertest';
+import jwt from 'jsonwebtoken';
 import { User } from '../../database/models';
-import { signupUser } from '../mocks/db.json';
+import { signupUser, profile } from '../mocks/db.json';
 import { urlPrefix } from '../mocks/variables.json';
 import app from '../../app';
+
+const { JWT_SECRET } = process.env;
 
 let testUserToken;
 describe('Profile', () => {
@@ -21,21 +24,13 @@ describe('Profile', () => {
       await User.destroy({
         where: { email: signupUser.email }
       });
+      await User.destroy({
+        where: { email: profile.email }
+      })
     });
 
-    test('create profile', async () => {
+    test('should create profile', async () => {
         expect.assertions(10);
-        const profile = {
-          firstName: 'John',
-          lastName: 'Doe',
-          username: 'doe201',
-          email: 'john.doe@andela.com',
-          bio: 'I am software at Andela',
-          gender: 'Male',
-          birthDate: '12 June 1999',
-          image: 'https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg',
-          cover: 'https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg'
-        }
         const res = await request(app)
           .put(`${urlPrefix}/user`)
           .set('Authorization', testUserToken)
@@ -54,47 +49,8 @@ describe('Profile', () => {
         expect(res.body.user.image).toBe(profile.image);
         expect(res.body.user.cover).toBe(profile.cover);
       });
-      test('create profile without --token', async () => {
-        expect.assertions(1);
-        await User.destroy({
-          where: { email: signupUser.email }
-        });
-        const profile = {
-          firstName: 'John',
-          lastName: 'Doe',
-          username: 'doe201',
-          email: 'john.doe@andela.com',
-          bio: 'I am software at Andela',
-          gender: 'Male',
-          birthDate: '12 June 1999',
-          image: 'https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg',
-          cover: 'https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg'
-        }
-        const res = await request(app)
-          .put(`${urlPrefix}/user`)
-          .send({user: {
-            ...profile
-          }})
-    
-        expect(res.status).toBe(401);
-      });
-
-      test('create profile with --unexisting user', async () => {
+      test('should not create profile with --taken email and username', async () => {
         expect.assertions(2);
-        await User.destroy({
-          where: { email: signupUser.email }
-        });
-        const profile = {
-          firstName: 'John',
-          lastName: 'Doe',
-          username: 'doe201',
-          email: 'john.doe@andela.com',
-          bio: 'I am software at Andela',
-          gender: 'Male',
-          birthDate: '12 June 1999',
-          image: 'https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg',
-          cover: 'https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg'
-        }
         const res = await request(app)
           .put(`${urlPrefix}/user`)
           .set('Authorization', testUserToken)
@@ -102,8 +58,117 @@ describe('Profile', () => {
             ...profile
           }})
     
+        expect(res.status).toBe(409);
+        expect(res.body.errors.body[0]).toBe('email and username are already taken');
+      });
+      test('should not create profile with --taken email ', async () => {
+        expect.assertions(2);
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', testUserToken)
+          .send({user: {
+            email: profile.email
+          }})
+    
+        expect(res.status).toBe(409);
+        expect(res.body.errors.body[0]).toBe('email is already taken');
+      });
+      test('should not create profile with --taken username ', async () => {
+        expect.assertions(2);
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', testUserToken)
+          .send({user: {
+            username: profile.username
+          }})
+    
+        expect(res.status).toBe(409);
+        expect(res.body.errors.body[0]).toBe('username is already taken');
+      });
+      test('should not create profile with --taken username and untaken email ', async () => {
+        expect.assertions(2);
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', testUserToken)
+          .send({user: {
+            username: profile.username,
+            email: 'papasava@email.com'
+          }})
+    
+        expect(res.status).toBe(409);
+        expect(res.body.errors.body[0]).toBe('username is already taken');
+      });
+      test('should not create profile with --taken email and untaken username ', async () => {
+        expect.assertions(2);
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', testUserToken)
+          .send({user: {
+            username: 'papasava',
+            email: profile.email
+          }})
+    
+        expect(res.status).toBe(409);
+        expect(res.body.errors.body[0]).toBe('email is already taken');
+      });
+      test('should not create profile without --token', async () => {
+        expect.assertions(2);
+        await User.destroy({
+          where: { email: 'john.doe@andela.com' }
+        });
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .send({user: {
+            ...profile
+          }})
+    
+        expect(res.status).toBe(401);
+        expect(res.body.errors.body[0]).toBe('No auth token');
+      });
+
+      test('should not create profile with --unexisting user', async () => {
+        expect.assertions(2);
+        await User.destroy({
+          where: { email: signupUser.email }
+        });
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', testUserToken)
+          .send({user: {
+            ...profile
+          }})
         expect(res.status).toBe(404);
         expect(res.body.errors.body).toBeDefined();
       });
-
+      test('should not create profile with --malformed token', async () => {
+        expect.assertions(2);
+        await User.destroy({
+          where: { email: signupUser.email }
+        });
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', 'thgdihueh-jz')
+          .send({user: {
+            ...profile
+          }})
+    
+        expect(res.status).toBe(401);
+        expect(res.body.errors.body).toBeDefined();
+      });
+      test('should not create profile with --incorrect token', async () => {
+        expect.assertions(2);
+        await User.destroy({
+          where: { email: signupUser.email }
+        });
+        const token = jwt.sign({ id: 12345, userType: 'user' }, JWT_SECRET);
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', token)
+          .send({user: {
+            ...profile
+          }})
+    
+        expect(res.status).toBe(520);
+        expect(res.body.errors.body).toBeDefined();
+      });
 });

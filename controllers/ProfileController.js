@@ -4,31 +4,92 @@ import { User } from '../database/models';
  * @description ProfileContoller class
  */
 class ProfileController {
-    /**
-     * @author Daniel
-     * @param {*} req 
-     * @param {*} res
-     * @returns{*} user object
-     */
+  /**
+   * @author Daniel
+   * @param {*} req 
+   * @param {*} res
+   * @returns{*} user object
+   */
   static async createProfile(req, res) {
       const{ user } = req.body;
       const { id } = req.currentUser;
+      const{ email, username } = req.body.user;
+      if (email || username) {
+        let message;
+        let errorMessage;
+        if (email && username ){
+          try {
+            const emailOwner = await User.findOne({
+              where:{email}
+            })
+            const usernameOwner = await User.findOne({
+              where:{username}
+            })
+            if(emailOwner && usernameOwner){
+              message = 'email and username are';
+            } else if(emailOwner){
+              message = 'email is';
+            } else if(usernameOwner){
+              message = 'username is';
+            }
+          } catch(error) {
+            errorMessage = error.message;
+          }
+        } else if(email) {
+            try {
+              const emailOwner = await User.findOne({
+                where:{email}
+              });
+              if(emailOwner){
+                message = 'email is';
+              }
+            } catch(error) {
+              errorMessage = error.message;
+            }
+          }else if(username){
+            try {
+              const usernameOwner = await User.findOne({
+                where:{username}
+              });
+              if(usernameOwner){
+                message = 'username is';
+              }
+            } catch(error) {
+              errorMessage = error.message;
+            }
+          }
+      if (message) {
+        return res.status(409).send({
+          errors:{
+            body:[`${message} already taken`]
+          }
+        });
+      } if(errorMessage) {
+        return res.status(520).send({
+          errors:{
+            body:[
+              errorMessage
+            ]
+          }
+        });
+      }
+      }
       try {
       const profile = await User.findOne({
           attributes:{ exclude: ['password', 'status', 'following','userType','createdAt']}, 
           where:{id}});
       profile.update({updateAt: new Date(),...user});
       return res.status(200).send({
-              user: profile.get()
+        user: profile.get()
       })
     } catch(error) {
-        return res.status(520).send({
-            errors:{
-                body:[
-                    error.message
-                ]
-            }
-        })
+      return res.status(520).send({
+        errors:{
+          body:[
+              error.message
+          ]
+        }
+      })
     }
   }
 }

@@ -30,17 +30,20 @@ module.exports = (sequelize, DataTypes) => {
       tagList: {
         type: DataTypes.ARRAY(DataTypes.STRING)
       },
-      favorited: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+      coverImage: {
+        type: DataTypes.TEXT
       },
-      favoritesCount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
-      },
-      images: {
-        type: DataTypes.ARRAY(DataTypes.TEXT)
-      },
+      // favorited: {
+      //   type: DataTypes.BOOLEAN,
+      //   defaultValue: false
+      // },
+      // favoritesCount: {
+      //   type: DataTypes.INTEGER,
+      //   defaultValue: 0
+      // },
+      // images: {
+      //   type: DataTypes.ARRAY(DataTypes.TEXT)
+      // },
       status: {
         type: DataTypes.STRING,
         defaultValue: 'unpublished'
@@ -49,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Article.associate = function(models) {
-    Article.belongsTo(models.User, { foreignKey: 'userId' });
+    Article.belongsTo(models.User, { as: 'author', foreignKey: 'userId' });
     Article.hasMany(models.Favorite, { foreignKey: 'articleId' });
   };
   return Article;

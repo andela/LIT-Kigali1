@@ -3,6 +3,7 @@ import { celebrate } from 'celebrate';
 import multer from 'multer';
 import { articleValidator } from '../validators';
 import { ArticleController } from '../../controllers';
+import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.post(
   fileParser.array('images'),
   ArticleController.createArticle
 );
+router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
 
 export default router;

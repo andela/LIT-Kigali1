@@ -14,6 +14,11 @@ describe('users', () => {
     });
     user = await User.create({ ...signupUser });
   });
+
+  afterAll(async () => {
+    await ResetPassword.destroy({ where: { userId: user.id } });
+  });
+
   test('should return invalid confirmation code -fake userid and confirmationCode', async () => {
     expect.assertions(2);
     const res = await request(app).get(
@@ -52,8 +57,8 @@ describe('users', () => {
     expect(res.body.message).toBe('test@email.com has already been confirmed');
   });
 
-  // Forget password tests
   test('Password reset link sent sucessfully', async () => {
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/forget`)
       .send({ user: { email: 'test@email.com' } });
@@ -62,6 +67,7 @@ describe('users', () => {
   }, 30000);
 
   test('No user found with that email address', async () => {
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/forget`)
       .send({ user: { email: 'fake@email.com' } });
@@ -69,6 +75,7 @@ describe('users', () => {
     expect(res.body.message).toBe('No user found with that email address');
   });
   test('Bad request- password forget', async () => {
+    expect.assertions(1);
     const res = await request(app)
       .post(`${urlPrefix}/users/forget`)
       .send({ user: { emailx: 'fake@email.com' } });
@@ -76,6 +83,7 @@ describe('users', () => {
   });
 
   test('No user found with that email address- Unconfirmed email', async () => {
+    expect.assertions(2);
     await user.update({ confirmed: 'pending' });
     const res = await request(app)
       .post(`${urlPrefix}/users/forget`)
@@ -84,8 +92,8 @@ describe('users', () => {
     expect(res.body.message).toBe('No user found with that email address');
   });
 
-  // Reset password tests
   test('Reset password- fail', async () => {
+    expect.assertions(2);
     const reset = await ResetPassword.findOne({ where: { userId: user.id } });
     const res = await request(app)
       .put(`${urlPrefix}/users/${reset.userId}/reset/${reset.resetCode}`)
@@ -95,6 +103,7 @@ describe('users', () => {
   });
 
   test('Reset password- Bad request', async () => {
+    expect.assertions(2);
     const reset = await ResetPassword.findOne({ where: { userId: user.id } });
     const res = await request(app)
       .put(`${urlPrefix}/users/${reset.userId}/reset/${reset.resetCode}`)
@@ -104,6 +113,7 @@ describe('users', () => {
   });
 
   test('Reset password- invalid token', async () => {
+    expect.assertions(2);
     const reset = await ResetPassword.findOne({ where: { userId: user.id } });
     const res = await request(app)
       .put(`${urlPrefix}/users/${reset.userId}/reset/7ced290d-f51a-472c-8086-7e8161fc40b9`)
@@ -113,11 +123,22 @@ describe('users', () => {
   }, 30000);
 
   test('Reset password- success', async () => {
+    expect.assertions(2);
     const reset = await ResetPassword.findOne({ where: { userId: user.id } });
     const res = await request(app)
       .put(`${urlPrefix}/users/${reset.userId}/reset/${reset.resetCode}`)
       .send({ newPassword: 'mugisha', confirmNewpassword: 'mugisha' });
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Your password has been reset successfully!');
-  });
+  }, 30000);
+
+  test('Reset password- success', async () => {
+    expect.assertions(2);
+    const reset = await ResetPassword.findOne({ where: { userId: user.id } });
+    const res = await request(app)
+      .put(`${urlPrefix}/users/${reset.userId}/reset/${reset.resetCode}`)
+      .send({ newPassword: 'mugisha', confirmNewpassword: 'mugisha' });
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe('Your password has been reset successfully!');
+  }, 30000);
 });

@@ -29,8 +29,8 @@ describe('Profile', () => {
       })
     });
 
-    test('should create profile', async () => {
-        expect.assertions(10);
+    test('should create profile and send confirmation when email is provided', async () => {
+        expect.assertions(11);
         const res = await request(app)
           .put(`${urlPrefix}/user`)
           .set('Authorization', testUserToken)
@@ -39,6 +39,7 @@ describe('Profile', () => {
           }})
     
         expect(res.status).toBe(200);
+        expect(res.body.message).toBe('Your email is changed. Please check your email for confirmation');
         expect(res.body.user.firstName).toBe(profile.firstName);
         expect(res.body.user.lastName).toBe(profile.lastName);
         expect(res.body.user.username).toBe(profile.username);
@@ -48,6 +49,19 @@ describe('Profile', () => {
         expect(res.body.user.birthDate).toBeDefined();
         expect(res.body.user.image).toBe(profile.image);
         expect(res.body.user.cover).toBe(profile.cover);
+      });
+      test('should create profile and not send confirmation email when email is not provided', async () => {
+        expect.assertions(3);
+        const res = await request(app)
+          .put(`${urlPrefix}/user`)
+          .set('Authorization', testUserToken)
+          .send({user: {
+            firstName: 'Peter'
+          }})
+    
+        expect(res.status).toBe(200);
+        expect(res.body.user.firstName).toBe('Peter');
+        expect(res.body.message).toBe('The information was updated successful');
       });
       test('should not create profile with --taken email and username', async () => {
         expect.assertions(2);

@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
       },
+      userId: {
+        type: DataTypes.UUID,
+        allowNull: false
+      },
+      slug: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false
@@ -36,16 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.STRING,
         defaultValue: 'unpublished'
-      },
-      userId: {
-        type: DataTypes.UUID,
-        allowNull: false
       }
     },
     {}
   );
   Article.associate = function(models) {
     Article.belongsTo(models.User, { foreignKey: 'userId' });
+    Article.hasMany(models.Favorite, { foreignKey: 'articleId' });
   };
   return Article;
 };

@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { Op } from 'sequelize';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as JWTStrategy } from 'passport-jwt';
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import 'dotenv/config';
 import { User } from '../database/models';
 
@@ -40,17 +40,21 @@ passport.use(
   'jwt',
   new JWTStrategy(
     {
-      jwtFromRequest: req => req.cookies.jwt,
+      jwtFromRequest: ExtractJwt.fromHeader('authorization'),
       secretOrKey: JWT_SECRET
     },
-    (jwtPayload, done) => {
-      if (Date.now() > jwtPayload.expires) {
-        return done('jwt expired');
+    async (jwtPayload, done) => {
+      try {
+        const user = await User.findOne({
+          where: { id: jwtPayload.id }
+        });
+        if (!user) {
+          return done(null, false, { message: 'user does not exist' });
+        }
+        return done(null, user.get());
+      } catch (error) {
+        return done(error);
       }
-
-      return done(null, jwtPayload);
     }
   )
 );
-
-export default passport;

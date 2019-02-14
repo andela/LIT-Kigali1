@@ -6,6 +6,14 @@ module.exports = {
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
+      slug: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       title: {
         type: Sequelize.STRING,
         allowNull: false
@@ -21,24 +29,9 @@ module.exports = {
       tagList: {
         type: Sequelize.ARRAY(Sequelize.STRING)
       },
-      favorited: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      favoritesCount: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      images: {
-        type: Sequelize.ARRAY(Sequelize.TEXT)
-      },
       status: {
         type: Sequelize.STRING,
         defaultValue: 'unpublished'
-      },
-      userId: {
-        type: Sequelize.UUID,
-        allowNull: false
       },
       createdAt: {
         allowNull: false,

@@ -1,3 +1,4 @@
 import authValidator from './auth';
+import articleValidator from './article';
 
-export { authValidator };
+export { authValidator, articleValidator };

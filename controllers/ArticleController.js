@@ -60,6 +60,7 @@ class ArticleController {
       });
       if (!article) {
         return res.status(404).json({
+          status: 404,
           message: 'Article not found'
         });
       }
@@ -82,8 +83,51 @@ class ArticleController {
         }
       });
     } catch (error) {
-      return res.status(409).json({ message: 'Failed!! Try again' });
+      return res.status(409).json({ status: 409, message: 'Failed!! Try again' });
     }
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async updateArticle(req, res) {
+    const { file, currentUser } = req;
+    const { article } = req.body;
+    let newArticle;
+    let { slug } = req.params;
+    const cover = file ? file.url : undefined;
+    try {
+      if (!currentUser) {
+        return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+      }
+      const dbArticle = await Article.findOne({
+        where: {
+          slug,
+          userId: currentUser.id
+        }
+      });
+      if (dbArticle.get().title !== article.title) {
+        slug = slugString(article.title);
+      }
+      newArticle = await dbArticle.update({
+        ...article,
+        userId: currentUser.id,
+        slug,
+        cover
+      });
+    } catch (error) {
+      return res.status(409).json({ status: 409, message: 'Please try again' });
+    }
+
+    return res.status(201).json({
+      status: 200,
+      message: 'Article updated successfully',
+      article: newArticle.get()
+    });
   }
 }
 export default ArticleController;

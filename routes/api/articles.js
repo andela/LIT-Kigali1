@@ -19,5 +19,14 @@ router.post(
   ArticleController.createArticle
 );
 router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
+router.put(
+  '/:slug',
+  celebrate({
+    body: articleValidator.createArticle
+  }),
+  verifyJwt(),
+  fileParser.single('cover'),
+  ArticleController.updateArticle
+);
 
 export default router;

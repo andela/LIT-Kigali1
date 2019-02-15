@@ -24,7 +24,10 @@ class ArticleController {
         return res.status(401).json({ status: 401, message: 'Unauthorized access' });
       }
       const slug = slugString(article.title);
-      newArticle = await Article.create({ ...article, userId: currentUser.id, slug, cover });
+      newArticle = await Article.create(
+        { ...article, userId: currentUser.id, slug, cover },
+        { include: [{ model: User, as: 'author' }], attributes: ['username', 'bio', 'image'] }
+      );
 
       if (newArticle.tagList.length > 0) {
         const tags = newArticle.tagList.map(val => ({ name: val }));
@@ -184,7 +187,7 @@ class ArticleController {
         status: 200,
         articles: articles.rows,
         articlesCount: articles.count,
-        pages: articles.count / limit
+        pages: Math.ceil(articles.count / limit)
       });
     } catch (error) {
       return res.status(409).json({ message: 'Failed!! Try again' });

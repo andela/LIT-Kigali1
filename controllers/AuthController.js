@@ -107,8 +107,7 @@ class AuthController {
       await resetPasswordEmail(id, email, resetCode);
       res.status(201).json({
         status: 201,
-        message: 'Password reset link sent sucessfully. Please check your email!',
-        ResetPassword: createReset
+        message: 'Password reset link sent sucessfully. Please check your email!'
       });
     } catch (error) {
       return res.status(520).json({ message: 'Please try again' });
@@ -158,7 +157,6 @@ class AuthController {
           await newPasswordEmail(user.email);
           res.status(200).json({
             status: 200,
-            user: { ...user.get() },
             message: 'Your password has been reset successfully!'
           });
         }

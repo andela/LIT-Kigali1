@@ -74,12 +74,23 @@ describe('users', () => {
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('No user found with that email address');
   });
+
   test('Bad request- password forget', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/forget`)
       .send({ user: { emailx: 'fake@email.com' } });
     expect(res.status).toBe(400);
+    expect(res.body.message).toBe('Bad Request');
+  });
+
+  test('Bad request- password forget', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .post(`${urlPrefix}/users/forget`)
+      .send({ user: { emailx: 'fake' } });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe('Bad Request');
   });
 
   test('No user found with that email address- Unconfirmed email', async () => {
@@ -112,6 +123,16 @@ describe('users', () => {
     expect(res.body.message).toBe('Bad Request');
   });
 
+  test('Reset password- Bad request', async () => {
+    expect.assertions(2);
+    const reset = await ResetPassword.findOne({ where: { userId: user.id } });
+    const res = await request(app)
+      .put(`${urlPrefix}/users/${reset.userId}/reset/${reset.resetCode}`)
+      .send({ newPassword: 'mug', confirmpassword: 'mug' });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe('Bad Request');
+  });
+
   test('Reset password- invalid token', async () => {
     expect.assertions(2);
     const reset = await ResetPassword.findOne({ where: { userId: user.id } });
@@ -120,17 +141,7 @@ describe('users', () => {
       .send({ newPassword: 'mugisha', confirmNewpassword: 'mugisha' });
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('invalid token');
-  }, 30000);
-
-  test('Reset password- success', async () => {
-    expect.assertions(2);
-    const reset = await ResetPassword.findOne({ where: { userId: user.id } });
-    const res = await request(app)
-      .put(`${urlPrefix}/users/${reset.userId}/reset/${reset.resetCode}`)
-      .send({ newPassword: 'mugisha', confirmNewpassword: 'mugisha' });
-    expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Your password has been reset successfully!');
-  }, 30000);
+  });
 
   test('Reset password- success', async () => {
     expect.assertions(2);

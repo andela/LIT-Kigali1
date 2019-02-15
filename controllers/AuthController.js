@@ -111,7 +111,7 @@ class AuthController {
         ResetPassword: createReset
       });
     } catch (error) {
-      return res.status(401).json({ message: 'Please try again' });
+      return res.status(520).json({ message: 'Please try again' });
     }
   }
 
@@ -164,7 +164,7 @@ class AuthController {
         }
       }
     } catch (error) {
-      return res.status(401);
+      return res.status(520);
     }
   }
 }

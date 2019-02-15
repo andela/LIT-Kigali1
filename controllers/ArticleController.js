@@ -26,7 +26,7 @@ class ArticleController {
       const slug = slugString(article.title);
       newArticle = await Article.create({ ...article, userId: currentUser.id, slug, cover });
 
-      if (newArticle.tagList.length > 0) {
+      if (newArticle.tagList && newArticle.tagList.length > 0) {
         const tags = newArticle.tagList.map(val => ({ name: val }));
         await Tag.bulkCreate(tags, { ignoreDuplicates: true });
       }

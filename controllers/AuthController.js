@@ -28,14 +28,21 @@ class AuthController {
     } = req;
     try {
       userModel = await User.findOne({
-        where: { [Op.or]: [{ email: user.email }, { username: user.username }] }
+        where: {
+          [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]
+        }
       });
       if (userModel) {
         return res.status(401).json({ status: 401, message: 'Account already exist' });
       }
       const password = await bcrypt.hash(user.password, 10);
 
-      userModel = await User.create({ ...user, password });
+      userModel = await User.create({
+        ...user,
+        email: user.email.toLowerCase(),
+        username: user.username.toLowerCase(),
+        password
+      });
 
       token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
     } catch (error) {
@@ -79,4 +86,5 @@ class AuthController {
     })(req, res, next);
   }
 }
+
 export default AuthController;

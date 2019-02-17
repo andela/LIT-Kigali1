@@ -62,7 +62,7 @@ export const resetPasswordEmail = (userId, email, resetCode) => {
       <div style="text-align: center; padding: 20px;">
         <a href="${FRONTEND_URL}/users/${userId}/reset/${resetCode}"
           style="color: #fff; background-color: #2ABDEB; padding: 10px 20px; font-size: 1.2rem; text-align: center; text-decoration: none;"
-        > Password reset </a>
+        > Password Reset </a>
         <p style="font-size: 1.5rem; margin-top: 30px; color: #5a5a5a !important">
           Or copy the link below
         <p><br>${FRONTEND_URL}/users/${userId}/reset/${resetCode}
@@ -88,5 +88,5 @@ export const newPasswordEmail = email => {
   </div>
       `;
 
-  return sendgrid({ to: email, subject: 'Password changed', html: mailBody });
+  return sendgrid({ to: email, subject: 'Password Changed', html: mailBody });
 };

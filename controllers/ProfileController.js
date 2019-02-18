@@ -1,6 +1,7 @@
 import uuid from 'uuid';
 import { User } from '../database/models';
 import { sendEmailConfirmationLink } from './MailController';
+
 /**
  * @description ProfileContoller class
  */
@@ -9,7 +10,7 @@ class ProfileController {
    * @author Daniel
    * @param {*} req 
    * @param {*} res
-   * @returns{*} user object
+   * @returns {*} user object
    */
   static async createProfile(req, res) {
     const { user } = req.body;
@@ -83,7 +84,7 @@ class ProfileController {
     let message;
     if (user.email) {
       await sendEmailConfirmationLink({ ...profile.get() });
-        message = 'Your email is changed. Please check your email for confirmation'
+        message = 'Your email has changed. Please check your email for confirmation'
     } else {
       message = 'The information was updated successful';
     }

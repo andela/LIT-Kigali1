@@ -17,23 +17,17 @@ class ArticleController {
   static async createArticle(req, res) {
     const { file = {}, currentUser = {} } = req;
     const { article } = req.body;
-    let newArticle;
     const cover = file.url || undefined;
-    try {
-      const slug = slugString(article.title);
-      newArticle = await Article.create(
-        { ...article, userId: currentUser.id, slug, cover },
-        { include: [{ model: User, as: 'author' }], attributes: ['username', 'bio', 'image'] }
-      );
+    const slug = slugString(article.title);
+    const newArticle = await Article.create(
+      { ...article, userId: currentUser.id, slug, cover },
+      { include: [{ model: User, as: 'author' }], attributes: ['username', 'bio', 'image'] }
+    );
 
-      if (newArticle.tagList && newArticle.tagList.length > 0) {
-        const tags = newArticle.tagList.map(val => ({ name: val }));
-        await Tag.bulkCreate(tags, { ignoreDuplicates: true });
-      }
-    } catch (error) {
-      return res.status(409).json({ status: 409, message: 'Please try again' });
+    if (newArticle.tagList && newArticle.tagList.length > 0) {
+      const tags = newArticle.tagList.map(val => ({ name: val }));
+      await Tag.bulkCreate(tags, { ignoreDuplicates: true });
     }
-
     return res.status(201).json({
       status: 201,
       message: 'Article created successfully',
@@ -49,48 +43,43 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async getArticle(req, res) {
-    let favorited;
     let following = false;
     const { currentUser } = req;
     const { slug } = req.params;
-    try {
-      const article = await Article.findOne({
-        where: {
-          slug,
-          status: { [Op.not]: 'deleted' }
-        },
-        include: [{ model: User, as: 'author', attributes: ['username', 'bio', 'image'] }]
+    const article = await Article.findOne({
+      where: {
+        slug,
+        status: { [Op.not]: 'deleted' }
+      },
+      include: [{ model: User, as: 'author', attributes: ['username', 'bio', 'image'] }]
+    });
+    if (
+      !article ||
+      (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
+    ) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Article not found'
       });
-      if (
-        !article ||
-        (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
-      ) {
-        return res.status(404).json({
-          status: 404,
-          message: 'Article not found'
-        });
-      }
-      const favoritesCount = await Favorite.count({
-        where: {
-          articleId: article.get().id
-        }
-      });
-      favorited = favoritesCount !== 0;
-      if (currentUser) {
-        const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
-        following = followingCount !== 0;
-      }
-      return res.status(200).json({
-        article: {
-          ...article.get(),
-          author: { ...article.get().author.get(), following },
-          favorited,
-          favoritesCount
-        }
-      });
-    } catch (error) {
-      return res.status(409).json({ status: 409, message: 'Failed!! Try again' });
     }
+    const favoritesCount = await Favorite.count({
+      where: {
+        articleId: article.get().id
+      }
+    });
+    const favorited = favoritesCount !== 0;
+    if (currentUser) {
+      const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
+      following = followingCount !== 0;
+    }
+    return res.status(200).json({
+      article: {
+        ...article.get(),
+        author: { ...article.get().author.get(), following },
+        favorited,
+        favoritesCount
+      }
+    });
   }
 
   /**
@@ -171,24 +160,20 @@ class ArticleController {
         ? include[0].where[Op.and].push({ username: favorited })
         : { [Op.and]: [{ username: favorited }] };
     }
-    try {
-      const articles = await Article.findAndCountAll({
-        attributes: { exclude: ['id'] },
-        include,
-        where,
-        offset: offset * limit,
-        limit
-      });
-      return res.status(200).json({
-        status: 200,
-        articles: articles.rows,
-        articlesCount: articles.count,
-        pages: Math.ceil(articles.count / limit),
-        page
-      });
-    } catch (error) {
-      return res.status(409).json({ message: 'Failed!! Try again' });
-    }
+    const articles = await Article.findAndCountAll({
+      attributes: { exclude: ['id'] },
+      include,
+      where,
+      offset: offset * limit,
+      limit
+    });
+    return res.status(200).json({
+      status: 200,
+      articles: articles.rows,
+      articlesCount: articles.count,
+      pages: Math.ceil(articles.count / limit),
+      page
+    });
   }
 
   /**

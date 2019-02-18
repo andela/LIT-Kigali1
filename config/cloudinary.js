@@ -17,10 +17,6 @@ const storage = (folder = 'articles') =>
     folder,
     allowedFormats: ['jpg', 'png'],
     transformation: [{ width: 500, height: 500, crop: 'limit' }]
-    //   filename(req, file, cb) {
-    //     const { userId, id } = req.params;
-    //     cb(undefined, userId || id);
-    //   },
   });
 
 export default storage;

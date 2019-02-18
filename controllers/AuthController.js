@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
-import { User } from '../database/models';
-import { sendEmailConfirmationLink } from './MailController';
+import { User, ResetPassword } from '../database/models';
+import { sendEmailConfirmationLink, resetPasswordEmail, newPasswordEmail } from './MailController';
 
 const { JWT_SECRET } = process.env;
 
@@ -77,6 +77,93 @@ class AuthController {
         return next(error);
       }
     })(req, res, next);
+  }
+
+  /**
+   * @author Caleb
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async forgotPassword(req, res) {
+    const {
+      body: { user }
+    } = req;
+
+    try {
+      const reset = await User.findOne({
+        where: { email: user.email, confirmed: 'confirmed' },
+        attributes: ['id', 'email']
+      });
+      if (!reset) {
+        return res
+          .status(404)
+          .json({ status: 404, message: 'No user found with that email address' });
+      }
+      const { id, email } = reset.get();
+      const createReset = await ResetPassword.create({ userId: id });
+      const { resetCode } = createReset.get();
+      await resetPasswordEmail(id, email, resetCode);
+      res.status(201).json({
+        status: 201,
+        message: 'Password reset link sent sucessfully. Please check your email!'
+      });
+    } catch (error) {
+      return res.status(520).json({ message: 'Please try again' });
+    }
+  }
+
+  /**
+   * @author Caleb
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async resetPassword(req, res) {
+    const { resetCode, userId } = req.params;
+    const { body } = req;
+    try {
+      const reset = await ResetPassword.findOne({
+        where: { resetCode, userId }
+      });
+
+      if (body.newPassword !== body.confirmNewpassword) {
+        res.status(400).json({ status: 400, message: "Passwords don't match" });
+      }
+      if (!reset) {
+        res.status(404).json({ status: 404, message: 'invalid token' });
+      }
+
+      if (body.newPassword === body.confirmNewpassword) {
+        const expirationTime = reset.createdAt.setMinutes(reset.createdAt.getMinutes() + 30);
+        const presentTime = new Date();
+
+        if (expirationTime < presentTime) {
+          res
+            .status(401)
+            .json({ status: 401, message: 'Expired token, Please request a new Token' });
+        }
+
+        if (expirationTime > presentTime) {
+          const user = await User.findOne({
+            where: { id: userId },
+            attributes: ['id', 'email']
+          });
+
+          const password = await bcrypt.hash(body.newPassword, 10);
+          await user.update({ password });
+          await newPasswordEmail(user.email);
+          res.status(200).json({
+            status: 200,
+            message: 'Your password has been reset successfully!'
+          });
+        }
+      }
+    } catch (error) {
+      return res.status(520);
+    }
   }
 }
 export default AuthController;

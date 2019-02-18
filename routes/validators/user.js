@@ -20,6 +20,4 @@ const profile = {
       cover: Joi.string(),
     })
   };
-
   export default profile;
-  

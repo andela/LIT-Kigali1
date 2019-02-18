@@ -17,4 +17,18 @@ describe('sendgrid', () => {
     expect(res.length).toBeGreaterThan(0);
     expect(res[0].statusCode).toBe(202);
   }, 30000);
+
+  test('should send the Reset password link email', async () => {
+    expect.assertions(2);
+    const res = await MailController.resetPasswordEmail(db.mailUser);
+    expect(res).toBeDefined();
+    expect(res[0].statusCode).toBe(202);
+  }, 30000);
+
+  test('should send password changed email', async () => {
+    expect.assertions(2);
+    const res = await MailController.newPasswordEmail(db.mailUser);
+    expect(res).toBeDefined();
+    expect(res[0].statusCode).toBe(202);
+  }, 30000);
 });

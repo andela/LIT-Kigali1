@@ -28,7 +28,29 @@ const login = {
   })
 };
 
+const forgetPassword = {
+  user: Joi.object().keys({
+    email: Joi.string()
+      .email()
+      .required()
+      .trim()
+  })
+};
+
+const resetPassword = {
+  newPassword: Joi.string()
+    .required()
+    .min(6)
+    .max(60),
+  confirmNewpassword: Joi.string()
+    .required()
+    .min(6)
+    .max(60)
+};
+
 export default {
   signup,
-  login
+  login,
+  forgetPassword,
+  resetPassword
 };

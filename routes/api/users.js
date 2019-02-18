@@ -21,5 +21,19 @@ router.post(
 );
 
 router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEmail);
+router.post(
+  '/forget',
+  celebrate({
+    body: authValidator.forgetPassword
+  }),
+  AuthController.forgotPassword
+);
+router.put(
+  '/:userId/reset/:resetCode',
+  celebrate({
+    body: authValidator.resetPassword
+  }),
+  AuthController.resetPassword
+);
 
 export default router;

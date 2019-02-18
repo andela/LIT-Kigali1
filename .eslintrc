@@ -12,6 +12,7 @@
       "allowImportExportEverywhere": true,
       "sourceType": "module"
     },
+    "eol-last": ["error", "always"],
     "import/prefer-default-export": "off",
     "import/resolver": { "node": { "extensions": [".js"] } },
     "one-var": 0,

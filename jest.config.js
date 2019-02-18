@@ -11,5 +11,12 @@ module.exports = {
     '__tests__',
     'config'
   ],
-  coverageDirectory: 'coverage'
+  coverageDirectory: 'coverage',
+  coverageThreshold: {
+    global: {
+      functions: 80,
+      lines: 80,
+      statements: -10
+    }
+  }
 };

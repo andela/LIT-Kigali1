@@ -39,7 +39,7 @@ describe('articles', () => {
   });
 
   test('should return created article', async () => {
-    expect.assertions(3);
+    expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser.token)
@@ -48,6 +48,7 @@ describe('articles', () => {
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
     expect(res.body.article).toBeDefined();
+    expect(res.body.article.slug).toBeDefined();
   }, 30000);
 
   test('Should return article not found', async () => {

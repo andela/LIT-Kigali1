@@ -15,14 +15,11 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async createArticle(req, res) {
-    const { file, currentUser } = req;
+    const { file = {}, currentUser = {} } = req;
     const { article } = req.body;
     let newArticle;
-    const cover = file ? file.url : undefined;
+    const cover = file.url || undefined;
     try {
-      if (!currentUser) {
-        return res.status(401).json({ status: 401, message: 'Unauthorized access' });
-      }
       const slug = slugString(article.title);
       newArticle = await Article.create(
         { ...article, userId: currentUser.id, slug, cover },
@@ -154,10 +151,18 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async getArticles(req, res) {
-    const { author, tag, favorited, limit = 20, offset = 0 } = req.query;
+    const {
+      author,
+      tag,
+      favorited,
+      limit = 20,
+      offset: offsetQuery = 0,
+      page: queryPage
+    } = req.query;
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };
     const include = [{ model: User, as: 'author', attributes: ['username', 'bio', 'image'] }];
-
+    const offset = queryPage ? queryPage - 1 : offsetQuery;
+    const page = queryPage || offset + 1;
     if (tag) {
       where.tagList = { [Op.contains]: [tag] };
     }
@@ -174,7 +179,7 @@ class ArticleController {
         attributes: { exclude: ['id'] },
         include,
         where,
-        offset,
+        offset: offset * limit,
         limit
       });
       if (!articles) {
@@ -187,7 +192,8 @@ class ArticleController {
         status: 200,
         articles: articles.rows,
         articlesCount: articles.count,
-        pages: Math.ceil(articles.count / limit)
+        pages: Math.ceil(articles.count / limit),
+        page
       });
     } catch (error) {
       return res.status(409).json({ message: 'Failed!! Try again' });

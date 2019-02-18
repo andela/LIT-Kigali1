@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       tagList: {
-        type: DataTypes.ARRAY(DataTypes.STRING)
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: []
       },
       status: {
         type: DataTypes.STRING,

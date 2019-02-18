@@ -42,7 +42,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'active'
       },
       userType: {
         type: Sequelize.STRING,

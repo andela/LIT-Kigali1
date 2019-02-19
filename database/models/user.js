@@ -43,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       status: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: 'active'
       },
       userType: {
         type: DataTypes.STRING,

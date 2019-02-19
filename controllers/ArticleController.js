@@ -92,35 +92,30 @@ class ArticleController {
   static async updateArticle(req, res) {
     const { file, currentUser } = req;
     const { article } = req.body;
-    let newArticle;
     let { slug } = req.params;
     const cover = file ? file.url : undefined;
-    try {
-      const dbArticle = await Article.findOne({
-        where: {
-          slug,
-          userId: currentUser.id,
-          status: { [Op.not]: 'deleted' }
-        }
-      });
-      if (!dbArticle) {
-        return res.status(404).json({
-          status: 404,
-          message: 'Article not found'
-        });
-      }
-      if (dbArticle.get().title !== article.title) {
-        slug = slugString(article.title);
-      }
-      newArticle = await dbArticle.update({
-        ...article,
-        userId: currentUser.id,
+    const dbArticle = await Article.findOne({
+      where: {
         slug,
-        cover
+        userId: currentUser.id,
+        status: { [Op.not]: 'deleted' }
+      }
+    });
+    if (!dbArticle) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Article not found'
       });
-    } catch (error) {
-      return res.status(409).json({ status: 409, message: 'Please try again' });
     }
+    if (dbArticle.get().title !== article.title) {
+      slug = slugString(article.title);
+    }
+    const newArticle = await dbArticle.update({
+      ...article,
+      userId: currentUser.id,
+      slug,
+      cover
+    });
 
     return res.status(200).json({
       status: 200,
@@ -186,21 +181,17 @@ class ArticleController {
   static async deleteArticle(req, res) {
     const { currentUser = {} } = req;
     const { slug } = req.params;
-    try {
-      const article = await Article.findOne({ where: { slug } });
+    const article = await Article.findOne({ where: { slug } });
 
-      if (!article) {
-        return res.status(404).json({ status: 404, message: 'Article not found' });
-      }
-
-      if (article.userId !== currentUser.id) {
-        return res.status(401).json({ status: 401, message: 'Unauthorized access' });
-      }
-
-      await article.update({ status: 'deleted' });
-    } catch (error) {
-      return res.status(409).json({ status: 409, message: 'Please try again' });
+    if (!article) {
+      return res.status(404).json({ status: 404, message: 'Article not found' });
     }
+
+    if (article.userId !== currentUser.id) {
+      return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+    }
+
+    await article.update({ status: 'deleted' });
 
     return res.status(200).json({
       status: 200,
@@ -208,4 +199,5 @@ class ArticleController {
     });
   }
 }
+
 export default ArticleController;

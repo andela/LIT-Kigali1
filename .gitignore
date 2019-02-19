@@ -47,6 +47,7 @@ shrinkwrap.yaml
 
 yarn.lock
 
+package-lock.json
 # Winston logger files
 
 error.log

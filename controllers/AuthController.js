@@ -21,33 +21,30 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async signup(req, res) {
-    let userModel;
-    let token;
     const {
       body: { user }
     } = req;
-    try {
-      userModel = await User.findOne({
-        where: {
-          [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]
-        }
-      });
-      if (userModel) {
-        return res.status(401).json({ status: 401, message: 'Account already exist' });
+    let userModel = await User.findOne({
+      where: {
+        [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]
       }
-      const password = await bcrypt.hash(user.password, 10);
-
-      userModel = await User.create({
-        ...user,
-        email: user.email.toLowerCase(),
-        username: user.username.toLowerCase(),
-        password
-      });
-
-      token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
-    } catch (error) {
-      return res.status(401).json({ status: 401, message: 'Please try again' });
+    });
+    if (userModel) {
+      return res.status(401).json({ status: 401, message: 'Account already exist' });
     }
+    const passwordHashed = await bcrypt.hash(user.password, 10);
+
+    userModel = await User.create({
+      ...user,
+      email: user.email.toLowerCase(),
+      username: user.username.toLowerCase(),
+      password: passwordHashed
+    });
+
+    const token = jwt.sign(
+      { id: userModel.get().id, userType: userModel.get().userType },
+      JWT_SECRET
+    );
 
     await sendEmailConfirmationLink({ ...userModel.get() });
 
@@ -73,16 +70,12 @@ class AuthController {
     req.body.username = loginUser.username;
     req.body.password = loginUser.password;
     passport.authenticate('login', async (err, user) => {
-      try {
-        if (err || !user) {
-          return res.status(404).json({ status: 404, message: err.message });
-        }
-        const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
-        const { confirmationCode, ...userData } = user;
-        return res.json({ status: 200, user: { ...userData, token } });
-      } catch (error) {
-        return next(error);
+      if (err || !user) {
+        return res.status(404).json({ status: 404, message: err.message });
       }
+      const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
+      const { confirmationCode, ...userData } = user;
+      return res.json({ status: 200, user: { ...userData, token } });
     })(req, res, next);
   }
 

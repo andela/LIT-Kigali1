@@ -43,7 +43,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       status: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: 'active'
+      },
+      following: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
       userType: {
         type: DataTypes.STRING,

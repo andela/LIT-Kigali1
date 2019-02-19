@@ -14,5 +14,17 @@
     "id": "578c8188-cba6-45f6-842f-8d80c247b818",
     "username": "oemapp",
     "email": "oemapp.dev@gmail.com"
+  },
+  "profile":{
+    "firstName": "John",
+    "lastName": "Doe",
+    "username": "doe201",
+    "email": "john.doe@andela.com",
+    "bio": "I am software at Andela",
+    "gender": "Male",
+    "birthDate": "12 June 1999",
+    "image": "https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg",
+    "cover": "https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg"
   }
+
 }

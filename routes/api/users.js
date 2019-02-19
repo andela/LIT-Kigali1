@@ -2,6 +2,7 @@ import express from 'express';
 import { celebrate } from 'celebrate';
 import { authValidator } from '../validators';
 import { AuthController, UserController } from '../../controllers';
+import { verifyJwt } from '../../middlewares';
 
 const router = express.Router();
 router.post(
@@ -19,6 +20,8 @@ router.post(
   }),
   AuthController.signup
 );
+
+router.post('/signout', verifyJwt(), AuthController.signout);
 
 router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEmail);
 router.post(

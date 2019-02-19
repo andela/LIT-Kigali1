@@ -9,7 +9,7 @@ mail.setApiKey(process.env.SENDGRID_API_KEY);
  * @author Olivier
  * @param {Object} msg
  */
-const send = (msg = {}) => {
+const send = msg => {
   const defaultMsg = {
     to: msg.to || 'test@authors-haven.com',
     from: msg.from || 'Authors Haven <no_reply@authors-haven.com>',

@@ -9,7 +9,7 @@ const { FRONTEND_URL = '/' } = process.env;
  * @param {Object} user
  * @returns {Promise} - Returns a promise
  */
-export const sendEmailConfirmationLink = (user = {}) => {
+export const sendEmailConfirmationLink = user => {
   const mailBody = `
     <div style="color: #5a5a5a;">
       <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">
@@ -34,7 +34,7 @@ export const sendEmailConfirmationLink = (user = {}) => {
   return sendgrid({ to: user.email, subject: 'Confirm your email', html: mailBody });
 };
 
-export const sendEmailVerified = (user = {}) => {
+export const sendEmailVerified = user => {
   const mailBody = `
     <div style="color: #5a5a5a;">
       <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">

@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
-import { User, ResetPassword } from '../database/models';
+import moment from 'moment';
+import { User, ResetPassword, Token } from '../database/models';
 import { sendEmailConfirmationLink, resetPasswordEmail, newPasswordEmail } from './MailController';
 
 const { JWT_SECRET } = process.env;
@@ -38,6 +39,7 @@ class AuthController {
       userModel = await User.create({ ...user, password });
 
       token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
+      await userModel.createToken({ token });
     } catch (error) {
       return res.status(401).json({ status: 401, message: 'Please try again' });
     }
@@ -66,16 +68,13 @@ class AuthController {
     req.body.username = loginUser.username;
     req.body.password = loginUser.password;
     passport.authenticate('login', async (err, user) => {
-      try {
-        if (err || !user) {
-          return res.status(404).json({ status: 404, message: err.message });
-        }
-        const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
-        const { confirmationCode, ...userData } = user;
-        return res.json({ status: 200, user: { ...userData, token } });
-      } catch (error) {
-        return next(error);
+      if (err || !user) {
+        return res.status(404).json({ status: 404, message: err.message });
       }
+      const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
+      await Token.create({ token, userId: user.id });
+      const { confirmationCode, ...userData } = user;
+      return res.json({ status: 200, user: { ...userData, token } });
     })(req, res, next);
   }
 
@@ -164,6 +163,22 @@ class AuthController {
     } catch (error) {
       return res.status(520);
     }
+  }
+
+  /**
+   * @author Olivier
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async signout(req, res) {
+    const { currentUser } = req;
+    await Token.update(
+      { status: 'signout', signoutAt: moment().format() },
+      { where: { token: currentUser.token } }
+    );
+    return res.json({ status: 200, message: 'Signed out successfully' });
   }
 }
 export default AuthController;

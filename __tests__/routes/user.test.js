@@ -7,6 +7,7 @@ import { signupUser } from '../mocks/db.json';
 const fakeConfirmationCode = '07e83585-41e5-4fb2-b5d0-a7b52b55aba1';
 const fakeUserId = '457d032c-6d0f-4be5-b46a-032def5d6f2e';
 let user;
+jest.setTimeout(30000);
 describe('users', () => {
   beforeAll(async () => {
     await User.destroy({
@@ -26,7 +27,7 @@ describe('users', () => {
     );
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('Invalid confirmation code');
-  }, 30000);
+  });
 
   test('should return invalid confirmation code -correct userId -fake confirmationCode', async () => {
     expect.assertions(2);
@@ -64,7 +65,7 @@ describe('users', () => {
       .send({ user: { email: 'test@email.com' } });
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('Password reset link sent sucessfully. Please check your email!');
-  }, 30000);
+  });
 
   test('No user found with that email address', async () => {
     expect.assertions(2);
@@ -151,5 +152,5 @@ describe('users', () => {
       .send({ newPassword: 'mugisha', confirmNewpassword: 'mugisha' });
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Your password has been reset successfully!');
-  }, 30000);
+  });
 });

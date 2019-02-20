@@ -22,27 +22,31 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async signup(req, res) {
-    let userModel;
-    let token;
     const {
       body: { user }
     } = req;
-    try {
-      userModel = await User.findOne({
-        where: { [Op.or]: [{ email: user.email }, { username: user.username }] }
-      });
-      if (userModel) {
-        return res.status(401).json({ status: 401, message: 'Account already exist' });
+    let userModel = await User.findOne({
+      where: {
+        [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]
       }
-      const password = await bcrypt.hash(user.password, 10);
-
-      userModel = await User.create({ ...user, password });
-
-      token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType }, JWT_SECRET);
-      await userModel.createToken({ token });
-    } catch (error) {
-      return res.status(401).json({ status: 401, message: 'Please try again' });
+    });
+    if (userModel) {
+      return res.status(401).json({ status: 401, message: 'Account already exist' });
     }
+    const passwordHashed = await bcrypt.hash(user.password, 10);
+
+    userModel = await User.create({
+      ...user,
+      email: user.email.toLowerCase(),
+      username: user.username.toLowerCase(),
+      password: passwordHashed
+    });
+
+    const token = jwt.sign(
+      { id: userModel.get().id, userType: userModel.get().userType },
+      JWT_SECRET
+    );
+    await userModel.createToken({ token });
 
     await sendEmailConfirmationLink({ ...userModel.get() });
 
@@ -90,27 +94,23 @@ class AuthController {
       body: { user }
     } = req;
 
-    try {
-      const reset = await User.findOne({
-        where: { email: user.email, confirmed: 'confirmed' },
-        attributes: ['id', 'email']
-      });
-      if (!reset) {
-        return res
-          .status(404)
-          .json({ status: 404, message: 'No user found with that email address' });
-      }
-      const { id, email } = reset.get();
-      const createReset = await ResetPassword.create({ userId: id });
-      const { resetCode } = createReset.get();
-      await resetPasswordEmail(id, email, resetCode);
-      res.status(201).json({
-        status: 201,
-        message: 'Password reset link sent sucessfully. Please check your email!'
-      });
-    } catch (error) {
-      return res.status(520).json({ message: 'Please try again' });
+    const reset = await User.findOne({
+      where: { email: user.email, confirmed: 'confirmed' },
+      attributes: ['id', 'email']
+    });
+    if (!reset) {
+      return res
+        .status(404)
+        .json({ status: 404, message: 'No user found with that email address' });
     }
+    const { id, email } = reset.get();
+    const createReset = await ResetPassword.create({ userId: id });
+    const { resetCode } = createReset.get();
+    await resetPasswordEmail(id, email, resetCode);
+    res.status(201).json({
+      status: 201,
+      message: 'Password reset link sent sucessfully. Please check your email!'
+    });
   }
 
   /**
@@ -181,4 +181,5 @@ class AuthController {
     return res.json({ status: 200, message: 'Signed out successfully' });
   }
 }
+
 export default AuthController;

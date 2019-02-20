@@ -15,7 +15,14 @@
     "username": "oemapp",
     "email": "oemapp.dev@gmail.com"
   },
-  "profile":{
+  "createArticle": {
+    "title": "Test article",
+    "body": "Quis culpa ad exercitation sunt pariatur ut commodo ipsum ipsum. Labore velit laborum cupidatat laborum excepteur. Lorem eu do cupidatat amet eiusmod veniam.",
+    "description": "exercitation",
+    "status": "published",
+    "tagList": ["test", "article"]
+  },
+  "profile": {
     "firstName": "John",
     "lastName": "Doe",
     "username": "doe201",
@@ -26,5 +33,4 @@
     "image": "https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg",
     "cover": "https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg"
   }
-
 }

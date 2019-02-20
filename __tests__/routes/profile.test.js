@@ -8,6 +8,7 @@ import app from '../../app';
 const { JWT_SECRET } = process.env;
 
 let testUserToken;
+jest.setTimeout(30000);
 describe('Profile', () => {
   beforeAll(async () => {
     const { body } = await request(app)

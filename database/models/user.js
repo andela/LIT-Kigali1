@@ -44,10 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'active'
     },
-    following: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
     userType: {
       type: DataTypes.STRING,
       defaultValue: 'user'

@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import 'dotenv/config';
-import { User } from '../database/models';
+import { User, Token } from '../database/models';
 
 const { JWT_SECRET } = process.env;
 
@@ -40,17 +40,24 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-      secretOrKey: JWT_SECRET
+      secretOrKey: JWT_SECRET,
+      passReqToCallback: true
     },
-    async (jwtPayload, done) => {
+    async (req, jwtPayload, done) => {
+      const { authorization } = req.headers;
       try {
+        const token = await Token.findOne({ where: { status: 'active', token: authorization } });
+        if (!token) {
+          return done(null, false, { message: 'Invalid token. Please login.' });
+        }
         const user = await User.findOne({
-          where: { id: jwtPayload.id }
+          where: { id: jwtPayload.id },
+          attributes: { exclude: ['password'] }
         });
         if (!user) {
           return done(null, false, { message: 'user does not exist' });
         }
-        return done(null, user.get());
+        return done(null, { ...user.get(), token: token.token });
       } catch (error) {
         return done(error);
       }

@@ -219,7 +219,7 @@ describe('Profile', () => {
         }
       });
 
-    expect(res.status).toBe(520);
-    expect(res.body.errors.body).toBeDefined();
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBeDefined();
   });
 });

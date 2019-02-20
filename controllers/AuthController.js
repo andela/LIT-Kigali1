@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
-import { User, ResetPassword } from '../database/models';
+import moment from 'moment';
+import { User, ResetPassword, Token } from '../database/models';
 import { sendEmailConfirmationLink, resetPasswordEmail, newPasswordEmail } from './MailController';
 
 const { JWT_SECRET } = process.env;
@@ -45,6 +46,7 @@ class AuthController {
       { id: userModel.get().id, userType: userModel.get().userType },
       JWT_SECRET
     );
+    await userModel.createToken({ token });
 
     await sendEmailConfirmationLink({ ...userModel.get() });
 
@@ -74,6 +76,7 @@ class AuthController {
         return res.status(404).json({ status: 404, message: err.message });
       }
       const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
+      await Token.create({ token, userId: user.id });
       const { confirmationCode, ...userData } = user;
       return res.json({ status: 200, user: { ...userData, token } });
     })(req, res, next);
@@ -91,27 +94,23 @@ class AuthController {
       body: { user }
     } = req;
 
-    try {
-      const reset = await User.findOne({
-        where: { email: user.email, confirmed: 'confirmed' },
-        attributes: ['id', 'email']
-      });
-      if (!reset) {
-        return res
-          .status(404)
-          .json({ status: 404, message: 'No user found with that email address' });
-      }
-      const { id, email } = reset.get();
-      const createReset = await ResetPassword.create({ userId: id });
-      const { resetCode } = createReset.get();
-      await resetPasswordEmail(id, email, resetCode);
-      res.status(201).json({
-        status: 201,
-        message: 'Password reset link sent sucessfully. Please check your email!'
-      });
-    } catch (error) {
-      return res.status(520).json({ message: 'Please try again' });
+    const reset = await User.findOne({
+      where: { email: user.email, confirmed: 'confirmed' },
+      attributes: ['id', 'email']
+    });
+    if (!reset) {
+      return res
+        .status(404)
+        .json({ status: 404, message: 'No user found with that email address' });
     }
+    const { id, email } = reset.get();
+    const createReset = await ResetPassword.create({ userId: id });
+    const { resetCode } = createReset.get();
+    await resetPasswordEmail(id, email, resetCode);
+    res.status(201).json({
+      status: 201,
+      message: 'Password reset link sent sucessfully. Please check your email!'
+    });
   }
 
   /**
@@ -164,6 +163,22 @@ class AuthController {
     } catch (error) {
       return res.status(520);
     }
+  }
+
+  /**
+   * @author Olivier
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async signout(req, res) {
+    const { currentUser } = req;
+    await Token.update(
+      { status: 'signout', signoutAt: moment().format() },
+      { where: { token: currentUser.token } }
+    );
+    return res.json({ status: 200, message: 'Signed out successfully' });
   }
 }
 

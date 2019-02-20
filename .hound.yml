@@ -3,5 +3,5 @@ eslint:
   config_file: .eslintrc
   ignore_file: .eslintignore
 
-exclude:
-  - 'ui/css'
+scss:
+  enabled: false

@@ -94,23 +94,21 @@ describe('auth', () => {
   });
 
   test('Sigout - should return No auth token', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/signout`)
       .send();
     expect(res.status).toBe(401);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('No auth token');
   });
 
   test('Signout - should return jwt malformed', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/users/signout`)
       .set('Authorization', 'fake-token')
       .send();
     expect(res.status).toBe(401);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('jwt malformed');
   });
 

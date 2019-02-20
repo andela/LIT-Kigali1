@@ -22,11 +22,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(routes);
-app.use(joiErrors());
 app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs));
+app.use('/', express.static('ui'));
 
-app.use('/', (req, res) => res.send('<h1>Welcome to LIT Authors Haven</h1>'));
-
+app.use(joiErrors());
 // development error handler
 if (!isProduction) {
   app.use((err, req, res) => {

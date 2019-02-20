@@ -1,4 +1,4 @@
-@import '_variables.scss';
+@import 'variables.scss';
 
 .bg-primary {
   background-color: $primary;
@@ -24,4 +24,7 @@
 }
 .color-yellow {
   color: $yellow;
+}
+.color-white {
+  color: white;
 }

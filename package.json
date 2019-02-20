@@ -14,8 +14,6 @@
     "migrate": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate",
     "migrate:seed": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all",
     "seed": "node_modules/.bin/sequelize db:seed:all",
-    "build-css": "node-sass --include-path ui/scss ui/scss/style.scss ui/css/style.css",
-    "watch-css": "nodemon -e ui/scss -x 'npm run build-css'",
     "scss": "node-sass --watch ui/scss -o ui/css"
   },
   "author": "Andela Simulations Programme",

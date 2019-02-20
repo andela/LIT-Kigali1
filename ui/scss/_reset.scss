@@ -11,9 +11,9 @@
   src: url('../font/roboto/Roboto-Light.ttf');
 }
 * {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
@@ -28,7 +28,7 @@ body {
 
 button {
   outline: none;
-  border: none;
+  border: 0;
 }
 
 a {

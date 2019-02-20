@@ -1,0 +1,27 @@
+@import '_variables.scss';
+
+.bg-primary {
+  background-color: $primary;
+}
+.bg-primary-light {
+  background-color: $primary-light;
+}
+.bg-white {
+  background-color: white;
+}
+
+.color-primary {
+  color: $primary;
+}
+.color-primary-light {
+  color: $primary;
+}
+.color-red {
+  color: $red;
+}
+.color-green {
+  color: $green;
+}
+.color-yellow {
+  color: $yellow;
+}

@@ -1,0 +1,203 @@
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('../font/roboto/Roboto-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('../font/roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto-Light';
+  src: url('../font/roboto/Roboto-Light.ttf');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Roboto-Regular;
+}
+
+.bg-primary {
+  background-color: #3f51b5;
+}
+
+.bg-primary-light {
+  background-color: #e8eaf6;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.color-primary {
+  color: #3f51b5;
+}
+
+.color-primary-light {
+  color: #3f51b5;
+}
+
+.color-red {
+  color: #e74c3c;
+}
+
+.color-green {
+  color: #2ecc71;
+}
+
+.color-yellow {
+  color: #f1c40f;
+}
+
+/* 
+  Grid system of 12 columns
+*/
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  padding: 0 10%;
+}
+
+.col-1 {
+  width: 8.33%;
+}
+
+.col-2 {
+  width: 16.66%;
+}
+
+.col-3 {
+  width: 25%;
+}
+
+.col-4 {
+  width: 33.33%;
+}
+
+.col-5 {
+  width: 44.66%;
+}
+
+.col-6 {
+  width: 50%;
+}
+
+.col-7 {
+  width: 58.33%;
+}
+
+.col-8 {
+  width: 66.66%;
+}
+
+.col-9 {
+  width: 75%;
+}
+
+.col-10 {
+  width: 83.33%;
+}
+
+.col-11 {
+  width: 91.66%;
+}
+
+.col-12 {
+  width: 100%;
+}
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  padding: 10px 15px;
+}
+
+.is-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.is-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex {
+  display: flex;
+}
+
+.content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.content-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.items-center {
+  display: flex;
+  align-items: center;
+}
+
+.items-center {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* 
+  ##Device = Laptops, Desktops
+*/
+@media (min-width: 769px) {
+  .is-tablet,
+  .is-mobile {
+    display: none;
+  }
+}
+
+/* 
+  ##Device = Tablets and Mobile
+*/
+@media (max-width: 768px) {
+  .is-tablet,
+  .is-mobile {
+    display: block;
+  }
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12 {
+    width: 100%;
+  }
+}

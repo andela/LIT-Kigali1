@@ -45,17 +45,17 @@ passport.use(
     async (jwtPayload, done) => {
       try {
         const user = await User.findOne({
-          where : {id: jwtPayload.id}
+          where: { id: jwtPayload.id }
         });
         if (!user) {
           return done(null, false, { message: 'user does not exist' });
         }
         return done(null, user.get());
-      } catch(error) {
-       return done(error);
+      } catch (error) {
+        return done(error);
       }
     }
   )
-)
+);
 
 export default passport;

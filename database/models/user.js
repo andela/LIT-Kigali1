@@ -46,10 +46,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'active'
       },
-      following: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
       userType: {
         type: DataTypes.STRING,
         defaultValue: 'user'
@@ -74,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   User.associate = function(models) {
-    User.hasMany(models.ResetPassword, { foreignKey: 'userId' });
+    User.hasMany(models.Article, { foreignKey: 'userId', as: 'author' });
   };
   return User;
 };

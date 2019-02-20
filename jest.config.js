@@ -8,7 +8,8 @@ module.exports = {
     'index.js',
     'app.js',
     'database',
-    '__tests__'
+    '__tests__',
+    'config'
   ],
   coverageDirectory: 'coverage',
   coverageThreshold: {

@@ -1,8 +1,7 @@
+import * as MailController from './MailController';
 import AuthController from './AuthController';
 import UserController from './UserController';
-import * as MailController from './MailController';
+import ArticleController from './ArticleController';
 import ProfileController from './ProfileController';
 
-export { AuthController, UserController, MailController, ProfileController };
-
-
+export { AuthController, UserController, MailController, ArticleController, ProfileController };

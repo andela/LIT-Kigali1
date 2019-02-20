@@ -4,12 +4,13 @@ import { ProfileController } from '../../controllers';
 import { profileValidator } from '../validators';
 import { verifyJwt } from '../../middlewares';
 
-
 const router = express.Router();
 
-router.put('/', verifyJwt, 
+router.put(
+  '/',
+  verifyJwt(),
   celebrate({ body: profileValidator }),
-  ProfileController.createProfile);
-
+  ProfileController.createProfile
+);
 
 export default router;

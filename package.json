@@ -8,12 +8,14 @@
     "coveralls": "jest --runInBand --coverage --detectOpenHandles --forceExit && cat ./coverage/lcov.info | coveralls",
     "lint": "node_modules/.bin/eslint .",
     "lint:fix": "prettier-eslint --write '**/*.js'",
-    "start": "npm run migrate:seed && babel-node index.js",
+    "start": "npm run migrate:seed && npm run build-scss && babel-node index.js",
     "dev": "nodemon  index.js  --exec 'npm run lint && babel-node'",
     "devstart": "nodemon index.js --exec babel-node",
     "migrate": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate",
     "migrate:seed": "node_modules/.bin/sequelize db:migrate:undo:all && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all",
-    "seed": "node_modules/.bin/sequelize db:seed:all"
+    "seed": "node_modules/.bin/sequelize db:seed:all",
+    "scss": "node-sass --watch ui/scss -o ui/css",
+    "build-scss": "node-sass ui/scss -o ui/css"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",

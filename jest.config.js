@@ -9,7 +9,8 @@ module.exports = {
     'app.js',
     'database',
     '__tests__',
-    'config'
+    'config',
+    'ui'
   ],
   coverageDirectory: 'coverage',
   coverageThreshold: {

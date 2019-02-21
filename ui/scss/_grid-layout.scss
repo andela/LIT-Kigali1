@@ -13,57 +13,84 @@
 
 .main-content {
   padding-top: 65px;
+  padding-bottom: 20px;
 }
-
-.col-1 {
+.content-margin {
+  margin: 30px 0;
+}
+.col-1,
+.col-1-mob {
   width: 8.33%;
 }
-.col-2 {
+.col-2,
+.col-2-mob {
   width: 16.66%;
 }
-.col-3 {
+.col-3,
+.col-3-mob {
   width: 25%;
 }
-.col-4 {
+.col-4,
+.col-4-mob {
   width: 33.33%;
 }
-.col-5 {
+.col-5,
+.col-5-mob {
   width: 44.66%;
 }
-.col-6 {
+.col-6,
+.col-6-mob {
   width: 50%;
 }
-.col-7 {
+.col-7,
+.col-7-mob {
   width: 58.33%;
 }
-.col-8 {
+.col-8,
+.col-8-mob {
   width: 66.66%;
 }
-.col-9 {
+.col-9,
+.col-9-mob {
   width: 75%;
 }
-.col-10 {
+.col-10,
+.col-10-mob {
   width: 83.33%;
 }
-.col-11 {
+.col-11,
+.col-11-mob {
   width: 91.66%;
 }
-.col-12 {
+.col-12,
+.col-12-mob {
   width: 100%;
 }
 
 .col-1,
+.col-1-mob,
 .col-2,
+.col-2-mob,
 .col-3,
+.col-3-mob,
 .col-4,
+.col-4-mob,
 .col-5,
+.col-5-mob,
 .col-6,
+.col-6-mob,
 .col-7,
+.col-7-mob,
 .col-8,
+.col-8-mob,
 .col-9,
+.col-9-mob,
 .col-10,
+.col-10-mob,
 .col-11,
-.col-12 {
+.col-11-mob,
+.col-12,
+.col-12-mob {
   padding: 10px 15px;
 }
 
@@ -111,6 +138,78 @@
   -ms-border-radius: 6px;
   -o-border-radius: 6px;
 }
+
+.mr-5 {
+  margin-right: 5px;
+}
+.ml-5 {
+  margin-left: 5px;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.mb-5 {
+  margin-bottom: 5px;
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.ml-10 {
+  margin-left: 10px;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+.ml-20 {
+  margin-left: 20px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.pagination span {
+  margin: 0 15px;
+  cursor: pointer;
+}
+.pagination .pages {
+  margin: 0 20px;
+  text-decoration: none;
+  list-style: none;
+  padding: 0;
+}
+.pagination .pages .page {
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  padding: 5px;
+  height: 30px;
+  width: 30px;
+  margin: 0 5px;
+}
+
+.pagination .current {
+  border: 2px solid $primary;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+}
 /* 
   ##Device = Laptops, Desktops
 */
@@ -118,7 +217,7 @@
 @media screen and (min-width: 769px) {
   .is-tablet,
   .is-mobile {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -128,7 +227,7 @@
 
 @media screen and (max-width: 768px) {
   .is-desktop {
-    display: none;
+    display: none !important;
   }
   .is-tablet,
   .is-mobile {

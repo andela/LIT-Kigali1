@@ -1,0 +1,50 @@
+@import 'variables';
+
+.my-articles-tab {
+  padding: 10px 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.my-articles-tab span {
+  margin-right: 30px;
+  cursor: pointer;
+}
+.my-articles-tab .active {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.my-articles {
+  margin: 20px 0;
+}
+
+.my-article {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.my-article__title {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.my-article__title span {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: $primary-light;
+  padding: 5px;
+}
+.my-article__title span:hover {
+  color: $primary;
+}
+.my-article__text {
+  padding: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Roboto-Light;
+  margin: 0;
+}
+.my-article__meta {
+  color: rgba(0, 0, 0, 0.3);
+}

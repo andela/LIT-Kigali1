@@ -6,14 +6,80 @@
   color: white;
   display: flex;
   height: 65px;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 9999;
 }
 
+.nav-button {
+  background: transparent;
+  position: relative;
+}
 .brand-logo {
   height: 50px;
+}
+.top-navbar__avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+.navbar-dropdown {
+  display: block;
+}
+.navbar-dropdown:focus .dropdown,
+.navbar-dropdown:focus-within .dropdown {
+  display: block;
+}
+.dropdown {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  list-style: none;
+  padding: 0;
+  box-shadow: 0 1px 5px 0px rgba(0, 0, 0, 0.2);
+  display: none;
+  transition-duration: 0.5s;
+}
+.dropdown::after {
+  content: ' ';
+  position: absolute;
+  right: 17px;
+  top: -10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 11px solid #fff;
+}
+.dropdown li {
+  color: $primary;
+  background-color: #fff;
+  display: block;
+  float: left;
+  padding: 10px 20px;
+  min-width: 150px;
+  position: relative;
+  text-decoration: none;
+  transition-duration: 0.5s;
+  font-size: 14px;
+}
+.dropdown li a,
+.dropdown li a:link {
+  color: $primary;
+}
+.dropdown li.separator {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0;
+}
+.dropdown li:hover {
+  background-color: $primary-light;
 }
 
 .toggle-menu {
@@ -79,27 +145,17 @@
   -ms-transform: rotate(135deg);
   -o-transform: rotate(135deg);
 }
+.nav-search {
+  width: 200px;
+  max-width: 100%;
+  font-family: Roboto-Light;
+  transition-duration: 0.5s;
+}
+.nav-search:hover,
+.nav-search:focus-within {
+  width: 400px;
+}
 
-.hamburger:focus {
-  background-color: rgba(0, 0, 0, 0);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-.hamburger:focus::before {
-  top: 0;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-}
-.hamburger:focus::after {
-  top: 0;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-  -moz-transform: rotate(135deg);
-  -ms-transform: rotate(135deg);
-  -o-transform: rotate(135deg);
-}
 @media screen and (max-width: 768px) {
   .top-navbar {
     height: 50px;

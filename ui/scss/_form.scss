@@ -1,0 +1,86 @@
+@import 'variables';
+
+textarea {
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+
+input[type='text'] {
+  padding: 5px;
+  border: 0;
+  width: 100%;
+  font-size: inherit;
+  color: inherit;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba($color: #000000, $alpha: 0.3);
+}
+
+.input {
+  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.4);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: rgba($color: #000000, $alpha: 0.8);
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  background-color: transparent;
+}
+.input input[type='text'] {
+  background-color: transparent;
+}
+
+.input .fa {
+  margin-bottom: 0.2;
+}
+
+.input.medium {
+  font-size: 1.5rem;
+}
+.input.large {
+  font-size: 2rem;
+}
+
+.input.primary {
+  color: $primary;
+  border-bottom: 1px solid $primary;
+}
+.input.primary-border {
+  border-bottom: 1px solid $primary;
+}
+.input.primary input::placeholder {
+  color: $primary;
+}
+
+.input.white {
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+.input.white input::placeholder {
+  color: #fff;
+}
+
+.button {
+  padding: 10px 20px;
+  min-width: 100px;
+}
+.button.primary {
+  background-color: $primary;
+  color: #fff;
+  font-size: 13px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.button.primary:hover {
+  background-color: $primary-dark;
+}

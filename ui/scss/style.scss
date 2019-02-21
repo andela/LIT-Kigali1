@@ -1,4 +1,13 @@
 @import 'reset';
 @import 'colors';
 @import 'grid-layout';
-@import 'nav_bar.scss';
+@import 'form';
+@import 'typography';
+@import 'nav_bar';
+
+/* Pages */
+@import 'articles-create-page';
+@import 'articles-view-page';
+@import 'articles-all';
+@import 'articles-user-all';
+@import 'article-card';

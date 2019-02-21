@@ -1,0 +1,47 @@
+.article-text {
+  min-height: 650px;
+  outline: none;
+  border: 0;
+  resize: none;
+  overflow: hidden;
+}
+
+.article-actions {
+  position: fixed;
+  left: 15vw;
+  height: 650px;
+  top: 30vh;
+  margin-left: 15px;
+  width: 50px;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.article-icon {
+  font-family: Roboto-Medium;
+  padding: 5px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.article-icon.margin-top {
+  margin-top: 30px;
+}
+.article-icon .fa {
+  font-size: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .article-actions {
+    left: 10vw;
+  }
+}

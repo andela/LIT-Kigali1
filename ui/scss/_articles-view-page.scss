@@ -18,14 +18,15 @@
 
 .article-content {
   text-align: justify;
-  line-height: 20px;
+  line-height: 1.3rem;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .article-date {
   margin: 20px 0;
-  font-size: 16px;
-  font-weight: 600;
-  font-family: Roboto-Medium;
+  font-size: 0.6rem;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .article-side-actions {

@@ -21,8 +21,8 @@
   height: 50px;
 }
 .top-navbar__avatar {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -229,16 +229,23 @@
 }
 
 .nav-search {
-  width: 200px;
+  width: 30px;
   max-width: 100%;
   font-family: Roboto-Light;
   transition-duration: 0.5s;
+  border-bottom: 1px solid transparent;
+  color: #fff;
 }
 .nav-search:hover,
 .nav-search:focus-within {
-  width: 400px;
+  width: 200px;
+  border-bottom: 1px solid #fff;
 }
-
+.nav-search img {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
 @media screen and (max-width: 768px) {
   .top-navbar {
     height: 50px;

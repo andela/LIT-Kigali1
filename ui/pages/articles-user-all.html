@@ -18,6 +18,16 @@
       <div class="col-9-mob content-right color-white">
         <div class="toggle-menu is-tablet">
           <div class="hamburger"></div>
+          <div class="hamburger-nav">
+            <ul>
+              <li><a href="./articles-create.html">New article</a></li>
+              <li><a href="./articles-all.html">Articles</a></li>
+              <li><a href="./articles-user-all.html">My Articles</a></li>
+              <li class="separator"></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Sign out</a></li>
+            </ul>
+          </div>
         </div>
         <button class="nav-button navbar-dropdown is-desktop color-white">
           <img src="../images/avatar.png" class="top-navbar__avatar" alt="User logo" />
@@ -94,10 +104,6 @@
         </div>
       </div>
     </section>
-    <script>
-      document.querySelector('.hamburger').addEventListener('click', function(e) {
-        e.target.classList.toggle('active');
-      });
-    </script>
+    <a class="go-top-btn" href="#"><i class="fa fa-angle-up"></i></a>
   </body>
 </html>

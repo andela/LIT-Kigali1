@@ -95,9 +95,9 @@
   align-items: center;
 }
 
-.items-center {
+.items-left {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .box {
@@ -160,4 +160,10 @@
   .container {
     padding: 0 15px;
   }
+}
+.middle-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 65px);
 }

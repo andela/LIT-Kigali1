@@ -78,7 +78,8 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
 }
-.save-article-btn .options ul li a:hover {
+
+.save-article-btn .options ul li:hover a {
   color: $primary;
 }
 

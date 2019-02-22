@@ -84,3 +84,19 @@ input::placeholder {
 .button.primary:hover {
   background-color: $primary-dark;
 }
+
+.button.secondary {
+  border: 1px solid $primary;
+  color: $primary;
+  font-size: 13px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  background-color: #fff;
+}
+
+.button.secondary:hover {
+  background-color: $primary-light;
+}

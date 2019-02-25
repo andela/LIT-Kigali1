@@ -1,6 +1,15 @@
+@import 'variables';
 .align-center {
   text-align: center;
 }
 .align-right {
   text-align: right;
+}
+
+.title-1 {
+  font-size: 1.5;
+}
+
+.hover-primary:hover {
+  color: $primary;
 }

@@ -177,7 +177,9 @@
   position: relative;
   text-decoration: none;
   transition-duration: 0.5s;
-  font-size: 14px;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .hamburger-nav li:hover {
   background-color: #fff;
@@ -201,8 +203,7 @@
 .toggle-menu:focus .hamburger-nav {
   transform: translateX(-130px, 0, 0);
   animation-timing-function: 1s ease-in;
-  width: 50%;
-  min-width: 100px;
+  width: 200px;
   -webkit-transform: translateX(-130px, 0, 0);
   -moz-transform: translateX(-130px, 0, 0);
   -ms-transform: translateX(-130px, 0, 0);
@@ -222,8 +223,7 @@
     opacity: 0;
   }
   100% {
-    width: 50%;
-    min-width: 200px;
+    width: 200px;
     opacity: 1;
   }
 }
@@ -235,6 +235,7 @@
   transition-duration: 0.5s;
   border-bottom: 1px solid transparent;
   color: #fff;
+  margin-bottom: 0;
 }
 .nav-search:hover,
 .nav-search:focus-within {

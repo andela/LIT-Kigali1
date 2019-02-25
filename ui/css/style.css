@@ -1263,13 +1263,6 @@ input::placeholder {
 .input.primary input::placeholder {
   color: #3f51b5; }
 
-.btn {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  margin: 5px 0px 5px 0px;
-  border-radius: 10px; }
-
 .to-center {
   text-align: center; }
 
@@ -1292,3 +1285,5 @@ input::placeholder {
     font-size: 1rem; }
   .login-form #form-link span, .login-form #form-link a {
     padding: 5px; }
+  .login-form button {
+    width: 100%; }

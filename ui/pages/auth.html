@@ -22,7 +22,8 @@
       </div>
     </nav>
     <div class="main-content middle-content">
-				<form class="bg-primary-light login-form">
+			<div id="card">
+				<form class="bg-primary-light login-form" id="signup">
 						<div class="color-primary to-center">
 							<h2>SIGN UP</h2>
 						</div>
@@ -51,9 +52,51 @@
 							</div>
 						</div>
 						<div class="to-center" id="form-link">
-							<span>Already a member?</span><a href="#">Sign In</a>
+							<span>Already a member?</span><a onclick="flip()" href="#">Sign In</a>
 						</div>
 					</form>
-    </div>
+					<form class="bg-primary-light login-form" id="login">
+							<div class="color-primary to-center">
+								<h2>LOG IN</h2>
+							</div>
+							<div class="input primary">
+								<i class="fa fa-user"></i>
+								<input type="text" placeholder="Username / Email" class="bg-primary-light">
+							</div>
+							<div class="input primary">
+								<i class="fa fa-lock"></i>
+								<input type="password" placeholder="Password" class="bg-primary-light">
+							</div>
+							<button class="button primary color-white" type="submit">Log In</button>
+							<div class="align-right" id="forget-psswd">
+								<a href="#">Forget Password?</a>
+							</div>
+							<div class="icon-group">
+								<div id="fb">
+									<a href="#"><img src="../images/facebook.png" alt="fb-logo"></img></a>
+								</div>
+								<div id="twbs">
+									<a href="#"><img src="../images/twitter.png" alt="twbs-logo"></img></a>
+								</div>
+								<div id="gl">
+									<a href="#"><img src="../images/google.png" alt="gl-logo"></img></a>
+								</div>
+							</div>
+							<div class="to-center" id="form-link">
+								<span>Not a member?</span><a onclick="flip1()" href="#">Sign Up</a>
+							</div>
+						</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+			function flip(){
+			document.getElementById("card").style.transform = 'rotateY(180deg)';
+				console.log('hello')
+			}
+			function flip1(){
+			document.getElementById("card").style.transform = 'rotateY(0deg)';
+				console.log('hello')
+			}
+		</script>
   </body>
 </html>

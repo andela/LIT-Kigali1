@@ -1,6 +1,10 @@
 {
   "root": true,
-  "extends": ["airbnb-base", "prettier"],
+  "parser": "babel-eslint",
+  "extends": ["prettier", "airbnb-base"],
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "env": {
     "node": true,
     "es6": true,

@@ -25,6 +25,7 @@ body {
 
 button {
   border: 0;
+<<<<<<< HEAD
   outline: none;
   cursor: pointer; }
 
@@ -34,6 +35,12 @@ a {
 
 .fa {
   color: inherit; }
+=======
+  outline: none; }
+
+a {
+  text-decoration: none; }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 
 .bg-primary {
   background-color: #3f51b5; }
@@ -62,9 +69,12 @@ a {
 .color-white {
   color: white; }
 
+<<<<<<< HEAD
 .color-gray {
   color: rgba(0, 0, 0, 0.3); }
 
+=======
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 /* 
   Grid system of 12 columns
 */
@@ -76,6 +86,7 @@ a {
   padding: 0 10%; }
 
 .main-content {
+<<<<<<< HEAD
   padding-top: 65px;
   padding-bottom: 20px; }
 
@@ -157,6 +168,58 @@ a {
 .col-11-mob,
 .col-12,
 .col-12-mob {
+=======
+  padding-top: 65px; }
+
+.col-1 {
+  width: 8.33%; }
+
+.col-2 {
+  width: 16.66%; }
+
+.col-3 {
+  width: 25%; }
+
+.col-4 {
+  width: 33.33%; }
+
+.col-5 {
+  width: 44.66%; }
+
+.col-6 {
+  width: 50%; }
+
+.col-7 {
+  width: 58.33%; }
+
+.col-8 {
+  width: 66.66%; }
+
+.col-9 {
+  width: 75%; }
+
+.col-10 {
+  width: 83.33%; }
+
+.col-11 {
+  width: 91.66%; }
+
+.col-12 {
+  width: 100%; }
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+>>>>>>> feat(landing page ui): add the user interface of the landing page
   padding: 10px 15px; }
 
 .is-column {
@@ -182,9 +245,15 @@ a {
   display: flex;
   align-items: center; }
 
+<<<<<<< HEAD
 .items-left {
   display: flex;
   align-items: flex-start; }
+=======
+.items-center {
+  display: flex;
+  align-items: flex-end; }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 
 .box {
   background-color: #fff;
@@ -197,6 +266,7 @@ a {
   -ms-border-radius: 6px;
   -o-border-radius: 6px; }
 
+<<<<<<< HEAD
 .mr-5 {
   margin-right: 5px; }
 
@@ -266,20 +336,30 @@ a {
   -ms-border-radius: 50px;
   -o-border-radius: 50px; }
 
+=======
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 /* 
   ##Device = Laptops, Desktops
 */
 @media screen and (min-width: 769px) {
   .is-tablet,
   .is-mobile {
+<<<<<<< HEAD
     display: none !important; } }
+=======
+    display: none; } }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 
 /* 
   ##Device = Tablets and Mobile
 */
 @media screen and (max-width: 768px) {
   .is-desktop {
+<<<<<<< HEAD
     display: none !important; }
+=======
+    display: none; }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
   .is-tablet,
   .is-mobile {
     display: block; }
@@ -305,6 +385,7 @@ a {
   .container {
     padding: 0 15px; } }
 
+<<<<<<< HEAD
 .middle-content {
   display: flex;
   justify-content: center;
@@ -435,12 +516,15 @@ input::placeholder {
 .hover-primary:hover {
   color: #3f51b5; }
 
+=======
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 .top-navbar {
   align-items: center;
   background-color: #3f51b5;
   color: white;
   display: flex;
   height: 65px;
+<<<<<<< HEAD
   position: fixed;
   top: 0;
   left: 0;
@@ -450,10 +534,17 @@ input::placeholder {
 .nav-button {
   background: transparent;
   position: relative; }
+=======
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0; }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 
 .brand-logo {
   height: 50px; }
 
+<<<<<<< HEAD
 .top-navbar__avatar {
   height: 35px;
   width: 35px;
@@ -520,6 +611,11 @@ input::placeholder {
   padding: 0;
   margin: 0;
   background-color: transparent; }
+=======
+.toggle-menu {
+  height: 65px;
+  position: relative; }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 
 .hamburger,
 .hamburger::before,
@@ -528,6 +624,7 @@ input::placeholder {
   width: 40px; }
 
 .hamburger {
+<<<<<<< HEAD
   top: 0;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -536,6 +633,15 @@ input::placeholder {
   -ms-transform: translateY(0px);
   -o-transform: translateY(0px);
   -webkit-transform: translateY(0px);
+=======
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transform: translateY(30px);
+  -moz-transform: translateY(30px);
+  -ms-transform: translateY(30px);
+  -o-transform: translateY(30px);
+  -webkit-transform: translateY(30px);
+>>>>>>> feat(landing page ui): add the user interface of the landing page
   transition: 0.5s;
   -moz-transition: 0.5s;
   -ms-transition: 0.5s;
@@ -561,14 +667,20 @@ input::placeholder {
 .hamburger::after {
   top: 13px; }
 
+<<<<<<< HEAD
 .toggle-menu:focus .hamburger,
 .toggle-menu:focus-within .hamburger,
+=======
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 .hamburger.active {
   background-color: rgba(0, 0, 0, 0);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
 
+<<<<<<< HEAD
 .toggle-menu:focus .hamburger::before,
 .toggle-menu:focus-within .hamburger::before,
+=======
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 .hamburger.active::before {
   top: 0;
   transform: rotate(45deg);
@@ -577,8 +689,11 @@ input::placeholder {
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg); }
 
+<<<<<<< HEAD
 .toggle-menu:focus .hamburger::after,
 .toggle-menu:focus-within .hamburger::after,
+=======
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 .hamburger.active:after {
   top: 0;
   transform: rotate(135deg);
@@ -587,6 +702,7 @@ input::placeholder {
   -ms-transform: rotate(135deg);
   -o-transform: rotate(135deg); }
 
+<<<<<<< HEAD
 .hamburger-nav {
   position: fixed;
   right: 0;
@@ -672,6 +788,27 @@ input::placeholder {
   height: 20px;
   width: 20px;
   cursor: pointer; }
+=======
+.hamburger:focus {
+  background-color: rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+
+.hamburger:focus::before {
+  top: 0;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg); }
+
+.hamburger:focus::after {
+  top: 0;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg); }
+>>>>>>> feat(landing page ui): add the user interface of the landing page
 
 @media screen and (max-width: 768px) {
   .top-navbar {
@@ -679,6 +816,7 @@ input::placeholder {
   .brand-logo {
     height: 40px; } }
 
+<<<<<<< HEAD
 /* Pages */
 .article-text {
   min-height: 650px;
@@ -1287,3 +1425,165 @@ input::placeholder {
     padding: 5px; }
   .login-form button {
     width: 100%; }
+=======
+html {
+  scroll-behavior: smooth; }
+
+@keyframes articleSlide {
+  0% {
+    left: 100%; }
+  10% {
+    left: 100%; }
+  10% {
+    left: 0%; }
+  20% {
+    left: 0; }
+  25% {
+    left: -100%; }
+  40% {
+    left: -100%; }
+  45% {
+    left: -200%; }
+  60% {
+    left: -200%; }
+  65% {
+    left: -300%; }
+  80% {
+    left: -300%; }
+  85% {
+    left: -400%; }
+  100% {
+    left: -400%; } }
+
+.slide-area {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/slide_one.jpg);
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.4);
+  overflow: hidden; }
+
+.slides {
+  min-height: 60vh;
+  display: flex;
+  width: 500%;
+  animation: 20s articleSlide infinite;
+  -webkit-animation: 20s articleSlide infinite;
+  position: relative;
+  text-align: left;
+  overflow: hidden; }
+
+.slide-block {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+  color: white; }
+
+.slide-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%); }
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%); }
+
+p {
+  text-align: left; }
+
+.main-article-container {
+  width: 100%; }
+
+.article-container {
+  background: white;
+  margin: 50px;
+  display: flex;
+  flex-direction: column; }
+
+.article-card {
+  width: 100%; }
+
+.main-article-container img {
+  width: 183px;
+  height: 100%; }
+
+.article-text {
+  width: auto;
+  height: 138px;
+  padding-left: 10px;
+  overflow: hidden;
+  height: 100%; }
+
+.article-title {
+  font-size: 1.5em;
+  font-family: Roboto-Regular;
+  font-style: normal;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: auto; }
+
+.article-content {
+  font-family: Roboto-Light;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  font-size: 18px;
+  color: #000000;
+  overflow: hidden; }
+
+.article-thumbnail {
+  position: relative;
+  padding-right: auto;
+  margin-top: auto; }
+
+.article-time {
+  padding-right: 20px; }
+
+.article-views {
+  padding-right: 20px; }
+
+i {
+  padding-right: 5px; }
+
+@media screen and (max-width: 768px) {
+  .col-6 {
+    width: 100%;
+    margin: auto; }
+  .article-thumbnail {
+    position: relative;
+    padding-right: auto;
+    margin-top: auto;
+    font-size: small; }
+  .article-time {
+    padding-right: 5px; }
+  .article-views {
+    padding-right: 5px; }
+  i {
+    padding-right: 0px; } }
+
+.go-top-btn {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  background: #3f51b5;
+  bottom: 40px;
+  right: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  text-indent: 2px;
+  line-height: 50px;
+  color: white;
+  font-size: 22px; }
+
+.go-top-btn:hover {
+  background-color: #1a237e; }
+>>>>>>> feat(landing page ui): add the user interface of the landing page

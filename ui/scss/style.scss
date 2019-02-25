@@ -1,17 +1,6 @@
 @import 'reset';
 @import 'colors';
 @import 'grid-layout';
+@import 'nav-bar';
+@import 'landing-page';
 @import 'global';
-@import 'form';
-@import 'typography';
-@import 'nav_bar';
-
-/* Pages */
-@import 'articles-create-page';
-@import 'articles-view-page';
-@import 'articles-all';
-@import 'articles-user-all';
-@import 'article-card';
-@import 'nav_bar.scss';
-@import '_input.scss';
-@import 'login.scss';

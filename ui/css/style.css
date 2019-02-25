@@ -1072,12 +1072,6 @@ a.button {
   .login-form #forget-psswd {
     padding-top: 20px; }
 
-#card #signup, #card #login {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  position: absolute; }
-
 #card {
   height: 528px;
   width: 457px;
@@ -1091,6 +1085,11 @@ a.button {
   margin: 0 15px; }
   #card #login {
     transform: rotateY(180deg); }
+  #card #signup, #card #login {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    position: absolute; }
 
 @media screen and (max-width: 768px) {
   .login-form {

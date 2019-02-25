@@ -254,6 +254,11 @@
   .brand-logo {
     height: 40px;
   }
+  @media screen and (max-width: 500px) {
+    .nav-search {
+      margin-right: 15px;
+    }
+  }
 }
 @media screen and (max-width: 500px) {
   .nav-search {

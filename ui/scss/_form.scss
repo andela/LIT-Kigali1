@@ -7,7 +7,8 @@ textarea {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+input[type='email'] {
   padding: 5px;
   border: 0;
   width: 100%;
@@ -34,7 +35,8 @@ input::placeholder {
   background-color: transparent;
 }
 .input input[type='text'],
-.input input[type='password'] {
+.input input[type='password'],
+.input input[type='email'] {
   background-color: transparent;
 }
 

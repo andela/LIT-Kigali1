@@ -31,14 +31,6 @@
         padding-top:20px;
     }
 }
-#card{
-    #signup,#login {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    position: absolute;
-    }
-}
 #card {
     height: 528px; 
     width: 457px;
@@ -53,6 +45,12 @@
     #login {
         transform: rotateY(180deg);
     }
+    #signup,#login {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        position: absolute;
+        }
  } 
  @media screen and (max-width: 768px) {
   .login-form {

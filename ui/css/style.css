@@ -481,6 +481,9 @@ a.button {
 .hover-primary:hover {
   color: #3f51b5; }
 
+.underlined {
+  text-decoration: underline; }
+
 .top-navbar {
   align-items: center;
   background-color: #3f51b5;
@@ -724,6 +727,10 @@ a.button {
     height: 50px; }
   .brand-logo {
     height: 40px; } }
+
+@media screen and (max-width: 500px) {
+  .nav-search {
+    margin-right: 15px; } }
 
 /* Pages */
 .article-text {

@@ -35,6 +35,8 @@
 #card{
     #signup,#login{
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
     position: absolute;
     }
 }
@@ -45,7 +47,12 @@
     height: 528px; 
     width: 457px;
     transition: transform 1s ease-in-out;
+    -webkit-transition: transform 1s ease-in-out;
+    -moz-transition: transform 1s ease-in-out;
+    -o-transition: transform 1s ease-in-out;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
     margin: 0 15px;
 }
 @media screen and (max-width: 768px) {
@@ -53,3 +60,4 @@
     max-width:91.5vw !important ;
   }
   }
+  

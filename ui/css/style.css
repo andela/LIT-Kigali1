@@ -1291,17 +1291,23 @@ input::placeholder {
 
 #card #signup, #card #login {
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   position: absolute; }
-
-#card #login {
-  transform: rotateY(180deg); }
 
 #card {
   height: 528px;
   width: 457px;
   transition: transform 1s ease-in-out;
+  -webkit-transition: transform 1s ease-in-out;
+  -moz-transition: transform 1s ease-in-out;
+  -o-transition: transform 1s ease-in-out;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
   margin: 0 15px; }
+  #card #login {
+    transform: rotateY(180deg); }
 
 @media screen and (max-width: 768px) {
   .login-form {

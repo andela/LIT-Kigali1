@@ -30,6 +30,18 @@
     #forget-psswd {
         padding-top:20px;
     }
+
+}
+#card{
+    #signup,#login{
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    position: absolute;
+    }
+}
+#card #login{
+    transform: rotateY(180deg);
 }
 #card {
     height: 528px; 

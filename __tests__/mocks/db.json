@@ -32,5 +32,74 @@
     "birthDate": "12 June 1999",
     "image": "https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg",
     "cover": "https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg"
+  },
+  "twitterUser": {
+    "created_at": "Thu Apr 06 15:24:15 +0000 2017",
+    "id_str": "850006245121695744",
+    "text": "1/ Today we\u2019re sharing our vision for the future of the Twitter API platform!\nhttps://t.co/XweGngmxlP",
+    "user": {
+      "id": 2244994945,
+      "name": "Twitter Dev",
+      "screen_name": "TwitterDev",
+      "location": "Internet",
+      "url": "https://dev.twitter.com/",
+      "description": "Your official source for Twitter Platform news, updates & events. Need technical help? Visit https://twittercommunity.com/ \u2328\ufe0f #TapIntoTwitter"
+    },
+    "place": {},
+    "entities": {
+      "hashtags": [],
+      "urls": [
+        {
+          "url": "https://t.co/XweGngmxlP",
+          "unwound": {
+            "url": "https://cards.twitter.com/cards/18ce53wgo4h/3xo1c",
+            "title": "Building the Future of the Twitter API Platform"
+          }
+        }
+      ],
+      "user_mentions": []
+    }
+  },
+  "facebookUser": {
+    "id": "X999_Y999",
+    "from": {
+      "name": "Tom Brady",
+      "id": "X12"
+    },
+    "message": "Looking forward to 2010!",
+    "actions": [
+      {
+        "name": "Comment",
+        "link": "http://www.facebook.com/X999/posts/Y999"
+      },
+      {
+        "name": "Like",
+        "link": "http://www.facebook.com/X999/posts/Y999"
+      }
+    ],
+    "type": "status",
+    "created_time": "2010-08-02T21:27:44+0000",
+    "updated_time": "2010-08-02T21:27:44+0000"
+  },
+  "googleUser": {
+    "id": "129347198236536",
+    "primaryEmail": "liz@example.com",
+    "name": {
+      "givenName": "Elizabeth",
+      "familyName": "Smith"
+    },
+    "suspended": false,
+    "password": "new user password",
+    "hashFunction": "SHA-1",
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "ims": [
+      {
+        "type": "work",
+        "protocol": "gtalk",
+        "im": "liz_im@talk.example.com",
+        "primary": true
+      }
+    ]
   }
 }

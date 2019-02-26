@@ -1051,7 +1051,7 @@ a.button {
   padding: 50px;
   border-radius: 10px;
   width: 450px;
-  max-width: 100vw !important; }
+  max-width: 100vw; }
   .login-form .input {
     margin-bottom: 30px;
     font-size: 1rem; }

@@ -6,6 +6,13 @@
     "firstName": "test",
     "lastName": "test"
   },
+  "signupUser2": {
+    "username": "test2",
+    "email": "test2@email.com",
+    "password": "test@test",
+    "firstName": "test",
+    "lastName": "test"
+  },
   "loginUser": {
     "email": "manzi@email.com",
     "password": "123456"
@@ -32,5 +39,8 @@
     "birthDate": "12 June 1999",
     "image": "https://planetbotanix.com/wp-content/uploads/2017/08/Female-Avatar-1-300x300.jpg",
     "cover": "https://www.eta.co.uk/wp-content/uploads/2012/09/Cycling-by-water-resized-min.jpg"
+  },
+  "createComment": {
+    "body": "Quis culpa ad exercitation sunt pariatur ut commodo ipsum ipsum. Labore velit laborum cupidatat laborum excepteur. Lorem eu do cupidatat amet eiusmod veniam."
   }
 }

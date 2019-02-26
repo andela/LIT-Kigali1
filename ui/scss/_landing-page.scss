@@ -118,12 +118,12 @@ p {
   font-family: Roboto-Light;
   font-style: normal;
   font-weight: 300;
-  line-height: normal;
+  line-height: 1.5em;
+  height: 3em;
   font-size: 1rem;
   color: #000000;
   white-space: wrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 .article-thumbnail {
   position: relative;

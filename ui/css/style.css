@@ -1105,7 +1105,8 @@ p {
 
 .main-article-container img {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  border-radius: 5%; }
 
 .home-article-text {
   width: 60%;
@@ -1129,7 +1130,7 @@ p {
   line-height: normal;
   font-size: 1rem;
   color: #000000;
-  white-space: nowrap;
+  white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis; }
 

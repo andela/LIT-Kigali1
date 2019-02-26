@@ -106,7 +106,7 @@ p {
   height: 100%;
 }
 .home-article-title {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   font-family: Roboto-Regular;
   font-style: normal;
   font-weight: bold;
@@ -118,7 +118,7 @@ p {
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  font-size: 18px;
+  font-size: 1rem;
   color: #000000;
   white-space: nowrap;
   overflow: hidden;
@@ -129,15 +129,15 @@ p {
   padding-right: auto;
   margin-top: auto;
   padding-top: 10px;
+  font-family: Roboto-Light;
+  font-size: 0.8rem;
+  font-style: normal;
 }
 .article-time {
   padding-right: 20px;
 }
 .article-views {
   padding-right: 20px;
-}
-i {
-  padding-right: 5px;
 }
 .home-article-image {
   width: 40%;
@@ -147,12 +147,18 @@ i {
     width: 100%;
     margin: auto;
   }
+  .home-article-title {
+    font-size: 1rem;
+  }
+  .home-article-content {
+    font-size: 0.8rem;
+  }
   .article-thumbnail {
     position: relative;
     padding-right: auto;
-    // margin-top: auto;
     padding-top: 10px;
-    font-size: small;
+    font-size: 0.7rem;
+    font-style: normal;
   }
   .article-time {
     padding-right: 5px;

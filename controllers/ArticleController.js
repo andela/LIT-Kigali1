@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag } from '../database/models';
+import {
+  User, Article, Favorite, Follow, Tag
+} from '../database/models';
 import { slugString } from '../helpers';
 
 /**
@@ -20,7 +22,9 @@ class ArticleController {
     const cover = file.url || undefined;
     const slug = slugString(article.title);
     const newArticle = await Article.create(
-      { ...article, userId: currentUser.id, slug, cover },
+      {
+        ...article, userId: currentUser.id, slug, cover
+      },
       { include: [{ model: User, as: 'author' }], attributes: ['username', 'bio', 'image'] }
     );
 
@@ -54,8 +58,8 @@ class ArticleController {
       include: [{ model: User, as: 'author', attributes: ['username', 'bio', 'image'] }]
     });
     if (
-      !article ||
-      (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
+      !article
+      || (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
     ) {
       return res.status(404).json({
         status: 404,

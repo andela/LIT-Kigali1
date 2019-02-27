@@ -13,7 +13,6 @@ describe('SOCIAL AUTHENTICATION', () => {
     beforeAll(async () => {
       await nock('https://www.twitter.com/')
         .filteringPath(() => '/')
-        // .persist()
         .get(`${urlPrefix}/users/twitter`)
         .reply(302, undefined, {
           Location: `${urlPrefix}/users/${twitterUser.user.id}/social`

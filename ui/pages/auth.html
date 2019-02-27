@@ -83,16 +83,16 @@
 								</div>
 							</div>
 							<div class="to-center" id="form-link">
-								<span>Not a member?</span><a onclick="flipBack()">Sign Up</a>
+								<span>Not a member?</span><a onclick="flipBack()" href="#">Sign Up</a>
 							</div>
 						</form>
 			</div>
 		</div>
 		<script type="text/javascript">
-			function flip(){
+			const flip = () => {
 			document.getElementById("card").style.transform = 'rotateY(180deg)';
 			}
-			function flipBack(){
+			const flipBack = () => {
 			document.getElementById("card").style.transform = 'rotateY(0deg)';
 			}
 		</script>

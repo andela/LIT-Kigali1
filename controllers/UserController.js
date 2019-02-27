@@ -34,4 +34,5 @@ class UserController {
     return res.json({ message: `${user.email} has been confirmed` });
   }
 }
+
 export default UserController;

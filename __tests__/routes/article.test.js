@@ -79,12 +79,13 @@ describe('articles', () => {
   });
 
   test('should return article', async () => {
-    expect.assertions(5);
+    expect.assertions(6);
     const res = await request(app).get(`${urlPrefix}/articles/${newArticle.slug}`);
     expect(res.status).toBe(200);
     expect(res.body).toBeDefined();
     expect(res.body.article).toBeDefined();
     expect(res.body.article.author).toBeDefined();
+    expect(res.body.article.author.following).toBe(false);
     expect(res.body.article.favoritesCount).toBeDefined();
   });
 
@@ -110,6 +111,16 @@ describe('articles', () => {
   test('Fetch Articles - should return articles with the tag test', async () => {
     expect.assertions(5);
     const res = await request(app).get(`${urlPrefix}/articles?tag=test`);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeDefined();
+    expect(res.body.articles).toBeDefined();
+    expect(res.body.articles[0].tagList).toContain('test');
+    expect(res.body.articlesCount).toBeDefined();
+  });
+
+  test('Fetch Articles - should return articles by favorited tag test', async () => {
+    expect.assertions(5);
+    const res = await request(app).get(`${urlPrefix}/articles?favorited=${loginUser1.username}`);
     expect(res.status).toBe(200);
     expect(res.body).toBeDefined();
     expect(res.body.articles).toBeDefined();

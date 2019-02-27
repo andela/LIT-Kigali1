@@ -1,8 +1,8 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
-import { articleValidator } from '../validators';
-import { ArticleController } from '../../controllers';
+import { articleValidator, commentValidator } from '../validators';
+import { ArticleController, CommentController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
 
@@ -40,5 +40,22 @@ router.get(
 );
 
 router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
+
+router.post(
+  '/:articleSlug/comments',
+  celebrate({
+    body: commentValidator.createComment
+  }),
+  verifyJwt(),
+  CommentController.createArticleComment
+);
+router.get(
+  '/:articleSlug/comments',
+  celebrate({
+    query: commentValidator.getArticleCommentsQuery
+  }),
+  verifyJwt(),
+  CommentController.getArticleComments
+);
 
 export default router;

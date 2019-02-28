@@ -58,4 +58,6 @@ router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
 
 router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
 
+router.post('/:slug/rating', verifyJwt(), RatingController.rateArticle);
+
 export default router;

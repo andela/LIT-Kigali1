@@ -5,6 +5,7 @@ import ArticleController from './ArticleController';
 import ProfileController from './ProfileController';
 import FollowController from './FollowController';
 import CommentController from './CommentController';
+import RatingController from './RatingController';
 
 export {
   AuthController,
@@ -13,5 +14,7 @@ export {
   ArticleController,
   ProfileController,
   FollowController,
-  CommentController
+  CommentController,
+  CommentController,
+  RatingController
 };

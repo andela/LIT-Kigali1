@@ -1065,12 +1065,16 @@ a.button {
   .login-form .input {
     margin-bottom: 30px;
     font-size: 1rem; }
+  .login-form a {
+    color: #3f51b5; }
+  .login-form a:hover {
+    color: #2785d8; }
   .login-form #form-link span, .login-form #form-link a {
     padding: 5px; }
   .login-form button {
     width: 100%; }
   .login-form #forget-psswd {
-    padding-top: 20px; }
+    margin-top: -20px; }
 
 #card {
   height: 528px;

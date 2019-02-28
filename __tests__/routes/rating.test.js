@@ -1,13 +1,11 @@
 import request from 'supertest';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Favorite } from '../../database/models';
+import { User } from '../../database/models';
 import app from '../../app';
 import { signupUser } from '../mocks/db.json';
 
 let testUserToken;
-let articleSlug;
-let testUserId;
-describe('5 star Rating', () => {
+describe('Profile', () => {
   beforeAll(async () => {
     const { body } = await request(app)
       .post(`${urlPrefix}/users`)

@@ -5,7 +5,7 @@ addons:
   postgresql: '9.5'
 env:
   global:
-    - NODE_ENV=development
+    - NODE_ENV=test
     - JWT_SECRET=authors_haven@secret
     - DATABASE_URL=postgresql://authors_haven:authors_haven@localhost/authors_haven
 language: node_js
@@ -24,6 +24,4 @@ before_script:
   - psql -c "CREATE USER authors_haven WITH PASSWORD 'authors_haven';" -U postgres
   - npm run migrate:seed
 script:
-  - npm run test
-after_success:
   - npm run coveralls

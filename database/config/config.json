@@ -1,14 +1,14 @@
 {
   "development": {
-    "logging": false,
     "use_env_variable": "DATABASE_URL",
     "operatorsAliases": false,
     "dialect": "postgres"
   },
   "test": {
     "use_env_variable": "DATABASE_URL",
+    "operatorsAliases": false,
     "dialect": "postgres",
-    "operatorsAliases": false
+    "logging": false
   },
   "production": {
     "logging": false,

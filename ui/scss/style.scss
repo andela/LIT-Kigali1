@@ -1,10 +1,11 @@
+@import 'global';
 @import 'reset';
 @import 'colors';
 @import 'grid-layout';
 @import 'global';
 @import 'form';
 @import 'typography';
-@import 'nav_bar';
+@import 'nav-bar';
 
 /* Pages */
 @import 'articles-create-page';
@@ -13,3 +14,4 @@
 @import 'articles-user-all';
 @import 'article-card';
 @import 'login';
+@import 'landing-page';

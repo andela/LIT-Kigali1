@@ -50,3 +50,17 @@
   align-items: center;
   flex-direction: column;
 }
+
+.view-favorites {
+  display: flex;
+  flex-direction: column;
+}
+.view-stars {
+  display: flex;
+}
+.star-1 {
+  font-size: 1.5rem;
+}
+.star-2 {
+  font-size: 1.5rem;
+}

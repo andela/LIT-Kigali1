@@ -10,9 +10,9 @@ let loginUser1;
 let loginUser2;
 let newArticle;
 let newComment;
-jest.setTimeout(30000);
+jest.setTimeout(50000);
 describe('comments', () => {
-  beforeAll(async done => {
+  beforeAll(async () => {
     let res = await request(app)
       .post(`${urlPrefix}/users`)
       .send({
@@ -39,7 +39,6 @@ describe('comments', () => {
       userId: loginUser1.id
     });
     newArticle = res.get();
-    done();
   });
 
   afterAll(async () => {
@@ -60,16 +59,17 @@ describe('comments', () => {
 
   /* Create a comment test cases */
 
-  test('CREATE - should return Bad Request', async () => {
+  test('CREATE - should return Bad Request', async done => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.id}/comments`)
       .send();
     expect(res.status).toBe(400);
     expect(res.body.errors).toBeDefined();
+    done();
   });
 
-  test('CREATE - should return No auth token', async () => {
+  test('CREATE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.id}/comments`)
@@ -77,9 +77,10 @@ describe('comments', () => {
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
     expect(res.body.message).toBe('No auth token');
+    done();
   });
 
-  test('CREATE - should return Article not found', async () => {
+  test('CREATE - should return Article not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/fake-slug/comments`)
@@ -88,9 +89,10 @@ describe('comments', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
+    done();
   });
 
-  test('CREATE - should return created comment', async () => {
+  test('CREATE - should return created comment', async done => {
     expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -101,9 +103,10 @@ describe('comments', () => {
     expect(res.body.status).toBe(201);
     expect(res.body.comment.id).toBeDefined();
     expect(res.body.comment.body).toBeDefined();
+    done();
   });
 
-  test('CREATE - should return Parent comment not found', async () => {
+  test('CREATE - should return Parent comment not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -112,9 +115,10 @@ describe('comments', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Parent comment not found');
+    done();
   });
 
-  test('CREATE - should return created comment with parentId', async () => {
+  test('CREATE - should return created comment with parentId', async done => {
     expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -125,19 +129,21 @@ describe('comments', () => {
     expect(res.body.status).toBe(201);
     expect(res.body.comment.id).toBeDefined();
     expect(res.body.comment.body).toBeDefined();
+    done();
   });
 
   /* View a articles' comment test cases */
 
-  test('VIEW - should return No auth token', async () => {
+  test('VIEW - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app).get(`${urlPrefix}/articles/${newArticle.id}/comments`);
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
     expect(res.body.message).toBe('No auth token');
+    done();
   });
 
-  test('VIEW - should return Article not found', async () => {
+  test('VIEW - should return Article not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/fake-article-slug/comments`)
@@ -145,9 +151,10 @@ describe('comments', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
+    done();
   });
 
-  test("VIEW - should return articles' comments", async () => {
+  test("VIEW - should return articles' comments", async done => {
     expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -155,9 +162,10 @@ describe('comments', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.comments).toBeDefined();
+    done();
   });
 
-  test("VIEW - should return articles' comments for page 1", async () => {
+  test("VIEW - should return articles' comments for page 1", async done => {
     expect.assertions(5);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle.slug}/comments?page=1`)
@@ -168,20 +176,22 @@ describe('comments', () => {
     expect(res.body.comments).toBeDefined();
     expect(res.body.commentsCount).toBeDefined();
     expect(res.body.page).toBe(1);
+    done();
   });
 
   /* Update a comment test cases */
 
-  test('UPDATE - should return Bad Request', async () => {
+  test('UPDATE - should return Bad Request', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/comments/${newComment.id}`)
       .send();
     expect(res.status).toBe(400);
     expect(res.body.errors).toBeDefined();
+    done();
   });
 
-  test('UPDATE - should return No auth token', async () => {
+  test('UPDATE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/comments/${newComment.id}`)
@@ -189,9 +199,10 @@ describe('comments', () => {
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
     expect(res.body.message).toBe('No auth token');
+    done();
   });
 
-  test('UPDATE - should return Unauthorized access', async () => {
+  test('UPDATE - should return Unauthorized access', async done => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/comments/${newComment.id}`)
@@ -200,9 +211,10 @@ describe('comments', () => {
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
     expect(res.body.message).toBe('Unauthorized access');
+    done();
   });
 
-  test('UPDATE - should return internal error', async () => {
+  test('UPDATE - should return internal error', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/comments/fake-comment-id`)
@@ -210,9 +222,10 @@ describe('comments', () => {
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(500);
     expect(res.body.status).toBe(500);
+    done();
   });
 
-  test('UPDATE - should return Comment not found', async () => {
+  test('UPDATE - should return Comment not found', async done => {
     const commentBody = 'New body';
     expect.assertions(3);
     const res = await request(app)
@@ -222,9 +235,10 @@ describe('comments', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Comment not found');
+    done();
   });
 
-  test('UPDATE - should return updated comment', async () => {
+  test('UPDATE - should return updated comment', async done => {
     const commentBody = 'New body';
     expect.assertions(4);
     const res = await request(app)
@@ -236,11 +250,12 @@ describe('comments', () => {
     expect(res.body.status).toBe(200);
     expect(res.body.comment.id).toBeDefined();
     expect(res.body.comment.body).toBe(commentBody);
+    done();
   });
 
   /* Delete a comment test cases */
 
-  test('DELETE - should return No auth token', async () => {
+  test('DELETE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newComment.id}`)
@@ -248,9 +263,10 @@ describe('comments', () => {
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
     expect(res.body.message).toBe('No auth token');
+    done();
   });
 
-  test('DELETE - should return Unauthorized access', async () => {
+  test('DELETE - should return Unauthorized access', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newComment.id}`)
@@ -259,9 +275,10 @@ describe('comments', () => {
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
     expect(res.body.message).toBe('Unauthorized access');
+    done();
   });
 
-  test('DELETE - should return internal error', async () => {
+  test('DELETE - should return internal error', async done => {
     expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/fake-comment-id`)
@@ -269,9 +286,10 @@ describe('comments', () => {
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(500);
     expect(res.body.status).toBe(500);
+    done();
   });
 
-  test('DELETE - should return Comment not found', async () => {
+  test('DELETE - should return Comment not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newArticle.id}`)
@@ -280,9 +298,10 @@ describe('comments', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Comment not found');
+    done();
   });
 
-  test('DELETE - should return Comment deleted successfully', async () => {
+  test('DELETE - should return Comment deleted successfully', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newComment.id}`)
@@ -291,5 +310,6 @@ describe('comments', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBe('Comment deleted successfully');
+    done();
   });
 });

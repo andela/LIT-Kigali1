@@ -14,6 +14,9 @@ module.exports = {
       articleId: {
         type: Sequelize.STRING
       },
+      rating: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

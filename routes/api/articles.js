@@ -1,8 +1,13 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
+<<<<<<< HEAD
 import { articleValidator, commentValidator } from '../validators';
 import { ArticleController, CommentController } from '../../controllers';
+=======
+import { articleValidator } from '../validators';
+import { ArticleController, RatingController } from '../../controllers';
+>>>>>>> feat(rating) 5 stars rating
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
 
@@ -41,6 +46,7 @@ router.get(
 
 router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
 
+<<<<<<< HEAD
 router.post(
   '/:articleSlug/comments',
   celebrate({
@@ -57,5 +63,8 @@ router.get(
   verifyJwt(),
   CommentController.getArticleComments
 );
+=======
+router.post('/:slug/rating', verifyJwt(), RatingController.rateArticle);
+>>>>>>> feat(rating) 5 stars rating
 
 export default router;

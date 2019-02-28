@@ -4,8 +4,9 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest --runInBand --verbose --detectOpenHandles --forceExit",
-    "coveralls": "jest --runInBand --coverage --detectOpenHandles --forceExit && cat ./coverage/lcov.info | coveralls",
+    "test": "NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit",
+    "coveralls": "./coverage/lcov.info | coveralls",
+    "test:coveralls": "npm run test && npm run coveralls",
     "lint": "node_modules/.bin/eslint .",
     "lint:fix": "prettier-eslint --write '**/*.js'",
     "start": "npm run migrate:seed && npm run build-scss && babel-node index.js",

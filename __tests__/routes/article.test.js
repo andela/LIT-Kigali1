@@ -16,7 +16,7 @@ const password = '123456';
 const fakeSlug = 'fake-slug';
 
 describe('articles', () => {
-  beforeAll(async done => {
+  beforeAll(async (done) => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
       ...signupUser,

@@ -57,5 +57,8 @@ router.get(
   verifyJwt(),
   CommentController.getArticleComments
 );
+router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
+
+router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
 
 export default router;

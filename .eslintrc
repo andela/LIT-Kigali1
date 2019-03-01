@@ -46,6 +46,7 @@
           "ClassDeclaration": true
         }
       }
-    ]
+    ],
+    "object-curly-newline": ["error", { "multiline": true, "minProperties": 4 }]
   }
 }

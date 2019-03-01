@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Favorite = sequelize.define(
     'Favorite',
@@ -15,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       articleId: {
         type: DataTypes.STRING
       },
+      state: {
+        type: DataTypes.STRING
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
@@ -26,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Favorite.associate = function(models) {
+  Favorite.associate = function (models) {
     Favorite.belongsTo(models.User, { foreignKey: 'userId' });
     Favorite.belongsTo(models.Article, { foreignKey: 'articleId' });
   };

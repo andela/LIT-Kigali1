@@ -41,4 +41,8 @@ router.get(
 
 router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
 
+router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
+
+router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
+
 export default router;

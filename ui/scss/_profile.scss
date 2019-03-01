@@ -208,6 +208,9 @@ textarea::placeholder {
   .profile-form{
     width: 100%;
   }
+  .article-card.profile {
+    height: auto;
+  }
 }
 @media screen and (max-width: 768px) { 
   .profile-meta__button {

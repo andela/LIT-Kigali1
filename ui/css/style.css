@@ -1742,7 +1742,9 @@ textarea::placeholder {
   .profile-form .large-input {
     width: 90%; }
   .profile-form {
-    width: 100%; } }
+    width: 100%; }
+  .article-card.profile {
+    height: auto; } }
 
 @media screen and (max-width: 768px) {
   .profile-meta__button {

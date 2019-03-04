@@ -1,5 +1,6 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import { User } from '../../database/models';
 import { signupUser, profile } from '../mocks/db.json';
 import { urlPrefix } from '../mocks/variables.json';
@@ -7,20 +8,25 @@ import app from '../../app';
 
 const { JWT_SECRET } = process.env;
 
-let testUserToken;
+let loginUser1;
+const email = 'test_login@gmail.com';
+const username = 'test_login';
+const password = '123456';
 jest.setTimeout(50000);
 describe('Profile', () => {
   beforeAll(async done => {
-    const { body } = await request(app)
-      .post(`${urlPrefix}/users`)
-      .send({
-        user: {
-          username: signupUser.username,
-          email: signupUser.email,
-          password: signupUser.password
-        }
-      });
-    testUserToken = body.user.token;
+    const encryptedPassword = bcrypt.hashSync('123456', 10);
+    await User.create({
+      ...signupUser,
+      email,
+      username,
+      confirmed: 'confirmed',
+      password: encryptedPassword
+    });
+    const res = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({ user: { username, password } });
+    loginUser1 = res.body.user;
     done();
   });
 
@@ -34,7 +40,7 @@ describe('Profile', () => {
     expect.assertions(11);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({ user: { ...profile } });
 
     expect(res.status).toBe(200);
@@ -55,7 +61,7 @@ describe('Profile', () => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({ user: { firstName: 'Peter' } });
 
     expect(res.status).toBe(200);
@@ -68,7 +74,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({ user: { ...profile } });
 
     expect(res.status).toBe(409);
@@ -80,7 +86,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({ user: { email: profile.email } });
 
     expect(res.status).toBe(409);
@@ -92,7 +98,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({ user: { username: profile.username } });
 
     expect(res.status).toBe(409);
@@ -104,7 +110,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({
         user: {
           username: profile.username,
@@ -121,7 +127,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({
         user: {
           username: 'papasava',
@@ -150,7 +156,7 @@ describe('Profile', () => {
     await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({ user: { ...profile } });
 
     expect(res.status).toBe(404);

@@ -3,7 +3,9 @@ import { Op } from 'sequelize';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
 import { User, Article, Comment } from '../../database/models';
-import { createArticle, signupUser, signupUser2, createComment } from '../mocks/db.json';
+import {
+ createArticle, signupUser, signupUser2, createComment 
+} from '../mocks/db.json';
 import { slugString } from '../../helpers';
 
 let loginUser1;
@@ -42,19 +44,9 @@ describe('comments', () => {
   });
 
   afterAll(async () => {
-    await User.destroy({
-      where: {
-        [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]
-      }
-    }).then(() => true);
-    await Article.destroy({
-      where: { tagList: { [Op.contains]: ['Test'] } }
-    });
-    await Comment.destroy({
-      where: {
-        [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]
-      }
-    });
+    await User.destroy({where: {[Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]}}).then(() => true);
+    await Article.destroy({where: { tagList: { [Op.contains]: ['Test'] } }});
+    await Comment.destroy({where: {[Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]}});
   });
 
   /* Create a comment test cases */

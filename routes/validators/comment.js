@@ -25,9 +25,7 @@ const updateComment = {
     .required()
 };
 
-const getArticleCommentsQuery = {
-  page: Joi.number().min(1)
-};
+const getArticleCommentsQuery = {page: Joi.number().min(1)};
 
 export default {
   createComment,

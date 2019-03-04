@@ -25,8 +25,8 @@ describe('Profile', () => {
   });
 
   afterAll(async done => {
-    await User.destroy({where: { email: signupUser.email }});
-    await User.destroy({where: { email: profile.email }});
+    await User.destroy({ where: { email: signupUser.email } });
+    await User.destroy({ where: { email: profile.email } });
     done();
   });
 

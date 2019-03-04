@@ -12,15 +12,11 @@ let loginUser;
 jest.setTimeout(30000);
 describe('auth', () => {
   beforeAll(async () => {
-    await User.destroy({
-      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] }
-    }).then(() => true);
+    await User.destroy({ where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] } }).then(() => true);
   });
 
   afterAll(async () => {
-    await User.destroy({
-      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] }
-    }).then(() => true);
+    await User.destroy({ where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] } }).then(() => true);
   });
 
   test('Signup- bad request', async () => {

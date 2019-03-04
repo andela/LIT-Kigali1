@@ -25,12 +25,8 @@ describe('Profile', () => {
   });
 
   afterAll(async done => {
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
-    await User.destroy({
-      where: { email: profile.email }
-    });
+    await User.destroy({where: { email: signupUser.email }});
+    await User.destroy({where: { email: profile.email }});
     done();
   });
 
@@ -39,11 +35,7 @@ describe('Profile', () => {
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', testUserToken)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation');
@@ -64,11 +56,7 @@ describe('Profile', () => {
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', testUserToken)
-      .send({
-        user: {
-          firstName: 'Peter'
-        }
-      });
+      .send({ user: { firstName: 'Peter' } });
 
     expect(res.status).toBe(200);
     expect(res.body.user.firstName).toBe('Peter');
@@ -81,11 +69,7 @@ describe('Profile', () => {
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', testUserToken)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(409);
     expect(res.body.errors.body[0]).toBe('email and username are already taken');
@@ -97,11 +81,7 @@ describe('Profile', () => {
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', testUserToken)
-      .send({
-        user: {
-          email: profile.email
-        }
-      });
+      .send({ user: { email: profile.email } });
 
     expect(res.status).toBe(409);
     expect(res.body.errors.body[0]).toBe('email is already taken');
@@ -113,11 +93,7 @@ describe('Profile', () => {
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', testUserToken)
-      .send({
-        user: {
-          username: profile.username
-        }
-      });
+      .send({ user: { username: profile.username } });
 
     expect(res.status).toBe(409);
     expect(res.body.errors.body[0]).toBe('username is already taken');
@@ -160,16 +136,10 @@ describe('Profile', () => {
 
   test('should not create profile without --token', async () => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: 'john.doe@andela.com' }
-    });
+    await User.destroy({ where: { email: 'john.doe@andela.com' } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
@@ -177,17 +147,11 @@ describe('Profile', () => {
 
   test('should not create profile with --unexisting user', async done => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', testUserToken)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(404);
     expect(res.body.message).toBeDefined();
@@ -196,17 +160,11 @@ describe('Profile', () => {
 
   test('should not create profile with --malformed token', async done => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', 'thgdihueh-jz')
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBeDefined();
@@ -215,18 +173,12 @@ describe('Profile', () => {
 
   test('should not create profile with --incorrect token', async done => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     const token = jwt.sign({ id: 12345, userType: 'user' }, JWT_SECRET);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', token)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBeDefined();

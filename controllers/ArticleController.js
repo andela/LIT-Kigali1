@@ -76,11 +76,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    const favoritesCount = await Favorite.count({
-      where: {
-        articleId: article.get().id
-      }
-    });
+    const favoritesCount = await Favorite.count({ where: { articleId: article.get().id } });
     const favorited = favoritesCount !== 0;
     if (currentUser) {
       const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });

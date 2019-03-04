@@ -9,10 +9,7 @@ module.exports = {
     'index.js',
     'app.js',
     'database',
-    '__tests__',
-    '__mocks__',
-    'config',
-    'ui'
+    'config'
   ],
   coverageDirectory: 'coverage',
   collectCoverageFrom: ['**/*.js'],

@@ -404,7 +404,6 @@ No additional parameters required
 `DELETE /api/articles/:slug/favorite`
 
 Authentication required, returns the Article
-
 No additional parameters required
 
 ### Get Tags

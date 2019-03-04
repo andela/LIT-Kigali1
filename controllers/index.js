@@ -3,5 +3,13 @@ import AuthController from './AuthController';
 import UserController from './UserController';
 import ArticleController from './ArticleController';
 import ProfileController from './ProfileController';
+import CommentController from './CommentController';
 
-export { AuthController, UserController, MailController, ArticleController, ProfileController };
+export {
+  AuthController,
+  UserController,
+  MailController,
+  ArticleController,
+  ProfileController,
+  CommentController
+};

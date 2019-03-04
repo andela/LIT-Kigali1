@@ -20,8 +20,16 @@ class ArticleController {
     const cover = file.url || undefined;
     const slug = slugString(article.title);
     const newArticle = await Article.create(
-      { ...article, userId: currentUser.id, slug, cover },
-      { include: [{ model: User, as: 'author' }], attributes: ['username', 'bio', 'image'] }
+      {
+        ...article,
+        userId: currentUser.id,
+        slug,
+        cover
+      },
+      {
+        include: [{ model: User, as: 'author' }],
+        attributes: ['username', 'firstName', 'lastName', 'image']
+      }
     );
 
     if (newArticle.tagList && newArticle.tagList.length > 0) {
@@ -51,7 +59,13 @@ class ArticleController {
         slug,
         status: { [Op.not]: 'deleted' }
       },
-      include: [{ model: User, as: 'author', attributes: ['username', 'bio', 'image'] }]
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ]
     });
     if (
       !article ||
@@ -141,7 +155,9 @@ class ArticleController {
       page: queryPage
     } = req.query;
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };
-    const include = [{ model: User, as: 'author', attributes: ['username', 'bio', 'image'] }];
+    const include = [
+      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] }
+    ];
     const offset = queryPage ? queryPage - 1 : offsetQuery;
     const page = queryPage || offset + 1;
     if (tag) {

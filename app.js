@@ -45,6 +45,12 @@ app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs))
 app.use('/', express.static('ui'));
 // development error handler
 if (!isProduction) {
+  // / catch 404 and forward to error handler
+  app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
   app.get('/*', (req, res, next) => {
     if (req.headers.host.match(/^www\./) != null) {
       res.redirect(`http://${req.headers.host.slice(4)}${req.url}`, 301);
@@ -53,22 +59,14 @@ if (!isProduction) {
     }
   });
 }
-// development error handler
-if (!isProduction) {
-  app.use('*', (req, res) => {
-    res.send('<h1>Welcome to LIT Authors Haven</h1> ');
+
+app.use((err, req, res) => {
+  res.status(err.status || 500).json({
+    errors: {
+      message: err.message,
+      error: err
+    }
   });
-  app.use((err, req, res) => {
-    res.status(err.status || 500).json({
-      errors: {
-        message: err.message,
-        error: err
-      }
-    });
-  });
-} else {
-  // production error handler
-  app.use('*', (req, res) => res.send('<h1>Welcome to LIT Authors Haven</h1>'));
-}
+});
 
 export default app;

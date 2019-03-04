@@ -4,8 +4,9 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage --runInBand --detectOpenHandles --forceExit",
-    "coveralls": "jest --runInBand --coverage --detectOpenHandles --forceExit && cat ./coverage/lcov.info | coveralls",
+    "test": "NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit",
+    "coveralls": "./coverage/lcov.info | coveralls",
+    "test:coveralls": "npm run test && npm run coveralls",
     "lint": "node_modules/.bin/eslint .",
     "lint:fix": "prettier-eslint --write '**/*.js'",
     "start": "npm run migrate:seed && npm run build-scss && babel-node index.js",
@@ -30,7 +31,6 @@
     "cloudinary": "^1.13.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "coveralls": "^3.0.2",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
@@ -71,6 +71,7 @@
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.0.0",

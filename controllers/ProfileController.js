@@ -18,7 +18,6 @@ class ProfileController {
     const { email, username } = req.body.user;
     if (email || username) {
       let message;
-      let errorMessage;
       if (email && username) {
         const emailOwner = await User.findOne({
           where: { email }
@@ -52,13 +51,6 @@ class ProfileController {
         return res.status(409).send({
           errors: {
             body: [`${message} already taken`]
-          }
-        });
-      }
-      if (errorMessage) {
-        return res.status(520).send({
-          errors: {
-            body: [errorMessage]
           }
         });
       }

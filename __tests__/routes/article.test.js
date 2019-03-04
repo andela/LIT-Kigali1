@@ -82,46 +82,51 @@ describe('articles', () => {
     expect.assertions(5);
     const res = await request(app).get(`${urlPrefix}/articles/${newArticle.slug}`);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.article).toBeDefined();
     expect(res.body.article.author).toBeDefined();
+    expect(res.body.article.author.following).toBe(false);
     expect(res.body.article.favoritesCount).toBeDefined();
   });
 
   test('Fetch Articles - should return articles', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const res = await request(app).get(`${urlPrefix}/articles`);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.articles).toBeDefined();
     expect(res.body.articlesCount).toBeDefined();
   });
 
   test('Fetch Articles - should return articles for page 2', async () => {
-    expect.assertions(5);
+    expect.assertions(4);
     const res = await request(app).get(`${urlPrefix}/articles?page=2`);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.articles).toBeDefined();
     expect(res.body.articlesCount).toBeDefined();
     expect(res.body.page).toBe(2);
   });
 
   test('Fetch Articles - should return articles with the tag test', async () => {
-    expect.assertions(5);
+    expect.assertions(4);
     const res = await request(app).get(`${urlPrefix}/articles?tag=test`);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
+    expect(res.body.articles).toBeDefined();
+    expect(res.body.articles[0].tagList).toContain('test');
+    expect(res.body.articlesCount).toBeDefined();
+  });
+
+  test('Fetch Articles - should return articles by favorited tag test', async () => {
+    expect.assertions(4);
+    const res = await request(app).get(`${urlPrefix}/articles?favorited=${loginUser1.username}`);
+    expect(res.status).toBe(200);
     expect(res.body.articles).toBeDefined();
     expect(res.body.articles[0].tagList).toContain('test');
     expect(res.body.articlesCount).toBeDefined();
   });
 
   test('Fetch Articles - should return articles from author test_login', async () => {
-    expect.assertions(5);
+    expect.assertions(4);
     const res = await request(app).get(`${urlPrefix}/articles?author=test_login`);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.articles).toBeDefined();
     expect(res.body.articles[0].author.username).toBe('test_login');
     expect(res.body.articlesCount).toBeDefined();

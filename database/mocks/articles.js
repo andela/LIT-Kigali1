@@ -39,5 +39,29 @@ module.exports = [
     status: 'published',
     createdAt,
     updatedAt
+  },
+  {
+    id: 'ad54bed9-c3ca-4300-a2ce-7dbbeae07b69',
+    userId: 'd018c3b5-13c7-41c0-8b2c-4ec1cb6b21da',
+    slug: 'new-article-4',
+    title: 'new article 4',
+    description: 'new article',
+    body:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla faucibus ipsum non metus finibus ultricies. Donec ac auctor dui, sed fringilla est. Duis et pellentesque nisl, a gravida felis. Ut tempor felis id dignissim congue. Nunc blandit nunc sit amet dui pharetra, quis porttitor sem ullamcorper. Suspendisse faucibus imperdiet lacinia.',
+    status: 'published',
+    createdAt,
+    updatedAt
+  },
+  {
+    id: '2e7325d7-c8be-43eb-b1e4-5bba07b65924',
+    userId: 'd018c3b5-13c7-41c0-8b2c-4ec1cb6b21da',
+    slug: 'new-article-5',
+    title: 'new article 5',
+    description: 'new article',
+    body:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla faucibus ipsum non metus finibus ultricies. Donec ac auctor dui, sed fringilla est. Duis et pellentesque nisl, a gravida felis. Ut tempor felis id dignissim congue. Nunc blandit nunc sit amet dui pharetra, quis porttitor sem ullamcorper. Suspendisse faucibus imperdiet lacinia.',
+    status: 'published',
+    createdAt,
+    updatedAt
   }
 ];

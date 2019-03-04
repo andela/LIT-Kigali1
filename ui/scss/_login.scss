@@ -1,3 +1,4 @@
+@import 'variables';
 .to-center {
     text-align: center;
 }
@@ -19,6 +20,13 @@
         margin-bottom: 30px;
         font-size: 1rem;
     }
+    a {
+        color: $primary; 
+    }
+    a:hover {
+        color: #2785d8;
+        
+    }
     #form-link {
         span,a {
             padding: 5px;
@@ -28,7 +36,7 @@
         width:100%;
     }
     #forget-psswd {
-        padding-top:20px;
+        margin-top:-20px;
     }
 }
 #card {

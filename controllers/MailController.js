@@ -9,7 +9,7 @@ const { FRONTEND_URL = '/' } = process.env;
  * @param {Object} user
  * @returns {Promise} - Returns a promise
  */
-export const sendEmailConfirmationLink = (user) => {
+export const sendEmailConfirmationLink = user => {
   const mailBody = `
     <div style="color: #5a5a5a;">
       <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">
@@ -17,8 +17,8 @@ export const sendEmailConfirmationLink = (user) => {
       </div>
       <p style="font-size: 1.2rem; line-height: 2rem; color: #5a5a5a;">
         Thank you for creating an account with us, please proceed to confirm your email (${
-  user.email
-}).
+          user.email
+        }).
       <p/>
       <div style="text-align: center; padding: 20px;">
         <a href="${FRONTEND_URL}/users/${user.id}/confirm_email/${user.confirmationCode}"
@@ -34,7 +34,7 @@ export const sendEmailConfirmationLink = (user) => {
   return sendgrid({ to: user.email, subject: 'Confirm your email', html: mailBody });
 };
 
-export const sendEmailVerified = (user) => {
+export const sendEmailVerified = user => {
   const mailBody = `
     <div style="color: #5a5a5a;">
       <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">
@@ -74,7 +74,7 @@ export const resetPasswordEmail = (userId, email, resetCode) => {
   return sendgrid({ to: email, subject: 'Password Reset', html: mailBody });
 };
 
-export const newPasswordEmail = (email) => {
+export const newPasswordEmail = email => {
   const mailBody = `
   <div style="color: #5a5a5a;">
       <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">

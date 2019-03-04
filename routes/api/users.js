@@ -11,11 +11,7 @@ dotenv.config();
 const router = express.Router();
 const { SERVER_URL } = process.env;
 
-router.post(
-  '/login',
-  celebrate({body: authValidator.login}),
-  AuthController.login
-);
+router.post('/login', celebrate({ body: authValidator.login }), AuthController.login);
 
 router.post('/', celebrate({ body: authValidator.signup }), AuthController.signup);
 
@@ -56,10 +52,7 @@ router.get(
 );
 
 /* GOOGLE ROUTER */
-router.get(
-  '/google',
-  passport.authenticate('google', {scope: ['profile']})
-);
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 
 router.get(
   '/google/callback',

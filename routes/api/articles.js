@@ -37,13 +37,13 @@ router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
 
 router.post(
   '/:articleSlug/comments',
-  celebrate({body: commentValidator.createComment}),
+  celebrate({ body: commentValidator.createComment }),
   verifyJwt(),
   CommentController.createArticleComment
 );
 router.get(
   '/:articleSlug/comments',
-  celebrate({query: commentValidator.getArticleCommentsQuery}),
+  celebrate({ query: commentValidator.getArticleCommentsQuery }),
   verifyJwt(),
   CommentController.getArticleComments
 );

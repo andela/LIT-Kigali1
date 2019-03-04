@@ -44,9 +44,9 @@ describe('comments', () => {
   });
 
   afterAll(async () => {
-    await User.destroy({where: {[Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]}}).then(() => true);
-    await Article.destroy({where: { tagList: { [Op.contains]: ['Test'] } }});
-    await Comment.destroy({where: {[Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]}});
+    await User.destroy({where: { [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }] }}).then(() => true);
+    await Article.destroy({ where: { tagList: { [Op.contains]: ['Test'] } } });
+    await Comment.destroy({where: { [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }] }});
   });
 
   /* Create a comment test cases */

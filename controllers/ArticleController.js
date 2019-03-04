@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag } from '../database/models';
+import {
+ User, Article, Favorite, Follow, Tag 
+} from '../database/models';
 import { slugString } from '../helpers';
 
 /**

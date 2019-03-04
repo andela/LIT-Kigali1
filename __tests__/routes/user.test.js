@@ -10,9 +10,7 @@ let user;
 jest.setTimeout(30000);
 describe('users', () => {
   beforeAll(async () => {
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     user = await User.create({ ...signupUser });
   });
 

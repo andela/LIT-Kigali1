@@ -11,9 +11,7 @@ const fileParser = multer({ storage });
 
 router.post(
   '/',
-  celebrate({
-    body: articleValidator.createArticle
-  }),
+  celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
   ArticleController.createArticle
@@ -22,9 +20,7 @@ router.post(
 router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
 router.put(
   '/:slug',
-  celebrate({
-    body: articleValidator.createArticle
-  }),
+  celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
   ArticleController.updateArticle
@@ -32,9 +28,7 @@ router.put(
 
 router.get(
   '/',
-  celebrate({
-    query: articleValidator.getArticlesQuery
-  }),
+  celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
   ArticleController.getArticles
 );

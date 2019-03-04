@@ -3,9 +3,7 @@ import { signupUser } from '../mocks/db.json';
 
 describe('User model', () => {
   beforeAll(async () => {
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
   });
 
   test('Create a user', async () => {

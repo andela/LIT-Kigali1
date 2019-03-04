@@ -30,9 +30,7 @@ passport.use(
     async (username, password, done) => {
       let user;
       try {
-        user = await User.findOne({
-          where: { [Op.or]: [{ email: username }, { username }] }
-        });
+        user = await User.findOne({ where: { [Op.or]: [{ email: username }, { username }] } });
         if (!user) {
           return done(new Error("Email and password don't match"));
         }

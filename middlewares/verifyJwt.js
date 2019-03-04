@@ -3,11 +3,7 @@ import passport from 'passport';
 const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (req, res, next) => {
   passport.authenticate('jwt', (err, user, info) => {
     if (err) {
-      return res.status(520).send({
-        errors: {
-          body: [err.message]
-        }
-      });
+      return res.status(520).send({ errors: { body: [err.message] } });
     }
     if (!user && tokenRequired) {
       const status = info.message === 'user does not exist' ? 404 : 401;

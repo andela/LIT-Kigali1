@@ -321,4 +321,11 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.articles).toBeDefined();
   });
+
+  test('Search unexisting article by title', async () => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/articles/search?title=fake article`);
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe('Not found');
+  });
 });

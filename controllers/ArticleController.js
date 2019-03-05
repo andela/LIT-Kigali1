@@ -338,8 +338,8 @@ class ArticleController {
       offset
     });
     pages = Math.ceil(articles.count / limit);
-    if (articles.length <= 0) {
-      return res.status(404).json({ status: 404, message: 'Nothing found' });
+    if (articles.count <= 0) {
+      return res.status(404).json({ status: 404, message: 'Not found' });
     }
     return res.status(200).json({ status: 200, articles: { ...articles, pages } });
   }

@@ -168,81 +168,73 @@ describe('articles', () => {
   });
 
   test('Delete - should return Article not found', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/articles/fake-article-slug`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Article not found');
   });
 
   test('Delete - should return No auth token', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app).delete(`${urlPrefix}/articles/${newArticle.slug}`);
     expect(res.status).toBe(401);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('No auth token');
   });
 
   test('Delete - should return Unauthorized access', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${newArticle.slug}`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(401);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Unauthorized access');
   });
 
   test('Delete - should delete an article', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${newArticle.slug}`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Article deleted successfully');
   });
 
   test('Delete - should return article not found', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${fakeSlug}`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Article not found');
   });
 
   test('like an unexisting article', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${fakeSlug}/like`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(404);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Article not found');
   });
 
   test('like an article', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/like`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(201);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Liked');
     expect(res.body.article).toBeDefined();
   });
 
   test('dislike a liked article', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
   });
@@ -259,44 +251,40 @@ describe('articles', () => {
   });
 
   test('dislike an article', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
   });
 
   test('dislike an unexisting article', async () => {
-    expect.assertions(3);
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${fakeSlug}/dislike`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(404);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Article not found');
   });
 
   test('like a disliked article', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/like`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Liked');
     expect(res.body.article).toBeDefined();
   });
 
   test('Remove like from an article', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/like`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Like Removed successfully');
     expect(res.body.article).toBeDefined();
   });

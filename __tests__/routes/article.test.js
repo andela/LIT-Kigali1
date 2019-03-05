@@ -43,7 +43,7 @@ describe('articles', () => {
     res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({article: createArticle});
+      .send({ article: createArticle });
     testArticle = res.body.article;
     done();
   });
@@ -59,7 +59,7 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
-    await Article.destroy({where: { tagList: { [Op.contains]: ['test'] } }});
+    await Article.destroy({ where: { tagList: { [Op.contains]: ['test'] } } });
   });
 
   test('should return created article', async () => {

@@ -290,6 +290,47 @@ class ArticleController {
       state: 'dislike'
     });
     return res.status(200).json({ status: 200, message: 'Disliked', article });
+  static async searchArticles(req, res) {
+    const { title, author, tag, page = 1 } = req.query;
+    const limit = 10;
+    const offset = limit * (page - 1);
+    let pages = 0;
+    const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };
+    const include = [
+      {
+        model: User,
+        as: 'author',
+        attributes: ['username', 'firstName', 'lastName', 'image']
+      }
+    ];
+    if (title) {
+      where.title = { [Op.iLike]: `%${title}%` };
+    }
+    if (author) {
+      include[0].where = {
+        [Op.and]: {
+          [Op.or]: [
+            { username: { [Op.iLike]: `%${author}%` } },
+            { firstName: { [Op.iLike]: `%${author}%` } },
+            { lastName: { [Op.iLike]: `%${author}%` } }
+          ]
+        }
+      };
+    }
+    if (tag) {
+      where.tagList = { [Op.contains]: [tag] };
+    }
+    const articles = await Article.findAndCountAll({
+      where,
+      include,
+      limit,
+      offset
+    });
+    pages = Math.ceil(articles.count / limit);
+    if (articles.length <= 0) {
+      return res.status(404).json({ status: 404, message: 'Nothing found' });
+    }
+    return res.status(200).json({ status: 200, articles: { ...articles, pages } });
   }
 }
 

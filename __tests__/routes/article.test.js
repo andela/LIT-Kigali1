@@ -9,6 +9,7 @@ import { createArticle, signupUser } from '../mocks/db.json';
 let loginUser1;
 let loginUser2;
 let newArticle;
+let testArticle;
 const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
@@ -39,6 +40,13 @@ describe('articles', () => {
       .post(`${urlPrefix}/users/login`)
       .send({ user: { username: 'test_login1', password } });
     loginUser2 = res.body.user;
+    res = await request(app)
+      .post(`${urlPrefix}/articles`)
+      .set('Authorization', loginUser1.token)
+      .send({
+        article: createArticle
+      });
+    testArticle = res.body.article;
     done();
   });
 
@@ -53,7 +61,13 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
+<<<<<<< HEAD
     await Article.destroy({ where: { tagList: { [Op.contains]: ['Test'] } } });
+=======
+    await Article.destroy({
+      where: { tagList: { [Op.contains]: ['test'] } }
+    });
+>>>>>>> feat(search): add search functionality
   });
 
   test('should return created article', async () => {
@@ -293,5 +307,25 @@ describe('articles', () => {
     expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Like Removed successfully');
     expect(res.body.article).toBeDefined();
+    
+  test('Search article by title', async () => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/articles/search?title=${testArticle.title}`);
+    expect(res.status).toBe(200);
+    expect(res.body.articles).toBeDefined();
+  });
+
+  test('Search article by author', async () => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/articles/search?author=${loginUser1.username}`);
+    expect(res.status).toBe(200);
+    expect(res.body.articles).toBeDefined();
+  });
+
+  test('Search article by tags', async () => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/articles/search?tag=test`);
+    expect(res.status).toBe(200);
+    expect(res.body.articles).toBeDefined();
   });
 });

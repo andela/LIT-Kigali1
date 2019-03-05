@@ -11,37 +11,21 @@ dotenv.config();
 const router = express.Router();
 const { SERVER_URL } = process.env;
 
-router.post(
-  '/login',
-  celebrate({
-    body: authValidator.login
-  }),
-  AuthController.login
-);
+router.post('/login', celebrate({ body: authValidator.login }), AuthController.login);
 
-router.post(
-  '/',
-  celebrate({
-    body: authValidator.signup
-  }),
-  AuthController.signup
-);
+router.post('/', celebrate({ body: authValidator.signup }), AuthController.signup);
 
 router.post('/signout', verifyJwt(), AuthController.signout);
 
 router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEmail);
 router.post(
   '/forget',
-  celebrate({
-    body: authValidator.forgetPassword
-  }),
+  celebrate({ body: authValidator.forgetPassword }),
   AuthController.forgotPassword
 );
 router.put(
   '/:userId/reset/:resetCode',
-  celebrate({
-    body: authValidator.resetPassword
-  }),
+  celebrate({ body: authValidator.resetPassword }),
   AuthController.resetPassword
 );
 
@@ -68,12 +52,7 @@ router.get(
 );
 
 /* GOOGLE ROUTER */
-router.get(
-  '/google',
-  passport.authenticate('google', {
-    scope: ['profile']
-  })
-);
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 
 router.get(
   '/google/callback',

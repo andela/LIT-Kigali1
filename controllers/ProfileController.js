@@ -19,12 +19,8 @@ class ProfileController {
     if (email || username) {
       let message;
       if (email && username) {
-        const emailOwner = await User.findOne({
-          where: { email }
-        });
-        const usernameOwner = await User.findOne({
-          where: { username }
-        });
+        const emailOwner = await User.findOne({ where: { email } });
+        const usernameOwner = await User.findOne({ where: { username } });
         if (emailOwner && usernameOwner) {
           message = 'email and username are';
         } else if (emailOwner) {
@@ -33,26 +29,18 @@ class ProfileController {
           message = 'username is';
         }
       } else if (email) {
-        const emailOwner = await User.findOne({
-          where: { email }
-        });
+        const emailOwner = await User.findOne({ where: { email } });
         if (emailOwner) {
           message = 'email is';
         }
       } else if (username) {
-        const usernameOwner = await User.findOne({
-          where: { username }
-        });
+        const usernameOwner = await User.findOne({ where: { username } });
         if (usernameOwner) {
           message = 'username is';
         }
       }
       if (message) {
-        return res.status(409).send({
-          errors: {
-            body: [`${message} already taken`]
-          }
-        });
+        return res.status(409).send({ errors: { body: [`${message} already taken`] } });
       }
     }
     const profile = await User.findOne({

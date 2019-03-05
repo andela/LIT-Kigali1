@@ -1,5 +1,6 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import { User } from '../../database/models';
 import { signupUser, profile } from '../mocks/db.json';
 import { urlPrefix } from '../mocks/variables.json';
@@ -7,30 +8,31 @@ import app from '../../app';
 
 const { JWT_SECRET } = process.env;
 
-let testUserToken;
+let loginUser1;
+const email = 'test_login@gmail.com';
+const username = 'test_login';
+const password = '123456';
 jest.setTimeout(50000);
 describe('Profile', () => {
   beforeAll(async done => {
-    const { body } = await request(app)
-      .post(`${urlPrefix}/users`)
-      .send({
-        user: {
-          username: signupUser.username,
-          email: signupUser.email,
-          password: signupUser.password
-        }
-      });
-    testUserToken = body.user.token;
+    const encryptedPassword = bcrypt.hashSync('123456', 10);
+    await User.create({
+      ...signupUser,
+      email,
+      username,
+      confirmed: 'confirmed',
+      password: encryptedPassword
+    });
+    const res = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({ user: { username, password } });
+    loginUser1 = res.body.user;
     done();
   });
 
   afterAll(async done => {
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
-    await User.destroy({
-      where: { email: profile.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
+    await User.destroy({ where: { email: profile.email } });
     done();
   });
 
@@ -38,12 +40,8 @@ describe('Profile', () => {
     expect.assertions(11);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .set('Authorization', loginUser1.token)
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation');
@@ -63,12 +61,8 @@ describe('Profile', () => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
-      .send({
-        user: {
-          firstName: 'Peter'
-        }
-      });
+      .set('Authorization', loginUser1.token)
+      .send({ user: { firstName: 'Peter' } });
 
     expect(res.status).toBe(200);
     expect(res.body.user.firstName).toBe('Peter');
@@ -80,12 +74,8 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .set('Authorization', loginUser1.token)
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(409);
     expect(res.body.errors.body[0]).toBe('email and username are already taken');
@@ -96,12 +86,8 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
-      .send({
-        user: {
-          email: profile.email
-        }
-      });
+      .set('Authorization', loginUser1.token)
+      .send({ user: { email: profile.email } });
 
     expect(res.status).toBe(409);
     expect(res.body.errors.body[0]).toBe('email is already taken');
@@ -112,12 +98,8 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
-      .send({
-        user: {
-          username: profile.username
-        }
-      });
+      .set('Authorization', loginUser1.token)
+      .send({ user: { username: profile.username } });
 
     expect(res.status).toBe(409);
     expect(res.body.errors.body[0]).toBe('username is already taken');
@@ -128,7 +110,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({
         user: {
           username: profile.username,
@@ -145,7 +127,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', loginUser1.token)
       .send({
         user: {
           username: 'papasava',
@@ -160,16 +142,10 @@ describe('Profile', () => {
 
   test('should not create profile without --token', async () => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: 'john.doe@andela.com' }
-    });
+    await User.destroy({ where: { email: 'john.doe@andela.com' } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
@@ -177,17 +153,11 @@ describe('Profile', () => {
 
   test('should not create profile with --unexisting user', async done => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
-      .set('Authorization', testUserToken)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .set('Authorization', loginUser1.token)
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(404);
     expect(res.body.message).toBeDefined();
@@ -196,17 +166,11 @@ describe('Profile', () => {
 
   test('should not create profile with --malformed token', async done => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', 'thgdihueh-jz')
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBeDefined();
@@ -215,18 +179,12 @@ describe('Profile', () => {
 
   test('should not create profile with --incorrect token', async done => {
     expect.assertions(2);
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
     const token = jwt.sign({ id: 12345, userType: 'user' }, JWT_SECRET);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
       .set('Authorization', token)
-      .send({
-        user: {
-          ...profile
-        }
-      });
+      .send({ user: { ...profile } });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBeDefined();

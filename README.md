@@ -392,19 +392,18 @@ Authentication optional, returns multiple comments
 
 Authentication required
 
-### Favorite Article
+### Like Article
 
-`POST /api/articles/:slug/favorite`
+`POST /api/articles/:slug/like`
 
 Authentication required, returns the Article
 No additional parameters required
 
-### Unfavorite Article
+### Dislike Article
 
-`DELETE /api/articles/:slug/favorite`
+`POST /api/articles/:slug/dislike`
 
 Authentication required, returns the Article
-
 No additional parameters required
 
 ### Get Tags

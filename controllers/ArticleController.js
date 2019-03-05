@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag } from '../database/models';
+import {
+ User, Article, Favorite, Follow, Tag 
+} from '../database/models';
 import { slugString } from '../helpers';
 
 /**
@@ -76,11 +78,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    const favoritesCount = await Favorite.count({
-      where: {
-        articleId: article.get().id
-      }
-    });
+    const favoritesCount = await Favorite.count({ where: { articleId: article.get().id } });
     const favorited = favoritesCount !== 0;
     if (currentUser) {
       const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
@@ -213,6 +211,85 @@ class ArticleController {
       status: 200,
       message: 'Article deleted successfully'
     });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async likeArticle(req, res) {
+    const { slug } = req.params;
+    const { currentUser } = req;
+
+    const article = await Article.findOne({ where: { slug } });
+
+    if (!article) {
+      return res.status(404).json({ status: 404, message: 'Article not found' });
+    }
+    const liked = await Favorite.findOne({
+      where: {
+        userId: currentUser.id,
+        articleId: article.id
+      }
+    });
+    if (liked && liked.state === 'dislike') {
+      await liked.update({ state: 'like' });
+      return res.status(200).json({ status: 200, message: 'Liked', article });
+    }
+    if (liked && liked.state === 'like') {
+      await liked.destroy();
+      return res.status(200).json({ status: 200, message: 'Like Removed successfully', article });
+    }
+    await Favorite.create({
+      userId: currentUser.id,
+      articleId: article.id,
+      state: 'like'
+    });
+    return res.status(201).json({ status: 201, message: 'Liked', article });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async dislikeArticle(req, res) {
+    const { slug } = req.params;
+    const { currentUser } = req;
+
+    const article = await Article.findOne({ where: { slug } });
+
+    if (!article) {
+      return res.status(404).json({ status: 404, message: 'Article not found' });
+    }
+    const liked = await Favorite.findOne({
+      where: {
+        userId: currentUser.id,
+        articleId: article.id
+      }
+    });
+    if (liked && liked.state === 'like') {
+      await liked.update({ state: 'dislike' });
+      return res.status(200).json({ status: 200, message: 'Disliked', article });
+    }
+    if (liked && liked.state === 'dislike') {
+      await liked.destroy();
+      return res
+        .status(200)
+        .json({ status: 200, message: 'Dislike Removed successfully', article });
+    }
+
+    await Favorite.create({
+      userId: currentUser.id,
+      articleId: article.id,
+      state: 'dislike'
+    });
+    return res.status(200).json({ status: 200, message: 'Disliked', article });
   }
 }
 

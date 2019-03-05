@@ -9,9 +9,7 @@ const router = express.Router();
 
 router.put(
   '/:commentId',
-  celebrate({
-    body: commentValidator.updateComment
-  }),
+  celebrate({ body: commentValidator.updateComment }),
   verifyJwt(),
   asyncHandler(CommentController.updateComment)
 );

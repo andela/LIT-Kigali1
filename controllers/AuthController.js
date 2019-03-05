@@ -22,14 +22,8 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async signup(req, res) {
-    const {
-      body: { user }
-    } = req;
-    let userModel = await User.findOne({
-      where: {
-        [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]
-      }
-    });
+    const {body: { user }} = req;
+    let userModel = await User.findOne({where: {[Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]}});
     if (userModel) {
       return res.status(401).json({ status: 401, message: 'Account already exist' });
     }
@@ -90,9 +84,7 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async forgotPassword(req, res) {
-    const {
-      body: { user }
-    } = req;
+    const {body: { user }} = req;
 
     const reset = await User.findOne({
       where: { email: user.email, confirmed: 'confirmed' },
@@ -124,9 +116,7 @@ class AuthController {
     const { resetCode, userId } = req.params;
     const { body } = req;
     try {
-      const reset = await ResetPassword.findOne({
-        where: { resetCode, userId }
-      });
+      const reset = await ResetPassword.findOne({ where: { resetCode, userId } });
 
       if (body.newPassword !== body.confirmNewpassword) {
         res.status(400).json({ status: 400, message: "Passwords don't match" });

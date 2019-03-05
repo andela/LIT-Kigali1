@@ -67,9 +67,7 @@ class CommentController {
     const { comment } = req.body;
     const { commentId } = req.params;
     const foundComment = await Comment.findOne({
-      where: {
-        id: commentId
-      },
+      where: { id: commentId },
       include: [
         {
           model: User,

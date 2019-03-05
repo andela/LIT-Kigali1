@@ -11,9 +11,7 @@ const fileParser = multer({ storage });
 
 router.post(
   '/',
-  celebrate({
-    body: articleValidator.createArticle
-  }),
+  celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
   ArticleController.createArticle
@@ -22,9 +20,7 @@ router.post(
 router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
 router.put(
   '/:slug',
-  celebrate({
-    body: articleValidator.createArticle
-  }),
+  celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
   ArticleController.updateArticle
@@ -32,9 +28,7 @@ router.put(
 
 router.get(
   '/',
-  celebrate({
-    query: articleValidator.getArticlesQuery
-  }),
+  celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
   ArticleController.getArticles
 );
@@ -43,19 +37,18 @@ router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
 
 router.post(
   '/:articleSlug/comments',
-  celebrate({
-    body: commentValidator.createComment
-  }),
+  celebrate({ body: commentValidator.createComment }),
   verifyJwt(),
   CommentController.createArticleComment
 );
 router.get(
   '/:articleSlug/comments',
-  celebrate({
-    query: commentValidator.getArticleCommentsQuery
-  }),
+  celebrate({ query: commentValidator.getArticleCommentsQuery }),
   verifyJwt(),
   CommentController.getArticleComments
 );
+router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
+
+router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
 
 export default router;

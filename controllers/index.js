@@ -4,6 +4,7 @@ import UserController from './UserController';
 import ArticleController from './ArticleController';
 import ProfileController from './ProfileController';
 import FollowController from './FollowController';
+import CommentController from './CommentController';
 
 export {
   AuthController,
@@ -11,5 +12,6 @@ export {
   MailController,
   ArticleController,
   ProfileController,
-  FollowController
+  FollowController,
+  CommentController
 };

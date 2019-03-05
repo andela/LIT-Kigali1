@@ -20,15 +20,11 @@ class RatingController {
     if (!article) {
       return res.status(404).send({
         status: 404,
-        errors: {
-          body: ['Article not found']
-        }
+        errors: { body: ['Article not found'] }
       });
     }
     const articleId = article.get().id;
-    const ratedArticle = await Favorite.findOne({
-      where: { articleId, userId: currentUser.id }
-    });
+    const ratedArticle = await Favorite.findOne({ where: { articleId, userId: currentUser.id } });
     if (ratedArticle) {
       ratedArticle.update({ rating: rate, updatedAt: new Date() });
       return res.status(200).send({
@@ -48,14 +44,13 @@ class RatingController {
         rating: rate,
         articleId,
       },
-      {
-        include: [{ model: User }, { model: Article }]
-      }
+      { include: [{ model: User }, { model: Article }] }
     );
     return res.status(201).send({
       status: 201,
       message: 'article has been rated successfully',
-      article: { ...article.get(),
+      article: {
+        ...article.get(),
         ratedWith: newRate.get().rating,
         ratedBy: newRate.get().userId,
         averageRate: await calculateRating(articleId)
@@ -74,22 +69,12 @@ class RatingController {
     const { currentUser } = req;
     const article = await Article.findOne({ where: { slug: articleSlug, status: 'published' } });
     if (!article) {
-      return res.status(404).send({
-        errors: {
-          body: ['rating not found']
-        }
-      });
+      return res.status(404).send({ errors: { body: ['rating not found'] } });
     }
     const articleId = article.get().id;
-    const ratedArticle = await Favorite.findOne({
-      where: { articleId, userId: currentUser.id, rating: { [Op.ne]: null } }
-    });
+    const ratedArticle = await Favorite.findOne({ where: { articleId, userId: currentUser.id, rating: { [Op.ne]: null } } });
     if (!ratedArticle) {
-      return res.status(404).send({
-        errors: {
-          body: ['rating not found']
-        }
-      });
+      return res.status(404).send({ errors: { body: ['rating not found'] } });
     }
     ratedArticle.update({ rating: null });
     return res.status(200).send({
@@ -115,9 +100,7 @@ class RatingController {
       });
     }
 
-    const allRating = await Favorite.findAll({
-      where: { articleId: article.get().id, rating: { [Op.ne]: null } }
-    });
+    const allRating = await Favorite.findAll({ where: { articleId: article.get().id, rating: { [Op.ne]: null } } });
     if (!allRating.length) {
       return res.status(404).send({
         status: 404,

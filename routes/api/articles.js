@@ -20,7 +20,7 @@ router.post(
   ArticleController.createArticle
 );
 
-router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
+router.get('/:slug', verifyJwt({ tokenRequired: false }), asyncHandler(ArticleController.getArticle));
 router.put(
   '/:slug',
   celebrate({
@@ -37,7 +37,7 @@ router.get(
     query: articleValidator.getArticlesQuery
   }),
   verifyJwt({ tokenRequired: false }),
-  ArticleController.getArticles
+  asyncHandler(ArticleController.getArticles)
 );
 
 router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
@@ -62,6 +62,7 @@ router.route('/:articleSlug/rating')
   .post(celebrate({
     body: ratingValidator
   }), verifyJwt(), asyncHandler(RatingController.rateArticle))
-  .delete(verifyJwt(), asyncHandler(RatingController.deleteArticle));
+  .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
+  .get(asyncHandler(RatingController.getAllRating));
 
 export default router;

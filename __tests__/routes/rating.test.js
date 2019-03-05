@@ -69,7 +69,7 @@ describe('5 star Rating', () => {
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('article has been rated successfully');
     expect(res.body.article.ratedWith).toBe(3);
-    expect(res.body.article.rating).toBeDefined();
+    expect(res.body.article.averageRate).toBeDefined();
   });
   test('should overide an existing article rating', async () => {
     expect.assertions(4);
@@ -85,10 +85,10 @@ describe('5 star Rating', () => {
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Rating updated successfully');
     expect(res.body.article.ratedWith).toBe(4);
-    expect(res.body.article.rating).toBeDefined();
+    expect(res.body.article.averageRate).toBeDefined();
   });
   test('should not rate unexisting article', async () => {
-    expect.assertions(2);
+    expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/hjakksmjjfklaldk/rating`)
       .set('Authorization', testUserToken)
@@ -97,6 +97,7 @@ describe('5 star Rating', () => {
       });
 
     expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('Article not found');
   });
   test('should not rate without token', async () => {
@@ -144,7 +145,7 @@ describe('5 star Rating', () => {
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Rating removed successfully');
   });
-  test('should delete rate from article', async () => {
+  test('should not delete unexisting rating', async () => {
     expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${articleSlug}/rating`)
@@ -152,5 +153,50 @@ describe('5 star Rating', () => {
 
     expect(res.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('rating not found');
+  });
+  test('should not get unexisting rating', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${articleSlug}/rating`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('No rating for such article');
+  });
+  test('should not get rating for unpublished article', async () => {
+    expect.assertions(3);
+    const article = await Article.findOne({
+      where: { slug: articleSlug }
+    });
+    article.update({ status: 'unpublished' });
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${articleSlug}/rating`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('Rating not found');
+  });
+  test('should get rating for agiven  article', async () => {
+    expect.assertions(4);
+    const article = await Article.findOne({
+      where: { slug: articleSlug }
+    });
+    article.update({
+      status: 'published'
+    });
+    const rate = await Favorite.findOne({
+      where: { articleId: article.get().id }
+    });
+    rate.update({
+      rating: 4
+    });
+    article.update({ status: 'unpublished' });
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${articleSlug}/rating`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.averageRate).toBeDefined();
+    expect(res.body.ratings).toBeDefined();
   });
 });

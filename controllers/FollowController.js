@@ -46,7 +46,7 @@ class FollowController {
       return res.status(404).json({ status: 404, message: 'User not found' });
     }
 
-    await Follow.destroy({ where: { followee: userId, follower: currentUser.id } });
+    await Follow.destroy({where: { followee: userId, follower: currentUser.id }});
 
     return res
       .status(200)

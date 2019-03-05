@@ -49,6 +49,7 @@
           "ClassDeclaration": true
         }
       }
-    ]
+    ],
+    "no-useless-escape": 0
   }
 }

@@ -79,9 +79,10 @@ router.get(
 
 router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
 router.route('/:articleSlug/rating')
-  .post(celebrate({
-    body: ratingValidator
-  }), verifyJwt(), asyncHandler(RatingController.rateArticle))
+  .post(
+    celebrate({ body: ratingValidator }),
+    verifyJwt(), asyncHandler(RatingController.rateArticle)
+  )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
 

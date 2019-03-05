@@ -325,8 +325,8 @@ class ArticleController {
    */
   static async searchArticles(req, res) {
     const {
- title, author, tag, page = 1 
-} = req.query;
+      title, author, tag, page = 1
+    } = req.query;
     const limit = 10;
     const offset = limit * (page - 1);
     let pages = 0;

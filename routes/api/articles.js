@@ -1,9 +1,6 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
-
-import { articleValidator, commentValidator, ratingValidator } from '../validators';
-import { ArticleController, CommentController, RatingController } from '../../controllers';
 import { articleValidator, commentValidator, ratingValidator } from '../validators';
 import { ArticleController, CommentController, RatingController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
@@ -19,6 +16,13 @@ router.post(
   verifyJwt(),
   fileParser.single('cover'),
   ArticleController.createArticle
+);
+
+router.get(
+  '/search',
+  celebrate({ query: articleValidator.getArticlesQuery }),
+  verifyJwt({ tokenRequired: false }),
+  ArticleController.searchArticles
 );
 
 router.get('/:slug', verifyJwt({ tokenRequired: false }), asyncHandler(ArticleController.getArticle));

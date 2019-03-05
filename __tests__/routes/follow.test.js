@@ -52,9 +52,7 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
-    await Follow.destroy({
-      where: { followee: loginUser1.id, follower: loginUser2.id }
-    });
+    await Follow.destroy({ where: { followee: loginUser1.id, follower: loginUser2.id } });
   });
 
   test("Should return you can't follow yourself", async () => {

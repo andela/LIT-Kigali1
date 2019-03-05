@@ -1,6 +1,9 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
+
+import { articleValidator, commentValidator, ratingValidator } from '../validators';
+import { ArticleController, CommentController, RatingController } from '../../controllers';
 import { articleValidator, commentValidator, ratingValidator } from '../validators';
 import { ArticleController, CommentController, RatingController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';

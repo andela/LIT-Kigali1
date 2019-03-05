@@ -2,9 +2,10 @@ import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
 import {
- User, Article, Favorite, Follow, Tag 
+  User, Article, Favorite, Follow, Tag
 } from '../database/models';
-import { slugString, getReadingTime } from '../helpers';
+import { slugString, getReadingTime, calculateRating } from '../helpers';
+
 
 /**
  * @description Article Controller class
@@ -73,8 +74,8 @@ class ArticleController {
       ]
     });
     if (
-      !article ||
-      (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
+      !article
+      || (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
     ) {
       return res.status(404).json({
         status: 404,
@@ -90,6 +91,7 @@ class ArticleController {
     return res.status(200).json({
       article: {
         ...article.get(),
+        rating: await calculateRating(article.get().id),
         author: { ...article.get().author.get(), following },
         favorited,
         favoritesCount
@@ -137,7 +139,10 @@ class ArticleController {
     return res.status(200).json({
       status: 200,
       message: 'Article updated successfully',
-      article: newArticle.get()
+      article: {
+        ...newArticle.get(),
+        rating: await calculateRating(newArticle.get().id)
+      }
     });
   }
 
@@ -181,9 +186,23 @@ class ArticleController {
       offset: offset * limit,
       limit
     });
+    const ratedArticles = async articleArray => Promise.all(articleArray.map(async art => ({
+      userId: art.userId,
+      slug: art.slug,
+      title: art.title,
+      description: art.description,
+      body: art.body,
+      tagList: art.tagList,
+      status: art.status,
+      cover: art.cover,
+      createdAt: art.createdAt,
+      updatedAt: art.updatedAt,
+      author: art.author,
+      rating: await calculateRating(null, art.slug)
+    })));
     return res.status(200).json({
       status: 200,
-      articles: articles.rows,
+      articles: await ratedArticles(articles.rows),
       articlesCount: articles.count,
       pages: Math.ceil(articles.count / limit),
       page

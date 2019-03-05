@@ -93,8 +93,8 @@ router.get('/:username/social/', async (req, res) => {
   });
 });
 
-router.post('/:id/follow', verifyJwt(), FollowController.follow);
+router.post('/:userId/follow', verifyJwt(), FollowController.follow);
 
-router.delete('/:id/unfollow', verifyJwt(), FollowController.unfollow);
+router.delete('/:userId/unfollow', verifyJwt(), FollowController.unfollow);
 
 export default router;

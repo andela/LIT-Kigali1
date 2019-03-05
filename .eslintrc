@@ -49,7 +49,6 @@
         }
       }
     ],
-    "object-curly-newline": ["error", { "multiline": true, "minProperties": 4 }],
-    "max-len": 0
+    "object-curly-newline": ["error", { "multiline": true, "minProperties": 4 }]
   }
 }

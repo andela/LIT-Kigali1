@@ -61,9 +61,10 @@ router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
 router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
 
 router.route('/:articleSlug/rating')
-  .post(celebrate({
-    body: ratingValidator
-  }), verifyJwt(), asyncHandler(RatingController.rateArticle))
+  .post(
+    celebrate({ body: ratingValidator }),
+    verifyJwt(), asyncHandler(RatingController.rateArticle)
+  )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
 

@@ -25,7 +25,7 @@ class FollowController {
       where: { followee: id, follower: currentUser.id }
     });
 
-    return res.status(201).json({ status: '201', message: `You followed ${followee.firstName}.` });
+    return res.status(201).json({ status: '201', message: `You followed ${followee.firstName}` });
   }
 
   /**

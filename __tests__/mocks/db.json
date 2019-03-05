@@ -22,6 +22,10 @@
     "username": "oemapp",
     "email": "oemapp.dev@gmail.com"
   },
+  "followUser": {
+    "followee": "123456resses45324323",
+    "follower": "asfasdf23452eqet123r"
+  },
   "createArticle": {
     "title": "Test article",
     "body": "Quis culpa ad exercitation sunt pariatur ut commodo ipsum ipsum. Labore velit laborum cupidatat laborum excepteur. Lorem eu do cupidatat amet eiusmod veniam.",

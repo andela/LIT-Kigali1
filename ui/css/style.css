@@ -99,6 +99,9 @@ a {
 .content-margin {
   margin: 40px 0; }
 
+.content-margin-top {
+  margin-top: 40px; }
+
 .content-padding {
   padding: 40px 0; }
 
@@ -877,6 +880,19 @@ a.button {
   display: flex;
   align-items: center;
   flex-direction: column; }
+
+.view-favorites {
+  display: flex;
+  flex-direction: column; }
+
+.view-stars {
+  display: flex; }
+
+.star-1 {
+  font-size: 1.5rem; }
+
+.star-2 {
+  font-size: 1.5rem; }
 
 .articles-filter {
   font-size: 18px;

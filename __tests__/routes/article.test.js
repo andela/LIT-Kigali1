@@ -43,9 +43,7 @@ describe('articles', () => {
     res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({
-        article: createArticle
-      });
+      .send({article: createArticle});
     testArticle = res.body.article;
     done();
   });
@@ -61,13 +59,7 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
-<<<<<<< HEAD
-    await Article.destroy({ where: { tagList: { [Op.contains]: ['Test'] } } });
-=======
-    await Article.destroy({
-      where: { tagList: { [Op.contains]: ['test'] } }
-    });
->>>>>>> feat(search): add search functionality
+    await Article.destroy({where: { tagList: { [Op.contains]: ['test'] } }});
   });
 
   test('should return created article', async () => {
@@ -307,7 +299,8 @@ describe('articles', () => {
     expect(res.body).toBeDefined();
     expect(res.body.message).toBe('Like Removed successfully');
     expect(res.body.article).toBeDefined();
-    
+  });
+
   test('Search article by title', async () => {
     expect.assertions(2);
     const res = await request(app).get(`${urlPrefix}/articles/search?title=${testArticle.title}`);

@@ -290,8 +290,19 @@ class ArticleController {
       state: 'dislike'
     });
     return res.status(200).json({ status: 200, message: 'Disliked', article });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
   static async searchArticles(req, res) {
-    const { title, author, tag, page = 1 } = req.query;
+    const {
+ title, author, tag, page = 1 
+} = req.query;
     const limit = 10;
     const offset = limit * (page - 1);
     let pages = 0;

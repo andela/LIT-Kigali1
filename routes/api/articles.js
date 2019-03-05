@@ -19,9 +19,7 @@ router.post(
 
 router.get(
   '/search',
-  celebrate({
-    query: articleValidator.getArticlesQuery
-  }),
+  celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
   ArticleController.searchArticles
 );

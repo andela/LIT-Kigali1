@@ -4,7 +4,7 @@ import passport from 'passport';
 import dotenv from 'dotenv';
 import { User } from '../../database/models';
 import { authValidator } from '../validators';
-import { AuthController, UserController } from '../../controllers';
+import { AuthController, UserController, FollowController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 
 dotenv.config();
@@ -71,5 +71,9 @@ router.get('/:username/social/', async (req, res) => {
     title: 'User profile'
   });
 });
+
+router.post('/:id/follow', verifyJwt(), FollowController.follow);
+
+router.delete('/:id/unfollow', verifyJwt(), FollowController.unfollow);
 
 export default router;

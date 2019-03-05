@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import { Favorite, User, Article } from '../database/models';
+import { calculateRating } from '../helpers';
 /**
  * @author Daniel
  * @description a class for rating the article
@@ -37,7 +38,7 @@ class RatingController {
           ...article.get(),
           ratedWith: ratedArticle.get().rating,
           ratedBy: ratedArticle.get().userId,
-          rating: rate
+          averageRate: await calculateRating(articleId)
         }
       });
     }
@@ -57,7 +58,7 @@ class RatingController {
       article: { ...article.get(),
         ratedWith: newRate.get().rating,
         ratedBy: newRate.get().userId,
-        rating: newRate.get().rating
+        averageRate: await calculateRating(articleId)
       }
     });
   }
@@ -68,7 +69,7 @@ class RatingController {
    * @param {*} res
    * @returns {*} object res
    */
-  static async deleteArticle(req, res) {
+  static async deleteRating(req, res) {
     const { articleSlug } = req.params;
     const { currentUser } = req;
     const article = await Article.findOne({ where: { slug: articleSlug, status: 'published' } });
@@ -94,6 +95,40 @@ class RatingController {
     return res.status(200).send({
       status: 200,
       message: 'Rating removed successfully',
+    });
+  }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} object
+   */
+  static async getAllRating(req, res) {
+    const { articleSlug } = req.params;
+
+    const article = await Article.findOne({ where: { slug: articleSlug, status: 'published' } });
+    if (!article) {
+      return res.status(404).send({
+        status: 404,
+        message: 'Rating not found'
+      });
+    }
+
+    const allRating = await Favorite.findAll({
+      where: { articleId: article.get().id, rating: { [Op.ne]: null } }
+    });
+    if (!allRating.length) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No rating for such article'
+      });
+    }
+    return res.status(200).send({
+      status: 200,
+      averageRate: await calculateRating(null, article.get().slug),
+      ratings: allRating,
+
     });
   }
 }

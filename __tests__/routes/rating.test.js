@@ -1,11 +1,13 @@
 import request from 'supertest';
 import { urlPrefix } from '../mocks/variables.json';
-import { User } from '../../database/models';
+import { User, Article, Favorite } from '../../database/models';
 import app from '../../app';
 import { signupUser } from '../mocks/db.json';
 
 let testUserToken;
-describe('Profile', () => {
+let articleSlug;
+let testUserId;
+describe('5 star Rating', () => {
   beforeAll(async () => {
     const { body } = await request(app)
       .post(`${urlPrefix}/users`)
@@ -31,24 +33,16 @@ describe('Profile', () => {
     articleSlug = testArticle.body.article.slug;
   });
   afterAll(async () => {
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
-    await Favorite.destroy({
-      where: { userId: testUserId }
-    });
-    await Article.destroy({
-      where: { where: testUserId }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
+    await Favorite.destroy({ where: { userId: testUserId } });
+    await Article.destroy({ where: { where: testUserId } });
   });
   test('should not rate unpublished article', async () => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('Authorization', testUserToken)
-      .send({
-        rate: 3
-      });
+      .send({ rate: 3 });
 
     expect(res.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('Article not found');
@@ -60,9 +54,7 @@ describe('Profile', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('Authorization', testUserToken)
-      .send({
-        rate: 3
-      });
+      .send({ rate: 3 });
 
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('article has been rated successfully');
@@ -76,9 +68,7 @@ describe('Profile', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('Authorization', testUserToken)
-      .send({
-        rate: 4
-      });
+      .send({ rate: 4 });
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Rating updated successfully');
@@ -90,9 +80,7 @@ describe('Profile', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/hjakksmjjfklaldk/rating`)
       .set('Authorization', testUserToken)
-      .send({
-        rate: 3
-      });
+      .send({ rate: 3 });
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
@@ -102,9 +90,7 @@ describe('Profile', () => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/hjakksmjjfklaldk/rating`)
-      .send({
-        rate: 3
-      });
+      .send({ rate: 3 });
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
@@ -113,9 +99,7 @@ describe('Profile', () => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/hjakksmjjfklaldk/rating`)
-      .send({
-        rate: 6
-      });
+      .send({ rate: 6 });
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('Bad Request');
@@ -163,9 +147,7 @@ describe('Profile', () => {
   });
   test('should not get rating for unpublished article', async () => {
     expect.assertions(3);
-    const article = await Article.findOne({
-      where: { slug: articleSlug }
-    });
+    const article = await Article.findOne({ where: { slug: articleSlug } });
     article.update({ status: 'unpublished' });
     const res = await request(app)
       .get(`${urlPrefix}/articles/${articleSlug}/rating`);
@@ -176,18 +158,10 @@ describe('Profile', () => {
   });
   test('should get rating for agiven  article', async () => {
     expect.assertions(4);
-    const article = await Article.findOne({
-      where: { slug: articleSlug }
-    });
-    article.update({
-      status: 'published'
-    });
-    const rate = await Favorite.findOne({
-      where: { articleId: article.get().id }
-    });
-    rate.update({
-      rating: 4
-    });
+    const article = await Article.findOne({ where: { slug: articleSlug } });
+    article.update({ status: 'published' });
+    const rate = await Favorite.findOne({ where: { articleId: article.get().id } });
+    rate.update({ rating: 4 });
     article.update({ status: 'unpublished' });
     const res = await request(app)
       .get(`${urlPrefix}/articles/${articleSlug}/rating`);

@@ -17,6 +17,13 @@ router.post(
   ArticleController.createArticle
 );
 
+router.get(
+  '/search',
+  celebrate({ query: articleValidator.getArticlesQuery }),
+  verifyJwt({ tokenRequired: false }),
+  ArticleController.searchArticles
+);
+
 router.get('/:slug', verifyJwt({ tokenRequired: false }), ArticleController.getArticle);
 router.put(
   '/:slug',

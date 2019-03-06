@@ -31,7 +31,8 @@ const getArticlesQuery = {
     .max(25),
   offset: Joi.number().min(0),
   page: Joi.number().min(1),
-  favorited: Joi.string()
+  favorited: Joi.string(),
+  title: Joi.string().trim()
 };
 
 export default {

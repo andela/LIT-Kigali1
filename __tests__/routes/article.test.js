@@ -316,4 +316,12 @@ describe('articles', () => {
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('Not found');
   });
+
+  test('Get reading time of an article', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}`)
+      .set('Authorization', loginUser2.token);
+    expect(res.body.article.readingTime).toBeDefined();
+  });
 });

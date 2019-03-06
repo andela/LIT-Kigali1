@@ -12,6 +12,7 @@ let loginUser1;
 const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
+const randomUser = 'random';
 jest.setTimeout(50000);
 describe('Profile', () => {
   beforeAll(async done => {
@@ -188,6 +189,33 @@ describe('Profile', () => {
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBeDefined();
+    done();
+  });
+
+  test('should get user profile', async done => {
+    expect.assertions(3);
+    const res = await request(app).get(`${urlPrefix}/profiles/${loginUser1}`);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.user).toBeDefined();
+    done();
+  });
+
+  test('Should return user not found', async done => {
+    expect.assertions(3);
+    const res = await request(app).get(`${urlPrefix}/profiles/${randomUser}`);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('User not found');
+    done();
+  });
+
+  test('Should get user profiles list', async done => {
+    expect.assertions(3);
+    const res = await request(app).get(`${urlPrefix}/profiles`);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.user).toBeDefined();
     done();
   });
 });

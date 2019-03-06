@@ -15,6 +15,5 @@ export {
   ProfileController,
   FollowController,
   CommentController,
-  CommentController,
   RatingController
 };

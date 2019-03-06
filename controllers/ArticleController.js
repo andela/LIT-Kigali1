@@ -242,8 +242,7 @@ class ArticleController {
     const { slug } = req.params;
     const { currentUser } = req;
 
-    const article = await Article.findOne({ where: { slug } });
-
+    const article = await Article.findOne({ where: { slug, status: 'published' } });
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }
@@ -253,12 +252,12 @@ class ArticleController {
         articleId: article.id
       }
     });
-    if (liked && liked.state === 'dislike') {
+    if (liked && (liked.state === 'dislike' || liked.state === null)) {
       await liked.update({ state: 'like' });
       return res.status(200).json({ status: 200, message: 'Liked', article });
     }
     if (liked && liked.state === 'like') {
-      await liked.destroy();
+      await liked.update({ state: null });
       return res.status(200).json({ status: 200, message: 'Like Removed successfully', article });
     }
     await Favorite.create({
@@ -280,7 +279,7 @@ class ArticleController {
     const { slug } = req.params;
     const { currentUser } = req;
 
-    const article = await Article.findOne({ where: { slug } });
+    const article = await Article.findOne({ where: { slug, status: 'published' } });
 
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
@@ -291,12 +290,12 @@ class ArticleController {
         articleId: article.id
       }
     });
-    if (liked && liked.state === 'like') {
+    if (liked && (liked.state === 'like' || liked.state === null)) {
       await liked.update({ state: 'dislike' });
       return res.status(200).json({ status: 200, message: 'Disliked', article });
     }
     if (liked && liked.state === 'dislike') {
-      await liked.destroy();
+      await liked.update({ state: null });
       return res
         .status(200)
         .json({ status: 200, message: 'Dislike Removed successfully', article });

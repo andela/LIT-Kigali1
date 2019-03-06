@@ -15,14 +15,14 @@ router.post(
   celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
-  ArticleController.createArticle
+  asyncHandler(ArticleController.createArticle)
 );
 
 router.get(
   '/search',
   celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
-  ArticleController.searchArticles
+  asyncHandler(ArticleController.searchArticles)
 );
 
 router.get('/:slug', verifyJwt({ tokenRequired: false }), asyncHandler(ArticleController.getArticle));
@@ -31,7 +31,7 @@ router.put(
   celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
-  ArticleController.updateArticle
+  asyncHandler(ArticleController.updateArticle)
 );
 
 router.get(
@@ -47,18 +47,18 @@ router.post(
   '/:articleSlug/comments',
   celebrate({ body: commentValidator.createComment }),
   verifyJwt(),
-  CommentController.createArticleComment
+  asyncHandler(CommentController.createArticleComment)
 );
 router.get(
   '/:articleSlug/comments',
   celebrate({ query: commentValidator.getArticleCommentsQuery }),
   verifyJwt(),
-  CommentController.getArticleComments
+  asyncHandler(CommentController.getArticleComments)
 );
 
-router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
+router.post('/:slug/like', verifyJwt(), asyncHandler(ArticleController.likeArticle));
 
-router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
+router.post('/:slug/dislike', verifyJwt(), asyncHandler(ArticleController.dislikeArticle));
 
 router.route('/:articleSlug/rating')
   .post(

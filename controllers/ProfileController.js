@@ -77,7 +77,7 @@ class ProfileController {
    * @returns {*} Users object
    */
   static async getProfiles(req, res) {
-    const profiles = await User.findAll({attributes: ['firstName', 'lastName', 'image', 'bio', 'cover']});
+    const profiles = await User.findAll({ attributes: ['firstName', 'lastName', 'image', 'bio'] });
     return res.status(200).json({ status: 200, user: profiles });
   }
 
@@ -91,7 +91,7 @@ class ProfileController {
     const { username } = req.params;
     const profile = await User.findOne({
       where: { username },
-      attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender']
+      attributes: ['firstName', 'lastName', 'image', 'bio']
     });
     if (!profile) {
       return res.status(404).json({ status: 404, message: 'User not found' });

@@ -14,7 +14,7 @@ class FollowController {
     const { username } = req.params;
     const { currentUser } = req;
     if (username === currentUser.username) {
-      return res.status(401).json({ status: 401, message: "You can't follow youself" });
+      return res.status(401).json({ status: 401, message: "You can't follow yourself" });
     }
     const followee = await User.findOne({ where: { username } });
     if (!followee) {
@@ -36,7 +36,7 @@ class FollowController {
     const { username } = req.params;
     const { currentUser } = req;
     if (username === currentUser.username) {
-      return res.status(401).json({ status: 401, message: "You can't unfollow youself" });
+      return res.status(401).json({ status: 401, message: "You can't unfollow yourself" });
     }
     const followee = await User.findOne({ where: { username } });
     if (!followee) {

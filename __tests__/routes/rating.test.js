@@ -26,7 +26,7 @@ describe('5 star Rating', () => {
       .set('authorization', testUserToken)
       .send({
         article: {
-          title: 'Hello Test',
+          title: 'HelloTest',
           description: 'Hello Test',
           body: 'heloo  jnfdkenjsnfnvndn nnFDFKJN NFSJDNF NCDLFN  NJSNF'
         }
@@ -36,7 +36,7 @@ describe('5 star Rating', () => {
   afterAll(async () => {
     await User.destroy({ where: { email: signupUser.email } });
     await Favorite.destroy({ where: { userId: testUserId } });
-    await Article.destroy({ where: { userId: testUserId } });
+    await Article.destroy({ where: { title: 'HelloTest' } });
   });
   test('should not rate unpublished article', async () => {
     expect.assertions(2);

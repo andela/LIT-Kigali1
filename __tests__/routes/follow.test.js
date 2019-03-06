@@ -11,7 +11,9 @@ let loginUser2;
 const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
-const randomId = '27af8b1e-c0c9-4084-8304-256b2ae0c8b2';
+const randomUsername = 'random';
+const randomID = '7f71e93b-f1e9-48e9-81f7-f0b4475323a9';
+const randomID2 = 'a7c2ba9e-1aea-4c2a-9d8a-35e8c28346fa';
 
 describe('articles', () => {
   beforeAll(async done => {
@@ -58,7 +60,7 @@ describe('articles', () => {
   test("Should return you can't follow yourself", async () => {
     expect.assertions(1);
     const res = await request(app)
-      .post(`${urlPrefix}/users/${loginUser1.id}/follow`)
+      .post(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.body.message).toBe("You can't follow youself");
@@ -67,7 +69,7 @@ describe('articles', () => {
   test('Should return user not found', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .post(`${urlPrefix}/users/${randomId}/follow`)
+      .post(`${urlPrefix}/profiles/${randomUsername}/follow`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.body.status).toBe(404);
@@ -77,9 +79,9 @@ describe('articles', () => {
   test('Should return you followed', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .post(`${urlPrefix}/users/${loginUser1.id}/follow`)
+      .post(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser2.token)
-      .send({ followee: loginUser1.id, follower: loginUser2.id });
+      .send({ followee: loginUser1.username, follower: loginUser2.username });
     expect(res.body.status).toBe('201');
     expect(res.body.message).toBe('You followed test');
   });
@@ -87,7 +89,7 @@ describe('articles', () => {
   test('should return you unfollowed', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .delete(`${urlPrefix}/users/${loginUser1.id}/unfollow`)
+      .delete(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser2.token)
       .send();
     expect(res.body.status).toBe('200');
@@ -97,7 +99,7 @@ describe('articles', () => {
   test("Should return you can't unfollow yourself", async () => {
     expect.assertions(1);
     const res = await request(app)
-      .delete(`${urlPrefix}/users/${loginUser1.id}/unfollow`)
+      .delete(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.body.message).toBe("You can't unfollow youself");
@@ -106,10 +108,20 @@ describe('articles', () => {
   test('Should return user not found', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .delete(`${urlPrefix}/users/${randomId}/unfollow`)
+      .delete(`${urlPrefix}/profiles/${randomUsername}/follow`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('User not found');
+  });
+
+  test('Should return', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .delete(`${urlPrefix}/profiles/${loginUser2.username}/follow`)
+      .set('Authorization', loginUser1.token)
+      .send({ followee: randomID, follower: randomID2 });
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('User to unfollow not found');
   });
 });

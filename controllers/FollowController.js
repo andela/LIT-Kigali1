@@ -11,17 +11,17 @@ class FollowController {
    * @returns {Object} Returns the response
    */
   static async follow(req, res) {
-    const { userId } = req.params;
+    const { username } = req.params;
     const { currentUser } = req;
-    if (userId === currentUser.id) {
+    if (username === currentUser.username) {
       return res.status(401).json({ message: "You can't follow youself" });
     }
-    const followee = await User.findOne({ where: { id: userId } });
+    const followee = await User.findOne({ where: { username } });
     if (!followee) {
       return res.status(404).json({ status: 404, message: 'User not found' });
     }
 
-    await Follow.findOrCreate({ where: { followee: userId, follower: currentUser.id } });
+    await Follow.findOrCreate({ where: { followee: followee.id, follower: currentUser.id } });
 
     return res.status(201).json({ status: '201', message: `You followed ${followee.firstName}` });
   }
@@ -33,20 +33,25 @@ class FollowController {
    * @returns {Object} Returns the response
    */
   static async unfollow(req, res) {
-    const { userId } = req.params;
+    const { username } = req.params;
     const { currentUser } = req;
-    if (userId === currentUser.id) {
+    if (username === currentUser.username) {
       return res.status(401).json({ message: "You can't unfollow youself" });
     }
-    const follow = await Follow.findOne({
-      where: { followee: userId, follower: currentUser.id },
-      include: { model: User, as: 'userFollowee' }
-    });
-    if (!follow) {
+    const followee = await User.findOne({ where: { username } });
+    if (!followee) {
       return res.status(404).json({ status: 404, message: 'User not found' });
     }
+    const follow = await Follow.findOne({
+      where: { followee: followee.id, follower: currentUser.id },
+      include: { model: User, as: 'userFollowee' }
+    });
 
-    await Follow.destroy({where: { followee: userId, follower: currentUser.id }});
+    if (!follow) {
+      return res.status(404).json({ status: 404, message: 'User to unfollow not found' });
+    }
+
+    await Follow.destroy({ where: { followee: followee.id, follower: currentUser.id } });
 
     return res
       .status(200)

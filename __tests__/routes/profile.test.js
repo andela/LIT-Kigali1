@@ -227,19 +227,10 @@ describe('Profile', () => {
 
   test('should get user profile', async done => {
     expect.assertions(3);
-    const encryptedPassword = bcrypt.hashSync('123456', 10);
-    const aUser = await User.create({
-      ...signupUser,
-      email,
-      username,
-      confirmed: 'confirmed',
-      password: encryptedPassword
-    });
-    const res = await request(app).get(`${urlPrefix}/profiles/${aUser.username}`);
+    const res = await request(app).get(`${urlPrefix}/profiles/${loginUser1}`);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.user).toBeDefined();
-    await User.destroy({ where: { username: aUser.username } });
     done();
   });
 

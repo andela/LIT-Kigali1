@@ -14,7 +14,7 @@ class FollowController {
     const { username } = req.params;
     const { currentUser } = req;
     if (username === currentUser.username) {
-      return res.status(401).json({ message: "You can't follow youself" });
+      return res.status(401).json({ status: 401, message: "You can't follow youself" });
     }
     const followee = await User.findOne({ where: { username } });
     if (!followee) {
@@ -23,7 +23,7 @@ class FollowController {
 
     await Follow.findOrCreate({ where: { followee: followee.id, follower: currentUser.id } });
 
-    return res.status(201).json({ status: '201', message: `You followed ${followee.firstName}` });
+    return res.status(201).json({ status: 201, message: `You followed ${followee.firstName}` });
   }
 
   /**
@@ -36,7 +36,7 @@ class FollowController {
     const { username } = req.params;
     const { currentUser } = req;
     if (username === currentUser.username) {
-      return res.status(401).json({ message: "You can't unfollow youself" });
+      return res.status(401).json({ status: 401, message: "You can't unfollow youself" });
     }
     const followee = await User.findOne({ where: { username } });
     if (!followee) {
@@ -48,14 +48,16 @@ class FollowController {
     });
 
     if (!follow) {
-      return res.status(404).json({ status: 404, message: 'User to unfollow not found' });
+      return res
+        .status(404)
+        .json({ status: 404, message: 'The user you are trying to unfollow is not found' });
     }
 
     await Follow.destroy({ where: { followee: followee.id, follower: currentUser.id } });
 
     return res
       .status(200)
-      .json({ status: '200', message: `You unfollowed ${follow.userFollowee.firstName}` });
+      .json({ status: 200, message: `You unfollowed ${follow.userFollowee.firstName}` });
   }
 }
 

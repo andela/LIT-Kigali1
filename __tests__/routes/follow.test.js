@@ -58,11 +58,12 @@ describe('articles', () => {
   });
 
   test("Should return you can't follow yourself", async () => {
-    expect.assertions(1);
+    expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser1.token)
       .send();
+    expect(res.body.status).toBe(401);
     expect(res.body.message).toBe("You can't follow youself");
   });
 
@@ -82,7 +83,7 @@ describe('articles', () => {
       .post(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser2.token)
       .send({ followee: loginUser1.username, follower: loginUser2.username });
-    expect(res.body.status).toBe('201');
+    expect(res.body.status).toBe(201);
     expect(res.body.message).toBe('You followed test');
   });
 
@@ -92,16 +93,17 @@ describe('articles', () => {
       .delete(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser2.token)
       .send();
-    expect(res.body.status).toBe('200');
+    expect(res.body.status).toBe(200);
     expect(res.body.message).toBe('You unfollowed test');
   });
 
   test("Should return you can't unfollow yourself", async () => {
-    expect.assertions(1);
+    expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/profiles/${loginUser1.username}/follow`)
       .set('Authorization', loginUser1.token)
       .send();
+    expect(res.body.status).toBe(401);
     expect(res.body.message).toBe("You can't unfollow youself");
   });
 
@@ -115,13 +117,13 @@ describe('articles', () => {
     expect(res.body.message).toBe('User not found');
   });
 
-  test('Should return', async () => {
+  test('Should return user you are trying to unfollow is not found', async () => {
     expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/profiles/${loginUser2.username}/follow`)
       .set('Authorization', loginUser1.token)
       .send({ followee: randomID, follower: randomID2 });
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('User to unfollow not found');
+    expect(res.body.message).toBe('The user you are trying to unfollow is not found');
   });
 });

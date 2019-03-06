@@ -62,7 +62,7 @@ router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
 router.get(
   '/:slug/share/twitter',
   verifyJwt({ tokenRequired: false }),
-  ArticleController.shareArticleTwitter
+  asyncHandler(ArticleController.shareArticleTwitter)
 );
 
 router.get(

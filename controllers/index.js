@@ -3,6 +3,7 @@ import AuthController from './AuthController';
 import UserController from './UserController';
 import ArticleController from './ArticleController';
 import ProfileController from './ProfileController';
+import FollowController from './FollowController';
 import CommentController from './CommentController';
 
 export {
@@ -11,5 +12,6 @@ export {
   MailController,
   ArticleController,
   ProfileController,
+  FollowController,
   CommentController
 };

@@ -64,7 +64,7 @@ describe('articles', () => {
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.body.status).toBe(401);
-    expect(res.body.message).toBe("You can't follow youself");
+    expect(res.body.message).toBe("You can't follow yourself");
   });
 
   test('Should return user not found', async () => {
@@ -104,7 +104,7 @@ describe('articles', () => {
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.body.status).toBe(401);
-    expect(res.body.message).toBe("You can't unfollow youself");
+    expect(res.body.message).toBe("You can't unfollow yourself");
   });
 
   test('Should return user not found', async () => {

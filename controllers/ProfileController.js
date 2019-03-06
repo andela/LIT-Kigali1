@@ -40,7 +40,9 @@ class ProfileController {
         }
       }
       if (message) {
-        return res.status(409).send({ errors: { body: [`${message} already taken`] } });
+        return res
+          .status(409)
+          .send({ status: 409, errors: { body: [`${message} already taken`] } });
       }
     }
     const profile = await User.findOne({

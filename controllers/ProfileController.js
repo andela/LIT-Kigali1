@@ -1,6 +1,5 @@
 import uuid from 'uuid';
-import { Op } from 'sequelize';
-import { User, Article, Follow } from '../database/models';
+import { User } from '../database/models';
 import { sendEmailConfirmationLink } from './MailController';
 
 /**
@@ -75,42 +74,11 @@ class ProfileController {
    * @author Manzi
    * @param {*} req
    * @param {*} res
-   * @param {*} next
    * @returns {*} Users object
    */
   static async getProfiles(req, res) {
-    const { page } = req.query;
-    const limit = 10;
-    const offset = (page - 1) * limit;
-    const { currentUser } = req;
-    let users = await User.findAndCountAll({
-      where: {
-        userType: 'user',
-        confirmed: { [Op.ne]: 'pending' },
-        status: { [Op.ne]: 'blocked' }
-      },
-      include: {
-        model: Follow,
-        as: 'userFollower',
-        where: { follower: currentUser ? currentUser.id : null },
-        required: false,
-        attributes: ['followee']
-      },
-      attributes: ['firstName', 'lastName', 'image', 'bio'],
-      limit,
-      offset
-    });
-    const pages = Math.ceil(users.count / limit);
-    // offset = limit * (no - 1);
-    users = users.rows;
-    users = users.map(data => {
-      // const user = { ...data.get(), followed: false };
-      const user = { ...data.get() };
-      user.followed = user.userFollower && user.userFollower.length > 0;
-      delete user.userFollower;
-      return user;
-    });
-    return res.status(200).json({ status: 200, profiles: users, page, totalPages: pages });
+    const profiles = await User.findAll({ attributes: ['firstName', 'lastName', 'image', 'bio'] });
+    return res.status(200).json({ status: 200, user: profiles });
   }
 
   /**
@@ -122,9 +90,8 @@ class ProfileController {
   static async getProfile(req, res) {
     const { username } = req.params;
     const profile = await User.findOne({
-      where: { username, userType: 'user' },
-      attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
-      include: { model: Article, attributes: ['title', 'description'] }
+      where: { username },
+      attributes: ['firstName', 'lastName', 'image', 'bio']
     });
     if (!profile) {
       return res.status(404).json({ status: 404, message: 'User not found' });

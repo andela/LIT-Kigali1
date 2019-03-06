@@ -55,6 +55,12 @@ router.get(
   verifyJwt(),
   asyncHandler(CommentController.getArticleComments)
 );
+router.route('/:articleSlug/rating')
+  .post(celebrate({
+    body: ratingValidator
+  }), verifyJwt(), asyncHandler(RatingController.rateArticle))
+  .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
+  .get(asyncHandler(RatingController.getAllRating));
 
 router.post('/:slug/like', verifyJwt(), asyncHandler(ArticleController.likeArticle));
 

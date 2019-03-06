@@ -74,7 +74,13 @@ class RatingController {
       return res.status(404).send({ errors: { body: ['rating not found'] } });
     }
     const articleId = article.get().id;
-    const ratedArticle = await Favorite.findOne({ where: { articleId, userId: currentUser.id, rating: { [Op.ne]: null } } });
+    const ratedArticle = await Favorite.findOne({
+      where: {
+        articleId,
+        userId: currentUser.id,
+        rating: { [Op.ne]: null }
+      }
+    });
     if (!ratedArticle) {
       return res.status(404).send({ errors: { body: ['rating not found'] } });
     }
@@ -102,7 +108,12 @@ class RatingController {
       });
     }
 
-    const allRating = await Favorite.findAll({ where: { articleId: article.get().id, rating: { [Op.ne]: null } } });
+    const allRating = await Favorite.findAll({
+      where: {
+        articleId: article.get().id,
+        rating: { [Op.ne]: null }
+      }
+    });
     if (!allRating.length) {
       return res.status(404).send({
         status: 404,

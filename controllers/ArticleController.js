@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import {
  User, Article, Favorite, Follow, Tag 
 } from '../database/models';
-import { slugString } from '../helpers';
+import { slugString, getReadingTime } from '../helpers';
 
 /**
  * @description Article Controller class
@@ -21,12 +21,14 @@ class ArticleController {
     const { article } = req.body;
     const cover = file.url || undefined;
     const slug = slugString(article.title);
+    const readingTime = getReadingTime(article.body);
     const newArticle = await Article.create(
       {
         ...article,
         userId: currentUser.id,
         slug,
-        cover
+        cover,
+        readingTime
       },
       {
         include: [{ model: User, as: 'author' }],
@@ -106,6 +108,7 @@ class ArticleController {
     const { article } = req.body;
     let { slug } = req.params;
     const cover = file ? file.url : undefined;
+    const readingTime = getReadingTime(article.body);
     const dbArticle = await Article.findOne({
       where: {
         slug,
@@ -126,7 +129,8 @@ class ArticleController {
       ...article,
       userId: currentUser.id,
       slug,
-      cover
+      cover,
+      readingTime
     });
 
     return res.status(200).json({

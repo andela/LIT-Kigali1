@@ -35,9 +35,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'unpublished'
       },
-      cover: {
-        type: DataTypes.STRING
-      },
+      cover: {type: DataTypes.STRING},
+      readingTime: {type: DataTypes.STRING},
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

@@ -14,13 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       articleId: {
         type: DataTypes.STRING
       },
-<<<<<<< HEAD
       state: {
         type: DataTypes.STRING
-=======
+      },
       rating: {
         type: DataTypes.INTEGER
->>>>>>> feat(rating) 5 stars rating
       },
       createdAt: {
         allowNull: false,

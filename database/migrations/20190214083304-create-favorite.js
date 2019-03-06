@@ -14,9 +14,6 @@ module.exports = {
     },
     state: {
       type: Sequelize.STRING,
-      validate: {
-        is: [-1, 1]
-      }
     },
     rating: {
       type: Sequelize.INTEGER

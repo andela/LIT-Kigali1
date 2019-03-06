@@ -58,4 +58,16 @@ router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
 
 router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
 
+router.get(
+  '/:slug/share/twitter',
+  verifyJwt({ tokenRequired: false }),
+  ArticleController.shareArticleTwitter
+);
+
+router.get('/:slug/share/facebook', verifyJwt(), ArticleController.shareArticleFacebook);
+
+router.get('/:slug/share/linkedin', verifyJwt(), ArticleController.shareArticleLinkedin);
+
+router.get('/:slug/share/email', verifyJwt(), ArticleController.shareArticleEmail);
+
 export default router;

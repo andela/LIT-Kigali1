@@ -9,7 +9,6 @@ import { createArticle2, signupUser } from '../mocks/db.json';
 let loginUser1;
 let loginUser2;
 let newArticle2;
-let testArticle;
 const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
@@ -42,9 +41,8 @@ describe('articles', () => {
     loginUser2 = res.body.user;
     res = await request(app)
       .post(`${urlPrefix}/articles`)
-      .set('Authorization', loginUser1.token)
+      .set('Authorization', loginUser2.token)
       .send({ article: createArticle2 });
-    testArticle = res.body.article;
     done();
   });
 

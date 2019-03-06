@@ -69,6 +69,35 @@ class ProfileController {
       user: userData
     });
   }
+
+  /**
+   * @author Manzi
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} Users object
+   */
+  static async getProfiles(req, res) {
+    const profiles = await User.findAll({ attributes: ['firstName', 'lastName', 'image', 'bio'] });
+    return res.status(200).json({ status: 200, user: profiles });
+  }
+
+  /**
+   * @author Manzi
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} User object
+   */
+  static async getProfile(req, res) {
+    const { username } = req.params;
+    const profile = await User.findOne({
+      where: { username },
+      attributes: ['firstName', 'lastName', 'image', 'bio']
+    });
+    if (!profile) {
+      return res.status(404).json({ status: 404, message: 'User not found' });
+    }
+    return res.status(200).json({ status: 200, user: profile });
+  }
 }
 
 export default ProfileController;

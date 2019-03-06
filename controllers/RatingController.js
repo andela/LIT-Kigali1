@@ -27,6 +27,7 @@ class RatingController {
     const ratedArticle = await Favorite.findOne({ where: { articleId, userId: currentUser.id } });
     if (ratedArticle) {
       ratedArticle.update({ rating: rate, updatedAt: new Date() });
+      const averageRate = await calculateRating(articleId);
       return res.status(200).send({
         status: 200,
         message: 'Rating updated successfully',
@@ -34,7 +35,7 @@ class RatingController {
           ...article.get(),
           ratedWith: ratedArticle.get().rating,
           ratedBy: ratedArticle.get().userId,
-          averageRate: await calculateRating(articleId)
+          averageRate,
         }
       });
     }
@@ -46,6 +47,7 @@ class RatingController {
       },
       { include: [{ model: User }, { model: Article }] }
     );
+    const averageRate = await calculateRating(articleId);
     return res.status(201).send({
       status: 201,
       message: 'article has been rated successfully',
@@ -53,7 +55,7 @@ class RatingController {
         ...article.get(),
         ratedWith: newRate.get().rating,
         ratedBy: newRate.get().userId,
-        averageRate: await calculateRating(articleId)
+        averageRate,
       }
     });
   }

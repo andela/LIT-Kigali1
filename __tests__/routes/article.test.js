@@ -221,6 +221,8 @@ describe('articles', () => {
 
   test('like an article', async () => {
     expect.assertions(3);
+    const article = await Article.findOne({ where: { slug: newArticle.slug } });
+    article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/like`)
       .set('Authorization', loginUser2.token);

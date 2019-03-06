@@ -1,4 +1,5 @@
 import request from 'supertest';
+import bcrypt from 'bcrypt';
 import { urlPrefix } from '../mocks/variables.json';
 import { User, Article, Favorite } from '../../database/models';
 import app from '../../app';
@@ -9,17 +10,17 @@ let articleSlug;
 let testUserId;
 describe('5 star Rating', () => {
   beforeAll(async () => {
-    const { body } = await request(app)
-      .post(`${urlPrefix}/users`)
-      .send({
-        user: {
-          username: signupUser.username,
-          email: signupUser.email,
-          password: signupUser.password
-        }
-      });
-    testUserToken = body.user.token;
-    testUserId = body.user.id;
+    const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
+    await User.create({
+      ...signupUser,
+      confirmed: 'confirmed',
+      password: encryptedPassword
+    });
+    const res = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({ user: { username: signupUser.email, password: signupUser.password } });
+    testUserToken = res.body.user.token;
+    testUserId = res.body.user.id;
     const testArticle = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('authorization', testUserToken)
@@ -35,7 +36,7 @@ describe('5 star Rating', () => {
   afterAll(async () => {
     await User.destroy({ where: { email: signupUser.email } });
     await Favorite.destroy({ where: { userId: testUserId } });
-    await Article.destroy({ where: { where: testUserId } });
+    await Article.destroy({ where: { userId: testUserId } });
   });
   test('should not rate unpublished article', async () => {
     expect.assertions(2);

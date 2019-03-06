@@ -15,26 +15,24 @@ const password = '123456';
 jest.setTimeout(50000);
 describe('Profile', () => {
   beforeAll(async (done) => {
-    const { body } = await request(app)
-      .post(`${urlPrefix}/users`)
-      .send({
-        user: {
-          username: signupUser.username,
-          email: signupUser.email,
-          password: signupUser.password
-        }
-      });
-    testUserToken = body.user.token;
+    const encryptedPassword = bcrypt.hashSync('123456', 10);
+    await User.create({
+      ...signupUser,
+      email,
+      username,
+      confirmed: 'confirmed',
+      password: encryptedPassword
+    });
+    const res = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({ user: { username, password } });
+    loginUser1 = res.body.user;
     done();
   });
 
   afterAll(async (done) => {
-    await User.destroy({
-      where: { email: signupUser.email }
-    });
-    await User.destroy({
-      where: { email: profile.email }
-    });
+    await User.destroy({ where: { email: signupUser.email } });
+    await User.destroy({ where: { email: profile.email } });
     done();
   });
 

@@ -31,12 +31,8 @@ class RatingController {
       return res.status(200).send({
         status: 200,
         message: 'Rating updated successfully',
-        article: {
-          ...article.get(),
-          ratedWith: rating.rating,
-          ratedBy: rating.userId,
-          averageRate,
-        }
+        rate: { ...rating.get() },
+        averageRate,
       });
     }
     const newRate = await Favorite.create(
@@ -51,12 +47,8 @@ class RatingController {
     return res.status(201).send({
       status: 201,
       message: 'article has been rated successfully',
-      article: {
-        ...article.get(),
-        ratedWith: newRate.rating,
-        ratedBy: newRate.userId,
-        averageRate,
-      }
+      rate: { ...newRate.get() },
+      averageRate,
     });
   }
 

@@ -157,13 +157,12 @@ describe('5 star Rating', () => {
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Rating not found');
   });
-  test('should get rating for agiven  article', async () => {
+  test('should get rating for a given article', async () => {
     expect.assertions(4);
     const article = await Article.findOne({ where: { slug: articleSlug } });
     article.update({ status: 'published' });
     const rate = await Favorite.findOne({ where: { articleId: article.get().id } });
     rate.update({ rating: 4 });
-    article.update({ status: 'unpublished' });
     const res = await request(app)
       .get(`${urlPrefix}/articles/${articleSlug}/rating`);
 

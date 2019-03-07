@@ -159,8 +159,8 @@ describe('Profile', () => {
       .set('Authorization', loginUser1.token)
       .send({ user: { ...profile } });
 
-    expect(res.status).toBe(404);
-    expect(res.body.message).toBeDefined();
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe('Invalid token. Please login.');
     done();
   });
 

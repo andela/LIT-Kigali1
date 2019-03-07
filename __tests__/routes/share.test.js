@@ -13,6 +13,7 @@ const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
 const fakeSlug = 'fake-slug';
+jest.setTimeout(30000);
 
 describe('articles', () => {
   beforeAll(async done => {
@@ -71,7 +72,7 @@ describe('articles', () => {
     expect(res.body.status).toBe(201);
     expect(res.body.article).toBeDefined();
     expect(res.body.article.slug).toBeDefined();
-  }, 30000);
+  });
 
   test('should share article on twitter', async () => {
     const res = await request(app)
@@ -80,7 +81,7 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should fail to share article on twitter', async () => {
     const res = await request(app)
@@ -89,7 +90,7 @@ describe('articles', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should share article on Facebook', async () => {
     const res = await request(app)
@@ -98,7 +99,7 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should fail to share article on Facebook', async () => {
     const res = await request(app)
@@ -107,7 +108,7 @@ describe('articles', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should share article on Linkedin', async () => {
     const res = await request(app)
@@ -116,7 +117,7 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should fail to share article on Linkedin', async () => {
     const res = await request(app)
@@ -125,7 +126,7 @@ describe('articles', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should share article on email', async () => {
     const res = await request(app)
@@ -134,7 +135,7 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 
   test('should fail to share article on email', async () => {
     const res = await request(app)
@@ -143,5 +144,5 @@ describe('articles', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBeDefined();
-  }, 30000);
+  });
 });

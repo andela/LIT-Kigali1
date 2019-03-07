@@ -367,7 +367,7 @@ class ArticleController {
       });
     }
     opn(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
-    return res.status(200).json({ status: 200, message: 'Sharing article via witter' });
+    return res.status(200).json({ status: 200, message: 'Sharing article via Twitter' });
   }
 
   /**

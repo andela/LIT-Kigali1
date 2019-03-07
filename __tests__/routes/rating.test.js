@@ -59,8 +59,8 @@ describe('5 star Rating', () => {
 
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('article has been rated successfully');
-    expect(res.body.article.ratedWith).toBe(3);
-    expect(res.body.article.averageRate).toBeDefined();
+    expect(res.body.rate.rating).toBe(3);
+    expect(res.body.averageRate).toBeDefined();
   });
   test('should overide an existing article rating', async () => {
     expect.assertions(4);
@@ -73,8 +73,8 @@ describe('5 star Rating', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Rating updated successfully');
-    expect(res.body.article.ratedWith).toBe(4);
-    expect(res.body.article.averageRate).toBeDefined();
+    expect(res.body.rate.rating).toBe(4);
+    expect(res.body.averageRate).toBeDefined();
   });
   test('should not rate unexisting article', async () => {
     expect.assertions(3);

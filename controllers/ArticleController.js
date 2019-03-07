@@ -135,7 +135,7 @@ class ArticleController {
       message: 'Article updated successfully',
       article: {
         ...newArticle.get(),
-        rating: await calculateRating(newArticle.get().id)
+        rating: await calculateRating(newArticle.id)
       }
     });
   }

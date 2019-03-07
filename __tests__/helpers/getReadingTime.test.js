@@ -8,4 +8,11 @@ describe('getReadingTime', () => {
     const readingTime = getReadingTime(createArticle.body);
     expect(readingTime.length).toBeGreaterThan(0);
   });
+
+  test('Should be undefined', () => {
+    expect.assertions(1);
+    expect.stringContaining('min');
+    const readingTime = getReadingTime();
+    expect(readingTime).toBeUndefined();
+  });
 });

@@ -320,7 +320,7 @@ class ArticleController {
     const {
       title, author, tag, page = 1
     } = req.query;
-    const limit = 10;
+    const limit = 20;
     const offset = limit * (page - 1);
     let pages = 0;
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };

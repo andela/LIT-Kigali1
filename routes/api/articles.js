@@ -5,6 +5,7 @@ import { articleValidator, commentValidator } from '../validators';
 import { ArticleController, CommentController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
+import { asyncHandler } from '../../helpers';
 
 const router = express.Router();
 const fileParser = multer({ storage });
@@ -57,5 +58,25 @@ router.get(
 router.post('/:slug/like', verifyJwt(), ArticleController.likeArticle);
 
 router.post('/:slug/dislike', verifyJwt(), ArticleController.dislikeArticle);
+
+router.get(
+  '/:slug/share/twitter',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.shareArticleTwitter)
+);
+
+router.get(
+  '/:slug/share/facebook',
+  verifyJwt(),
+  asyncHandler(ArticleController.shareArticleFacebook)
+);
+
+router.get(
+  '/:slug/share/linkedin',
+  verifyJwt(),
+  asyncHandler(ArticleController.shareArticleLinkedin)
+);
+
+router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
 
 export default router;

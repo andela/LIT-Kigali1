@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import opn from 'opn';
 import { Op } from 'sequelize';
 import {
  User, Article, Favorite, Follow, Tag 
@@ -342,6 +343,108 @@ class ArticleController {
       return res.status(404).json({ status: 404, message: 'Not found' });
     }
     return res.status(200).json({ status: 200, articles: { ...articles, pages } });
+  }
+
+  /**
+   * @author Caleb
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async shareArticleTwitter(req, res) {
+    const { slug } = req.params;
+    const article = await Article.findOne({
+      where: {
+        slug,
+        status: { [Op.not]: 'deleted' }
+      }
+    });
+    if (!article || article.status === 'unpublished') {
+      return res.status(404).json({
+        status: 404,
+        message: 'Article not found'
+      });
+    }
+    opn(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
+    return res.status(200).json({ status: 200, message: 'Sharing article via Twitter' });
+  }
+
+  /**
+   * @author Caleb
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async shareArticleFacebook(req, res) {
+    const { slug } = req.params;
+    const article = await Article.findOne({
+      where: {
+        slug,
+        status: { [Op.not]: 'deleted' }
+      }
+    });
+    if (!article || article.status === 'unpublished') {
+      return res.status(404).json({
+        status: 404,
+        message: 'Article not found'
+      });
+    }
+    opn(`https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`);
+    return res.status(200).json({ status: 200, message: 'Sharing article via Facebook' });
+  }
+
+  /**
+   * @author Caleb
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async shareArticleLinkedin(req, res) {
+    const { slug } = req.params;
+    const article = await Article.findOne({
+      where: {
+        slug,
+        status: { [Op.not]: 'deleted' }
+      }
+    });
+    if (!article || article.status === 'unpublished') {
+      return res.status(404).json({
+        status: 404,
+        message: 'Article not found'
+      });
+    }
+    opn(`https://www.linkedin.com/sharing/share-offsite/?url=${
+        process.env.FRONTEND_URL
+      }/articles/${slug}`);
+    return res.status(200).json({ status: 200, message: 'Sharing article via Linkedin' });
+  }
+
+  /**
+   * @author Caleb
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async shareArticleEmail(req, res) {
+    const { slug } = req.params;
+    const article = await Article.findOne({
+      where: {
+        slug,
+        status: { [Op.not]: 'deleted' }
+      }
+    });
+    if (!article || article.status === 'unpublished') {
+      return res.status(404).json({
+        status: 404,
+        message: 'Article not found'
+      });
+    }
+    opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
+    return res.status(200).json({ status: 200, message: 'Sharing article via Email' });
   }
 }
 

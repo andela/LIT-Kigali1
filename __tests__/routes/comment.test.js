@@ -51,7 +51,7 @@ describe('comments', () => {
           { email: signupUser2.email }]
       }
     }).then(() => true);
-    await Article.destroy({ where: { tagList: { [Op.contains]: ['Test'] } } });
+    await Article.destroy({ where: { id: newArticle.id } });
     await Comment.destroy({
       where: {
         [Op.or]: [{ userId: loginUser1.id },

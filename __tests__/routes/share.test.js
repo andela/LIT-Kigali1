@@ -58,7 +58,11 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
+<<<<<<< HEAD
   await Article.destroy({ where: { tagList: { [Op.contains]: ['share'] } } });
+=======
+    await Article.destroy({ where: { tagList: { [Op.contains]: ['social'] } } });
+>>>>>>> feat(report article): add capability of reporting an article
   });
 
   test('should return created article', async () => {

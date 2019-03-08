@@ -65,5 +65,18 @@ module.exports = [
     gender,
     createdAt,
     updatedAt
+  },
+  {
+    id: 'cfb94dfa-a03b-4fc2-9e08-376681707418',
+    firstName: 'Admin',
+    lastName: 'admin',
+    username: 'admin',
+    email: 'admin@email.com',
+    confirmed: 'confirmed',
+    userType: 'admin',
+    password,
+    gender,
+    createdAt,
+    updatedAt
   }
 ];

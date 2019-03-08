@@ -3,11 +3,12 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Favorite } from '../../database/models';
+import { User, Article, Favorite, Report } from '../../database/models';
 import { createArticle, signupUser } from '../mocks/db.json';
 
 let loginUser1;
 let loginUser2;
+let admin;
 let newArticle;
 let testArticle;
 const email = 'test_login@gmail.com';
@@ -36,10 +37,17 @@ describe('articles', () => {
       .post(`${urlPrefix}/users/login`)
       .send({ user: { username, password } });
     loginUser1 = res.body.user;
+
     res = await request(app)
       .post(`${urlPrefix}/users/login`)
       .send({ user: { username: 'test_login1', password } });
     loginUser2 = res.body.user;
+
+    res = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({ user: { username: 'admin@email.com', password } });
+    admin = res.body.user;
+
     res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
@@ -61,6 +69,7 @@ describe('articles', () => {
     }).then(() => true);
     await Article.destroy({ where: { tagList: { [Op.contains]: ['test'] } } });
     await Favorite.destroy({ where: { articleId: newArticle.id } });
+    await Report.destroy({ where: { reason: 'test' } });
   });
 
   test('should return created article', async () => {
@@ -328,5 +337,53 @@ describe('articles', () => {
       .get(`${urlPrefix}/articles/${testArticle.slug}`)
       .set('Authorization', loginUser2.token);
     expect(res.body.article.readingTime).toBeDefined();
+  });
+
+  test('Should report an article', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/report`)
+      .set('Authorization', loginUser2.token)
+      .send({
+        report: {
+          reason: 'test',
+          description: 'copied an article'
+        }
+      });
+    expect(res.status).toBe(201);
+    expect(res.body.message).toBe('Article Reported successfully');
+  });
+
+  test('Report --Should return article not found', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${fakeSlug}/report`)
+      .set('Authorization', loginUser2.token)
+      .send({
+        report: {
+          reason: 'test',
+          description: 'copied an article'
+        }
+      });
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe('Article not found');
+  });
+
+  test('Report --Should return access not allowed', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/report/all`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(403);
+    expect(res.body.message).toBe('Access not allowed');
+  });
+
+  test('Report --Should return all reports', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/report/all`)
+      .set('Authorization', admin.token);
+    expect(res.status).toBe(200);
+    expect(res.body.rows).toBeDefined();
   });
 });

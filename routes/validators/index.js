@@ -4,6 +4,8 @@ import profileValidator from './user';
 import commentValidator from './comment';
 import ratingValidator from './rating';
 import profilesValidator from './profile';
+import reportValidator from './report';
+
 
 export {
   authValidator,
@@ -12,4 +14,5 @@ export {
   commentValidator,
   ratingValidator,
   profilesValidator,
+  reportValidator  
 };

@@ -29,6 +29,7 @@ router.get(
   verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.searchArticles),
 );
+router.get('/report', verifyJwt({ tokenRequired: true }), ArticleController.getArticleReports);
 
 router.get(
   '/:slug',
@@ -122,7 +123,5 @@ router.post(
   celebrate({ body: reportValidator }),
   asyncHandler(ArticleController.reportArticle)
 );
-
-router.get('/report/all', verifyJwt({ tokenRequired: true }), ArticleController.getArticleReports);
 
 export default router;

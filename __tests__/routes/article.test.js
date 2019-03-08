@@ -372,7 +372,7 @@ describe('articles', () => {
   test('Report --Should return access not allowed', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .get(`${urlPrefix}/articles/report/all`)
+      .get(`${urlPrefix}/articles/report`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(403);
     expect(res.body.message).toBe('Access not allowed');
@@ -381,7 +381,7 @@ describe('articles', () => {
   test('Report --Should return all reports', async () => {
     expect.assertions(2);
     const res = await request(app)
-      .get(`${urlPrefix}/articles/report/all`)
+      .get(`${urlPrefix}/articles/report`)
       .set('Authorization', admin.token);
     expect(res.status).toBe(200);
     expect(res.body.rows).toBeDefined();

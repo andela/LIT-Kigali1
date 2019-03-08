@@ -94,6 +94,20 @@ describe('Profile', () => {
     done();
   });
 
+  test('should  update  email ', async (done) => {
+    expect.assertions(2);
+    const res = await request(app)
+      .put(`${urlPrefix}/user`)
+      .set('Authorization', loginUser1.token)
+      .send({ user: { email: 'doe@doe.com' } });
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation');
+    const user = await User.findOne({ where: { email: 'doe@doe.com' } });
+    user.update({ email: profile.email });
+    done();
+  });
+
   test('should not create profile with --taken username ', async (done) => {
     expect.assertions(2);
     const res = await request(app)
@@ -106,6 +120,17 @@ describe('Profile', () => {
     done();
   });
 
+  test('should update username ', async (done) => {
+    expect.assertions(2);
+    const res = await request(app)
+      .put(`${urlPrefix}/user`)
+      .set('Authorization', loginUser1.token)
+      .send({ user: { username: 'claudine' } });
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe('The information was updated successful');
+    done();
+  });
+
   test('should not create profile with --taken username and untaken email ', async (done) => {
     expect.assertions(2);
     const res = await request(app)
@@ -113,7 +138,7 @@ describe('Profile', () => {
       .set('Authorization', loginUser1.token)
       .send({
         user: {
-          username: profile.username,
+          username: 'claudine',
           email: 'papasava@email.com'
         }
       });

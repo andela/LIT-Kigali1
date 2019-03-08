@@ -17,6 +17,7 @@ import { Favorite, Article } from '../database/models';
     if(!number) {
       return 0;
     }
-    return sum / number;
+    const average = (sum / number);
+    return Number(average.toFixed(1));
   };
   export default calculateRating;

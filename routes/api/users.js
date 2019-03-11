@@ -6,6 +6,7 @@ import { User } from '../../database/models';
 import { authValidator } from '../validators';
 import { AuthController, UserController, FollowController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
+import { asyncHandler } from '../../helpers';
 
 dotenv.config();
 const router = express.Router();
@@ -72,8 +73,8 @@ router.get('/:username/social/', async (req, res) => {
   });
 });
 
-router.post('/:userId/follow', verifyJwt(), FollowController.follow);
+router.post('/:username/follow', verifyJwt(), asyncHandler(FollowController.follow));
 
-router.delete('/:userId/unfollow', verifyJwt(), FollowController.unfollow);
+router.delete('/:username/unfollow', verifyJwt(), asyncHandler(FollowController.unfollow));
 
 export default router;

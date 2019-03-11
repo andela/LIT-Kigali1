@@ -2,9 +2,10 @@ import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
 import {
- User, Article, Favorite, Follow, Tag 
+  User, Article, Favorite, Follow, Tag
 } from '../database/models';
-import { slugString, getReadingTime } from '../helpers';
+import { slugString, getReadingTime, calculateRating } from '../helpers';
+
 
 /**
  * @description Article Controller class
@@ -73,8 +74,8 @@ class ArticleController {
       ]
     });
     if (
-      !article ||
-      (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
+      !article
+      || (article.status === 'unpublished' && currentUser && article.userId !== currentUser.id)
     ) {
       return res.status(404).json({
         status: 404,
@@ -90,6 +91,7 @@ class ArticleController {
     return res.status(200).json({
       article: {
         ...article.get(),
+        rating: await calculateRating(article.get().id),
         author: { ...article.get().author.get(), following },
         favorited,
         favoritesCount
@@ -137,7 +139,10 @@ class ArticleController {
     return res.status(200).json({
       status: 200,
       message: 'Article updated successfully',
-      article: newArticle.get()
+      article: {
+        ...newArticle.get(),
+        rating: await calculateRating(newArticle.id)
+      }
     });
   }
 
@@ -181,9 +186,23 @@ class ArticleController {
       offset: offset * limit,
       limit
     });
+    const ratedArticles = async articleArray => Promise.all(articleArray.map(async art => ({
+      userId: art.userId,
+      slug: art.slug,
+      title: art.title,
+      description: art.description,
+      body: art.body,
+      tagList: art.tagList,
+      status: art.status,
+      cover: art.cover,
+      createdAt: art.createdAt,
+      updatedAt: art.updatedAt,
+      author: art.author,
+      rating: await calculateRating(null, art.slug)
+    })));
     return res.status(200).json({
       status: 200,
-      articles: articles.rows,
+      articles: await ratedArticles(articles.rows),
       articlesCount: articles.count,
       pages: Math.ceil(articles.count / limit),
       page
@@ -229,8 +248,7 @@ class ArticleController {
     const { slug } = req.params;
     const { currentUser } = req;
 
-    const article = await Article.findOne({ where: { slug } });
-
+    const article = await Article.findOne({ where: { slug, status: 'published' } });
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }
@@ -240,12 +258,12 @@ class ArticleController {
         articleId: article.id
       }
     });
-    if (liked && liked.state === 'dislike') {
+    if (liked && (liked.state === 'dislike' || liked.state === null)) {
       await liked.update({ state: 'like' });
       return res.status(200).json({ status: 200, message: 'Liked', article });
     }
     if (liked && liked.state === 'like') {
-      await liked.destroy();
+      await liked.update({ state: null });
       return res.status(200).json({ status: 200, message: 'Like Removed successfully', article });
     }
     await Favorite.create({
@@ -267,7 +285,7 @@ class ArticleController {
     const { slug } = req.params;
     const { currentUser } = req;
 
-    const article = await Article.findOne({ where: { slug } });
+    const article = await Article.findOne({ where: { slug, status: 'published' } });
 
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
@@ -278,12 +296,12 @@ class ArticleController {
         articleId: article.id
       }
     });
-    if (liked && liked.state === 'like') {
+    if (liked && (liked.state === 'like' || liked.state === null)) {
       await liked.update({ state: 'dislike' });
       return res.status(200).json({ status: 200, message: 'Disliked', article });
     }
     if (liked && liked.state === 'dislike') {
-      await liked.destroy();
+      await liked.update({ state: null });
       return res
         .status(200)
         .json({ status: 200, message: 'Dislike Removed successfully', article });
@@ -306,9 +324,9 @@ class ArticleController {
    */
   static async searchArticles(req, res) {
     const {
- title, author, tag, page = 1 
-} = req.query;
-    const limit = 10;
+      title, author, tag, page = 1
+    } = req.query;
+    const limit = 20;
     const offset = limit * (page - 1);
     let pages = 0;
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };

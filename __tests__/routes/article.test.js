@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article } from '../../database/models';
+import { User, Article, Favorite } from '../../database/models';
 import { createArticle, signupUser } from '../mocks/db.json';
 
 let loginUser1;
@@ -16,7 +16,7 @@ const password = '123456';
 const fakeSlug = 'fake-slug';
 
 describe('articles', () => {
-  beforeAll(async done => {
+  beforeAll(async (done) => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
       ...signupUser,
@@ -60,6 +60,7 @@ describe('articles', () => {
       }
     }).then(() => true);
     await Article.destroy({ where: { tagList: { [Op.contains]: ['test'] } } });
+    await Favorite.destroy({ where: { articleId: newArticle.id } });
   });
 
   test('should return created article', async () => {
@@ -221,6 +222,8 @@ describe('articles', () => {
 
   test('like an article', async () => {
     expect.assertions(3);
+    const article = await Article.findOne({ where: { slug: newArticle.slug } });
+    article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/like`)
       .set('Authorization', loginUser2.token);

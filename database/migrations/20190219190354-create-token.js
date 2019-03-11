@@ -8,7 +8,12 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       userId: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
       },
       token: {
         type: Sequelize.STRING

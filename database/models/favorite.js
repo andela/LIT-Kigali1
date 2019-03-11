@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       state: {
         type: DataTypes.STRING
       },
+      rating: {
+        type: DataTypes.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

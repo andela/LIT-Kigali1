@@ -67,9 +67,9 @@ module.exports = (sequelize, DataTypes) => {
   });
   User.associate = function(models) {
     User.hasMany(models.ResetPassword, { foreignKey: 'userId' });
-    User.hasMany(models.Token, {foreignKey: 'userId'});
+    User.hasMany(models.Token, { foreignKey: 'userId' });
     User.hasMany(models.Article, { foreignKey: 'userId' });
-    User.hasMany(models.FavoriteComment, { foreignKey: 'userId' });
+    User.hasMany(models.Follow, { foreignKey: 'follower', as: 'userFollower' });
   };
   return User;
 };

@@ -9,7 +9,7 @@ router.post('/:username/follow', verifyJwt(), FollowController.follow);
 
 router.delete('/:username/follow', verifyJwt(), FollowController.unfollow);
 
-router.get('/', ProfileController.getProfiles);
+router.get('/', verifyJwt({ tokenRequired: false }), ProfileController.getProfiles);
 
 router.get('/:username', ProfileController.getProfile);
 

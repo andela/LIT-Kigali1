@@ -96,7 +96,7 @@ router.route('/:articleSlug/rating')
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
 
-router.get('/:articleSlug/comments/:commentId/like', asyncHandler(FavoriteCommentController.likeComment));
-router.get('/:articleSlug/comments/:commentId/dislike', asyncHandler(FavoriteCommentController.dislikeComment));
+router.post('/:articleSlug/comments/:commentId/like', verifyJwt(), asyncHandler(FavoriteCommentController.likeComment));
+router.post('/:articleSlug/comments/:commentId/dislike', verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment));
 
 export default router;

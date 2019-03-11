@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Favorite_comment = sequelize.define('Favorite_comment', {
+  const FavoriteComment = sequelize.define('FavoriteComment', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   });
-  Favorite_comment.associate = function(models) {
-    Favorite_comment.belongsTo(models.User, { foreignKey: 'userId', as: 'author' });
-    Favorite_comment.belongsTo(models.Comment, { foreignKey: 'commentId' });
+  FavoriteComment.associate = function(models) {
+    FavoriteComment.belongsTo(models.User, { foreignKey: 'userId', as: 'author' });
+    FavoriteComment.belongsTo(models.Comment, { foreignKey: 'commentId' });
   };
-  return Favorite_comment;
+  return FavoriteComment;
 };

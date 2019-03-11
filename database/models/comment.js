@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     Comment.belongsTo(models.User, { foreignKey: 'userId', as: 'author' });
     Comment.belongsTo(models.Article, { foreignKey: 'articleId' });
     Comment.hasMany(models.Comment, { foreignKey: 'parentId', as: 'replies' });
-    Comment.hasMany(models.Favorite_comment, { foreignKey: 'id', as: 'likes' })
+    Comment.hasMany(models.FavoriteComment, { foreignKey: 'id', as: 'likes' })
   };
   return Comment;
 };

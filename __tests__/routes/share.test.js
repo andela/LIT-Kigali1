@@ -58,7 +58,7 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
-    await Article.destroy({ where: { tagList: { [Op.contains]: ['share', 'social'] } } });
+    await Article.destroy({ where: { tagList: { [Op.contains]: ['share'] } } });
   });
 
   test('should return created article', async () => {

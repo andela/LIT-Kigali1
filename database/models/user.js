@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.ResetPassword, { foreignKey: 'userId' });
     User.hasMany(models.Token, {foreignKey: 'userId'});
     User.hasMany(models.Article, { foreignKey: 'userId' });
-    User.hasMany(models.Favorite_comment, { foreignKey: 'userId' });
+    User.hasMany(models.FavoriteComment, { foreignKey: 'userId' });
   };
   return User;
 };

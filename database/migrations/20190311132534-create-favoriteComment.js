@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Favorite_comments', {
+    return queryInterface.createTable('FavoriteComments', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -38,6 +38,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Favorite_comments');
+    return queryInterface.dropTable('FavoriteComments');
   }
 };

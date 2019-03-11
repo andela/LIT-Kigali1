@@ -24,7 +24,7 @@ describe('likeComment', () => {
       .send({ article: { ...createArticle } });
     testArticle = res2.body.article;
     const res3 = await request(app)
-      .post(`${urlPrefix}/articles/${testArticle.id}/comments`)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments`)
       .set('authorization', testToken)
       .send({ comment: { ...createComment } });
     testComment = res3.body.comment;
@@ -35,27 +35,42 @@ describe('likeComment', () => {
     await Comment.destroy({ where: { id: testComment.id } });
   });
 
-  test('should like a comment', async () => {
-    expect.assertions(4);
+  test('should like a comment', async (done) => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
 
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
-    expect(res.body.message).toBe('comment liked successfully');
+    expect(res.body.message).toBe('Comment liked successfully');
     expect(res.body.like.value).toBe('liked');
+    done();
   });
 
   test('should unlike a comment', async () => {
-    expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.message).toBe('like removed successfully');
+    expect(res.body.message).toBe('Like removed successfully');
+  });
+
+  test('should like a comment in case it was disliked', async (done) => {
+    await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
+      .set('authorization', testToken);
+
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
+      .set('authorization', testToken);
+
+    expect(res.status).toBe(201);
+    expect(res.body.status).toBe(201);
+    expect(res.body.message).toBe('Comment liked successfully');
+    expect(res.body.like.value).toBe('liked');
+    done();
   });
 
   test('should not like comment without authorization', async () => {
@@ -69,6 +84,7 @@ describe('likeComment', () => {
 
   test('should not like unexisting comment', async () => {
     expect.assertions(3);
+    await Comment.destroy({ where: { id: testComment.id } });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
@@ -79,11 +95,28 @@ describe('likeComment', () => {
   });
 
   test('should dislike comment', async () => {
-    expect.assertions(3);
+    await Comment.create({
+      userId: testComment.userId,
+      id: testComment.id,
+      body: testComment.body,
+      articleId: testComment.articleId
+    });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);
+    expect(res.status).toBe(201);
+    expect(res.body.message).toBe('Comment disliked successfully');
+    expect(res.body.dislike.value).toBe('disliked');
+  });
 
+  test('should dislike comment in case it is liked', async () => {
+    await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
+      .set('authorization', testToken);
+
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
+      .set('authorization', testToken);
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('Comment disliked successfully');
     expect(res.body.dislike.value).toBe('disliked');
@@ -96,7 +129,8 @@ describe('likeComment', () => {
       .set('authorization', testToken);
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Disliked removed successfully');
+    expect(res.body.status).toBe(200);
+    expect(res.body.message).toBe('Dislike removed successfully');
   });
 
   test('should not dislike comment without authorization', async () => {
@@ -110,6 +144,7 @@ describe('likeComment', () => {
 
   test('should not dislike unexisting comment', async () => {
     expect.assertions(3);
+    await Comment.destroy({ where: { id: testComment.id } });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);

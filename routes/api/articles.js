@@ -73,11 +73,23 @@ router.post('/:slug/like', verifyJwt(), asyncHandler(ArticleController.likeArtic
 
 router.post('/:slug/dislike', verifyJwt(), asyncHandler(ArticleController.dislikeArticle));
 
-router.get('/:slug/share/twitter', asyncHandler(ArticleController.shareArticleTwitter));
+router.get(
+  '/:slug/share/twitter',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.shareArticleTwitter)
+);
 
-router.get('/:slug/share/facebook', asyncHandler(ArticleController.shareArticleFacebook));
+router.get(
+  '/:slug/share/facebook',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.shareArticleFacebook)
+);
 
-router.get('/:slug/share/linkedin', asyncHandler(ArticleController.shareArticleLinkedin));
+router.get(
+  '/:slug/share/linkedin',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.shareArticleLinkedin)
+);
 
 router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
 router

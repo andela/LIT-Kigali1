@@ -16,7 +16,7 @@ const randomUser = 'random';
 const aFollowee = '5b8168be-7451-4ebb-a364-ef9293e707c2';
 jest.setTimeout(50000);
 describe('Profile', () => {
-  beforeAll(async (done) => {
+  beforeAll(async done => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
       ...signupUser,
@@ -34,14 +34,14 @@ describe('Profile', () => {
     done();
   });
 
-  afterAll(async (done) => {
+  afterAll(async done => {
     await User.destroy({ where: { email: signupUser.email } });
     await User.destroy({ where: { email: profile.email } });
     await Follow.destroy({ where: { followee: aFollowee.id, follower: loginUser1.id } });
     done();
   });
 
-  test('should create profile and send confirmation when email is provided', async (done) => {
+  test('should create profile and send confirmation when email is provided', async done => {
     expect.assertions(11);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -62,7 +62,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should create profile and not send confirmation email when email is not provided', async (done) => {
+  test('should create profile and not send confirmation email when email is not provided', async done => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -75,7 +75,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --taken email and username', async (done) => {
+  test('should not create profile with --taken email and username', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -87,7 +87,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --taken email ', async (done) => {
+  test('should not create profile with --taken email ', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -99,7 +99,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should  update  email ', async (done) => {
+  test('should  update  email ', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -113,7 +113,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --taken username ', async (done) => {
+  test('should not create profile with --taken username ', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -125,7 +125,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should update username ', async (done) => {
+  test('should update username ', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -136,7 +136,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --taken username and untaken email ', async (done) => {
+  test('should not create profile with --taken username and untaken email ', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -153,7 +153,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --taken email and untaken username ', async (done) => {
+  test('should not create profile with --taken email and untaken username ', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/user`)
@@ -181,7 +181,7 @@ describe('Profile', () => {
     expect(res.body.message).toBe('No auth token');
   });
 
-  test('should not create profile with --unexisting user', async (done) => {
+  test('should not create profile with --unexisting user', async done => {
     expect.assertions(2);
     await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
@@ -194,7 +194,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --malformed token', async (done) => {
+  test('should not create profile with --malformed token', async done => {
     expect.assertions(2);
     await User.destroy({ where: { email: signupUser.email } });
     const res = await request(app)
@@ -207,7 +207,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('should not create profile with --incorrect token', async (done) => {
+  test('should not create profile with --incorrect token', async done => {
     expect.assertions(2);
     await User.destroy({ where: { email: signupUser.email } });
     const token = jwt.sign({ id: 12345, userType: 'user' }, JWT_SECRET);
@@ -249,7 +249,6 @@ describe('Profile', () => {
   });
 
   test('Should get user profiles list', async done => {
-    // await Follow.findOrCreate({ where: { followee: aFollowee.id, follower: loginUser1.id } });
     const res = await request(app)
       .get(`${urlPrefix}/profiles`)
       .set('Authorization', loginUser1.token);

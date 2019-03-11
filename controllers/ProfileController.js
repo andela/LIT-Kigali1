@@ -100,7 +100,6 @@ class ProfileController {
       attributes: ['firstName', 'lastName', 'image', 'bio']
     });
     users = users.map(data => {
-      // const user = { ...data.get(), followed: false };
       const user = { ...data.get() };
       user.followed = user.userFollower && user.userFollower.length > 0;
       delete user.userFollower;

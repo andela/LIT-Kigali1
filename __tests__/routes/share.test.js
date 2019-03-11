@@ -76,7 +76,9 @@ describe('articles', () => {
 
   test('should share article on twitter', async () => {
     expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${newArticle2.slug}/share/twitter`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${newArticle2.slug}/share/twitter`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
@@ -84,7 +86,9 @@ describe('articles', () => {
 
   test('should fail to share article on twitter', async () => {
     expect.assertions(4);
-    const res = await request(app).get(`${urlPrefix}/articles/${fakeSlug}/share/twitter`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${fakeSlug}/share/twitter`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
@@ -93,7 +97,9 @@ describe('articles', () => {
 
   test('should share article on Facebook', async () => {
     expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${newArticle2.slug}/share/facebook`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${newArticle2.slug}/share/facebook`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
@@ -101,7 +107,9 @@ describe('articles', () => {
 
   test('should fail to share article on Facebook', async () => {
     expect.assertions(4);
-    const res = await request(app).get(`${urlPrefix}/articles/${fakeSlug}/share/facebook`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${fakeSlug}/share/facebook`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
@@ -110,7 +118,9 @@ describe('articles', () => {
 
   test('should share article on Linkedin', async () => {
     expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${newArticle2.slug}/share/linkedin`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${newArticle2.slug}/share/linkedin`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
@@ -118,7 +128,9 @@ describe('articles', () => {
 
   test('should fail to share article on Linkedin', async () => {
     expect.assertions(4);
-    const res = await request(app).get(`${urlPrefix}/articles/${fakeSlug}/share/linkedin`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${fakeSlug}/share/linkedin`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
@@ -127,7 +139,9 @@ describe('articles', () => {
 
   test('should share article on email', async () => {
     expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${newArticle2.slug}/share/email`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${newArticle2.slug}/share/email`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBeDefined();
@@ -135,7 +149,9 @@ describe('articles', () => {
 
   test('should fail to share article on email', async () => {
     expect.assertions(4);
-    const res = await request(app).get(`${urlPrefix}/articles/${fakeSlug}/share/email`);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${fakeSlug}/share/email`)
+      .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Article not found');

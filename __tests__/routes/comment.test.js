@@ -43,6 +43,7 @@ describe('comments', () => {
   });
 
   afterAll(async () => {
+<<<<<<< HEAD
     await User.destroy({
       where: {
         [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]
@@ -54,6 +55,11 @@ describe('comments', () => {
         [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]
       }
     });
+=======
+    await User.destroy({where: { [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }] }}).then(() => true);
+    await Article.destroy({ where: { id: newArticle.id } });
+    await Comment.destroy({where: { [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }] }});
+>>>>>>> feat(report article): fix conflicts with the base branch
   });
 
   /* Create a comment test cases */

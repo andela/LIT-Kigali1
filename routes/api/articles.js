@@ -61,8 +61,8 @@ router.get(
 );
 
 router.delete(
-  '/:slug', 
-verifyJwt(), 
+  '/:slug',
+verifyJwt(),
 ArticleController.deleteArticle
 );
 
@@ -89,14 +89,14 @@ router
   .get(asyncHandler(RatingController.getAllRating));
 
 router.post(
-  '/:slug/like', 
-  verifyJwt(), 
+  '/:slug/like',
+  verifyJwt(),
   asyncHandler(ArticleController.likeArticle)
   );
 
 router.post(
-  '/:slug/dislike', 
-  verifyJwt(), 
+  '/:slug/dislike',
+  verifyJwt(),
   asyncHandler(ArticleController.dislikeArticle)
   );
 
@@ -119,8 +119,8 @@ router.get(
 );
 
 router.get(
-  '/:slug/share/email', 
-  verifyJwt(), 
+  '/:slug/share/email',
+  verifyJwt(),
   asyncHandler(ArticleController.shareArticleEmail)
   );
 router

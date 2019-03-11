@@ -253,11 +253,21 @@ describe('Profile', () => {
   });
 
   test('Should get user profiles list', async done => {
-    expect.assertions(3);
+    // await Follow.findOrCreate({ where: { followee: aFollowee.id, follower: loginUser1.id } });
+    const res = await request(app)
+      .get(`${urlPrefix}/profiles`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.profiles).toBeDefined();
+    done();
+  });
+
+  test('Should get user profiles without token list', async done => {
     const res = await request(app).get(`${urlPrefix}/profiles`);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.user).toBeDefined();
+    expect(res.body.profiles).toBeDefined();
     done();
   });
 });

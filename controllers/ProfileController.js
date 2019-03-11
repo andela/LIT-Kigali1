@@ -1,5 +1,6 @@
 import uuid from 'uuid';
-import { User } from '../database/models';
+import { Op } from 'sequelize';
+import { User, Article, Follow } from '../database/models';
 import { sendEmailConfirmationLink } from './MailController';
 
 /**
@@ -74,11 +75,38 @@ class ProfileController {
    * @author Manzi
    * @param {*} req
    * @param {*} res
+   * @param {*} next
    * @returns {*} Users object
    */
   static async getProfiles(req, res) {
-    const profiles = await User.findAll({attributes: ['firstName', 'lastName', 'image', 'bio', 'cover']});
-    return res.status(200).json({ status: 200, user: profiles });
+    const { currentUser } = req;
+    let include;
+    if (currentUser) {
+      include = {
+        model: Follow,
+        as: 'userFollower',
+        where: { follower: currentUser.id },
+        required: false,
+        attributes: ['followee']
+      };
+    }
+    let users = await User.findAll({
+      where: {
+        userType: 'user',
+        confirmed: { [Op.ne]: 'pending' },
+        status: { [Op.ne]: 'blocked' }
+      },
+      include,
+      attributes: ['firstName', 'lastName', 'image', 'bio']
+    });
+    users = users.map(data => {
+      // const user = { ...data.get(), followed: false };
+      const user = { ...data.get() };
+      user.followed = user.userFollower && user.userFollower.length > 0;
+      delete user.userFollower;
+      return user;
+    });
+    return res.status(200).json({ status: 200, profiles: users });
   }
 
   /**
@@ -90,8 +118,9 @@ class ProfileController {
   static async getProfile(req, res) {
     const { username } = req.params;
     const profile = await User.findOne({
-      where: { username },
-      attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender']
+      where: { username, userType: 'user' },
+      attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
+      include: { model: Article, attributes: ['title', 'description'] }
     });
     if (!profile) {
       return res.status(404).json({ status: 404, message: 'User not found' });

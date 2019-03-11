@@ -1,7 +1,7 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { User } from '../../database/models';
+import { User, Follow } from '../../database/models';
 import { signupUser, profile } from '../mocks/db.json';
 import { urlPrefix } from '../mocks/variables.json';
 import app from '../../app';
@@ -13,6 +13,7 @@ const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
 const randomUser = 'random';
+const aFollowee = '5b8168be-7451-4ebb-a364-ef9293e707c2';
 jest.setTimeout(50000);
 describe('Profile', () => {
   beforeAll(async (done) => {
@@ -28,12 +29,15 @@ describe('Profile', () => {
       .post(`${urlPrefix}/users/login`)
       .send({ user: { username, password } });
     loginUser1 = res.body.user;
+    await Follow.findOrCreate({ where: { followee: aFollowee.id, follower: loginUser1.id } });
+
     done();
   });
 
   afterAll(async (done) => {
     await User.destroy({ where: { email: signupUser.email } });
     await User.destroy({ where: { email: profile.email } });
+    await Follow.destroy({ where: { followee: aFollowee.id, follower: loginUser1.id } });
     done();
   });
 
@@ -245,11 +249,21 @@ describe('Profile', () => {
   });
 
   test('Should get user profiles list', async done => {
-    expect.assertions(3);
+    // await Follow.findOrCreate({ where: { followee: aFollowee.id, follower: loginUser1.id } });
+    const res = await request(app)
+      .get(`${urlPrefix}/profiles`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.profiles).toBeDefined();
+    done();
+  });
+
+  test('Should get user profiles without token list', async done => {
     const res = await request(app).get(`${urlPrefix}/profiles`);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.user).toBeDefined();
+    expect(res.body.profiles).toBeDefined();
     done();
   });
 });

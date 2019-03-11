@@ -29,7 +29,11 @@ router.get(
   verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.searchArticles),
 );
-router.get('/report', verifyJwt({ tokenRequired: true }), ArticleController.getArticleReports);
+router.get(
+  '/report',
+  verifyJwt({ tokenRequired: true }),
+  asyncHandler(ArticleController.getArticleReports)
+);
 
 router.get(
   '/:slug',

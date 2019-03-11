@@ -219,22 +219,22 @@ class ArticleController {
   static async deleteArticle(req, res) {
     const { currentUser = {} } = req;
     const { slug } = req.params;
-    const article = await Article.findOne({ where: { slug } });
+    const article = await Article.findOne({ where: { slug, status: { [Op.not]: ['deleted'] } } });
 
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }
 
-    if (article.userId !== currentUser.id) {
-      return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+    if (article.userId === currentUser.id || currentUser.userType === 'admin') {
+      await article.update({ status: 'deleted' });
+
+      return res.status(200).json({
+        status: 200,
+        message: 'Article deleted successfully',
+      });
+      
     }
-
-    await article.update({ status: 'deleted' });
-
-    return res.status(200).json({
-      status: 200,
-      message: 'Article deleted successfully',
-    });
+    return res.status(401).json({ status: 401, message: 'Unauthorized access' });
   }
 
   /**
@@ -483,7 +483,7 @@ class ArticleController {
     const { slug } = req.params;
     const { report } = req.body;
 
-    const article = await Article.findOne({ where: { slug } });
+    const article = await Article.findOne({where: { slug, status: { [Op.not]: ['deleted', 'unpublished'] } }});
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }

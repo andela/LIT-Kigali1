@@ -108,7 +108,11 @@ router
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
 
-router.post('/:articleSlug/comments/:commentId/like', verifyJwt(), asyncHandler(FavoriteCommentController.likeComment));
-router.post('/:articleSlug/comments/:commentId/dislike', verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment));
+router.route('/:articleSlug/comments/:commentId/like')
+  .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
+  .get(asyncHandler(FavoriteCommentController.getAllLikes));
+router.route('/:articleSlug/comments/:commentId/dislike')
+  .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
+  .get(asyncHandler(FavoriteCommentController.getAllDislikes));
 
 export default router;

@@ -19,7 +19,7 @@ class FavoriteCommentController {
     if (!comment) {
       return res.status(404).send({
         status: 404,
-        message: 'The comment you are trying to like does not exist',
+        message: 'The comment you are trying to like does not exist'
       });
     }
     const isFavorited = await FavoriteComment.findOne({
@@ -113,6 +113,82 @@ class FavoriteCommentController {
       status: 201,
       message: 'Comment disliked successfully',
       dislike: { ...dislike.get() }
+    });
+  }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} object
+   */
+  static async getAllLikes(req, res) {
+    const { commentId } = req.params;
+    const { queryPage = 1 } = req.query;
+
+    const comments = await Comment.findOne({ where: { id: commentId } });
+    if (!comments) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No likes found'
+      });
+    }
+    const limit = 20;
+    const commentLikes = await FavoriteComment.findAndCountAll({
+      where: { commentId, value: 'liked' },
+      limit,
+      offset: (queryPage - 1) * limit
+    });
+    if (!commentLikes.rows.length) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No likes found'
+      });
+    }
+    return res.status(200).send({
+      status: 200,
+      counts: commentLikes.count,
+      likes: commentLikes.rows,
+      page: Number(queryPage),
+      pages: Math.ceil(commentLikes.count / limit)
+    });
+  }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} object
+   */
+  static async getAllDislikes(req, res) {
+    const { commentId } = req.params;
+    const { queryPage = 1 } = req.query;
+
+    const comments = await Comment.findOne({ where: { id: commentId } });
+    if (!comments) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No dislikes found'
+      });
+    }
+    const limit = 20;
+    const commentDislikes = await FavoriteComment.findAndCountAll({
+      where: { commentId, value: 'disliked' },
+      limit,
+      offset: (queryPage - 1) * limit
+    });
+    if (!commentDislikes.rows.length) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No dislikes found'
+      });
+    }
+    return res.status(200).send({
+      status: 200,
+      counts: commentDislikes.count,
+      dislikes: commentDislikes.rows,
+      page: Number(queryPage),
+      pages: Math.ceil(commentDislikes.count / limit)
     });
   }
 }

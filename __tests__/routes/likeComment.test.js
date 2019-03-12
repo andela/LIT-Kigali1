@@ -153,4 +153,92 @@ describe('likeComment', () => {
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('The comment you are trying to dislike does not exist');
   });
+
+  test('should not dislike unexisting comment', async () => {
+    expect.assertions(3);
+    await Comment.destroy({ where: { id: testComment.id } });
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
+      .set('authorization', testToken);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('The comment you are trying to dislike does not exist');
+  });
+
+  test('should get not likes', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('No likes found');
+  });
+
+  test('should get all likes for a comment', async () => {
+    expect.assertions(5);
+    await Comment.create({
+      userId: testComment.userId,
+      id: testComment.id,
+      body: testComment.body,
+      articleId: testComment.articleId
+    });
+    await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
+      .set('authorization', testToken);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.likes).toBeDefined();
+    expect(res.body.page).toBeDefined();
+    expect(res.body.pages).toBeDefined();
+  });
+
+  test('should get not likes for unexisting comment', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/4b557e5f-d3da-4ac0-a25b-cfd2b244eedc/like`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('No likes found');
+  });
+
+  test('should get not likes', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('No dislikes found');
+  });
+
+  test('should get all dislikes for a comment', async () => {
+    expect.assertions(5);
+    await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
+      .set('authorization', testToken);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.dislikes).toBeDefined();
+    expect(res.body.page).toBeDefined();
+    expect(res.body.pages).toBeDefined();
+  });
+
+  test('should get not likes for unexisting comment', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/4b557e5f-d3da-4ac0-a25b-cfd2b244eedc/dislike`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('No dislikes found');
+  });
 });

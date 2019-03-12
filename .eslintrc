@@ -56,6 +56,7 @@
           "ClassDeclaration": true
         }
       }
-    ]
+    ],
+    "prettier/prettier": 0
   }
 }

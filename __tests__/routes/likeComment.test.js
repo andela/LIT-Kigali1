@@ -168,6 +168,12 @@ describe('likeComment', () => {
 
   test('should get not likes', async () => {
     expect.assertions(3);
+    await Comment.create({
+      userId: testComment.userId,
+      id: testComment.id,
+      body: testComment.body,
+      articleId: testComment.articleId
+    });
     const res = await request(app)
       .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`);
 
@@ -178,12 +184,6 @@ describe('likeComment', () => {
 
   test('should get all likes for a comment', async () => {
     expect.assertions(5);
-    await Comment.create({
-      userId: testComment.userId,
-      id: testComment.id,
-      body: testComment.body,
-      articleId: testComment.articleId
-    });
     await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);

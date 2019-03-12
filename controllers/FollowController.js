@@ -44,7 +44,7 @@ class FollowController {
     }
     const follow = await Follow.findOne({
       where: { followee: followee.id, follower: currentUser.id },
-      include: { model: User, as: 'userFollowee' },
+      include: { model: User, as: 'userFollowee' }
     });
 
     if (!follow) {

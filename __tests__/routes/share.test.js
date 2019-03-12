@@ -23,14 +23,14 @@ describe('articles', () => {
       email,
       username,
       confirmed: 'confirmed',
-      password: encryptedPassword,
+      password: encryptedPassword
     });
     await User.create({
       ...signupUser,
       email: 'test_login1@gmail.com',
       username: 'test_login1',
       confirmed: 'confirmed',
-      password: encryptedPassword,
+      password: encryptedPassword
     });
     let res = await request(app)
       .post(`${urlPrefix}/users/login`)
@@ -54,9 +54,9 @@ describe('articles', () => {
           { email: signupUser.email },
           { email },
           { username: 'test_login' },
-          { username: 'test_login1' },
-        ],
-      },
+          { username: 'test_login1' }
+        ]
+      }
     }).then(() => true);
     await Article.destroy({ where: { tagList: { [Op.contains]: ['share'] } } });
   });

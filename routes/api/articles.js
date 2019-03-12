@@ -50,7 +50,9 @@ router.get(
   asyncHandler(ArticleController.getArticles),
 );
 
-router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
+router.delete(
+'/:slug', verifyJwt(), ArticleController.deleteArticle
+);
 
 router.post(
   '/:articleSlug/comments',
@@ -74,9 +76,13 @@ router
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
 
-router.post('/:slug/like', verifyJwt(), asyncHandler(ArticleController.likeArticle));
+router.post(
+'/:slug/like', verifyJwt(), asyncHandler(ArticleController.likeArticle)
+);
 
-router.post('/:slug/dislike', verifyJwt(), asyncHandler(ArticleController.dislikeArticle));
+router.post(
+'/:slug/dislike', verifyJwt(), asyncHandler(ArticleController.dislikeArticle)
+);
 
 router.get(
   '/:slug/share/twitter',
@@ -96,7 +102,9 @@ router.get(
   asyncHandler(ArticleController.shareArticleLinkedin),
 );
 
-router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
+router.get(
+'/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail)
+);
 router
   .route('/:articleSlug/rating')
   .post(

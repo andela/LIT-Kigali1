@@ -23,12 +23,12 @@ class AuthController {
    */
   static async signup(req, res) {
     const {
-      body: { user },
+      body: { user }
     } = req;
     let userModel = await User.findOne({
       where: {
-        [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }],
-      },
+        [Op.or]: [{ email: user.email.toLowerCase() }, { username: user.username.toLowerCase() }]
+      }
     });
     if (userModel) {
       return res.status(401).json({ status: 401, message: 'Account already exist' });
@@ -39,13 +39,11 @@ class AuthController {
       ...user,
       email: user.email.toLowerCase(),
       username: user.username.toLowerCase(),
-      password: passwordHashed,
+      password: passwordHashed
     });
 
-    const token = jwt.sign(
-      { id: userModel.get().id, userType: userModel.get().userType },
-      JWT_SECRET,
-    );
+    const token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType },
+      JWT_SECRET);
     await userModel.createToken({ token });
 
     await sendEmailConfirmationLink({ ...userModel.get() });
@@ -55,7 +53,7 @@ class AuthController {
     return res.status(201).json({
       status: 201,
       message: 'Account created sucessfully. Please check your email for confirmation',
-      user: { ...userData, token },
+      user: { ...userData, token }
     });
   }
 
@@ -67,7 +65,9 @@ class AuthController {
    * @param {*} next
    * @returns {Object} Returns the response
    */
-  static async login(req, res, next) {
+  static async login(
+req, res, next
+) {
     const { user: loginUser } = req.body;
     req.body.username = loginUser.username;
     req.body.password = loginUser.password;
@@ -79,7 +79,9 @@ class AuthController {
       await Token.create({ token, userId: user.id });
       const { confirmationCode, ...userData } = user;
       return res.json({ status: 200, user: { ...userData, token } });
-    })(req, res, next);
+    })(
+req, res, next
+);
   }
 
   /**
@@ -91,12 +93,12 @@ class AuthController {
    */
   static async forgotPassword(req, res) {
     const {
-      body: { user },
+      body: { user }
     } = req;
 
     const reset = await User.findOne({
       where: { email: user.email, confirmed: 'confirmed' },
-      attributes: ['id', 'email'],
+      attributes: ['id', 'email']
     });
     if (!reset) {
       return res
@@ -106,10 +108,12 @@ class AuthController {
     const { id, email } = reset.get();
     const createReset = await ResetPassword.create({ userId: id });
     const { resetCode } = createReset.get();
-    await resetPasswordEmail(id, email, resetCode);
+    await resetPasswordEmail(
+id, email, resetCode
+);
     res.status(201).json({
       status: 201,
-      message: 'Password reset link sent sucessfully. Please check your email!',
+      message: 'Password reset link sent sucessfully. Please check your email!'
     });
   }
 
@@ -146,7 +150,7 @@ class AuthController {
         if (expirationTime > presentTime) {
           const user = await User.findOne({
             where: { id: userId },
-            attributes: ['id', 'email'],
+            attributes: ['id', 'email']
           });
 
           const password = await bcrypt.hash(body.newPassword, 10);
@@ -154,7 +158,7 @@ class AuthController {
           await newPasswordEmail(user.email);
           res.status(200).json({
             status: 200,
-            message: 'Your password has been reset successfully!',
+            message: 'Your password has been reset successfully!'
           });
         }
       }
@@ -172,10 +176,8 @@ class AuthController {
    */
   static async signout(req, res) {
     const { currentUser } = req;
-    await Token.update(
-      { status: 'signout', signoutAt: moment().format() },
-      { where: { token: currentUser.token } },
-    );
+    await Token.update({ status: 'signout', signoutAt: moment().format() },
+      { where: { token: currentUser.token } });
     return res.json({ status: 200, message: 'Signed out successfully' });
   }
 }

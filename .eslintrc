@@ -55,7 +55,6 @@
         }
       }
     ],
-    "object-curly-newline": 0,
-    "no-useless-escape": 0
+    "prettier/prettier": 0
   }
 }

@@ -12,17 +12,11 @@ dotenv.config();
 const router = express.Router();
 const { SERVER_URL } = process.env;
 
-router.post(
-'/login', celebrate({ body: authValidator.login }), AuthController.login
-);
+router.post('/login', celebrate({ body: authValidator.login }), AuthController.login);
 
-router.post(
-'/', celebrate({ body: authValidator.signup }), AuthController.signup
-);
+router.post('/', celebrate({ body: authValidator.signup }), AuthController.signup);
 
-router.post(
-'/signout', verifyJwt(), AuthController.signout
-);
+router.post('/signout', verifyJwt(), AuthController.signout);
 
 router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEmail);
 router.post(
@@ -79,12 +73,8 @@ router.get('/:username/social/', async (req, res) => {
   });
 });
 
-router.post(
-'/:username/follow', verifyJwt(), asyncHandler(FollowController.follow)
-);
+router.post('/:username/follow', verifyJwt(), asyncHandler(FollowController.follow));
 
-router.delete(
-'/:username/unfollow', verifyJwt(), asyncHandler(FollowController.unfollow)
-);
+router.delete('/:username/unfollow', verifyJwt(), asyncHandler(FollowController.unfollow));
 
 export default router;

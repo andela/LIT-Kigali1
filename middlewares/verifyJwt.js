@@ -1,11 +1,7 @@
 import passport from 'passport';
 
-const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (
-req, res, next
-) => {
-  passport.authenticate('jwt', (
-err, user, info
-) => {
+const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (req, res, next) => {
+  passport.authenticate('jwt', (err, user, info) => {
     if (err) {
       return res.status(520).send({ errors: { body: [err.message] } });
     }
@@ -25,9 +21,7 @@ err, user, info
     }
 
     return next();
-  })(
-req, res, next
-);
+  })(req, res, next);
 };
 
 export default verifyJwt;

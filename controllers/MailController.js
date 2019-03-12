@@ -50,9 +50,7 @@ export const sendEmailVerified = user => {
   return sendgrid({ to: user.email, subject: 'Email Confirmed', html: mailBody });
 };
 
-export const resetPasswordEmail = (
-userId, email, resetCode
-) => {
+export const resetPasswordEmail = (userId, email, resetCode) => {
   const mailBody = `
   <div style="color: #5a5a5a;">
       <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">

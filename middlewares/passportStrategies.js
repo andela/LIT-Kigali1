@@ -20,8 +20,10 @@ const {
   GOOGLE_CONSUMER_SECRET
 } = process.env;
 
-passport.use('login',
-  new LocalStrategy({
+passport.use(
+  'login',
+  new LocalStrategy(
+    {
       usernameField: 'username',
       passwordField: 'password'
     },
@@ -40,9 +42,13 @@ passport.use('login',
       } catch (error) {
         done(error);
       }
-    }));
-passport.use('jwt',
-  new JWTStrategy({
+    }
+  )
+);
+passport.use(
+  'jwt',
+  new JWTStrategy(
+    {
       jwtFromRequest: ExtractJwt.fromHeader('authorization'),
       secretOrKey: JWT_SECRET,
       passReqToCallback: true
@@ -52,24 +58,22 @@ passport.use('jwt',
       try {
         const token = await Token.findOne({ where: { status: 'active', token: authorization } });
         if (!token) {
-          return done(
-null, false, { message: 'Invalid token. Please login.' }
-);
+          return done(null, false, { message: 'Invalid token. Please login.' });
         }
         const user = await User.findOne({
           where: { id: jwtPayload.id },
           attributes: { exclude: ['password'] }
         });
         if (!user) {
-          return done(
-null, false, { message: 'user does not exist' }
-);
+          return done(null, false, { message: 'user does not exist' });
         }
         return done(null, { ...user.get(), token: token.token });
       } catch (error) {
         return done(error);
       }
-    }));
+    }
+  )
+);
 
 passport.serializeUser((user, callback) => {
   callback(null, user);
@@ -80,7 +84,9 @@ passport.deserializeUser(async (user, callback) => {
   callback(null, foundUser);
 });
 
-passport.use(new TwitterStrategy({
+passport.use(
+  new TwitterStrategy(
+    {
       consumerKey: TWITTER_CONSUMER_KEY,
       consumerSecret: TWITTER_CONSUMER_SECRET,
       callbackURL: `http://${SERVER_URL}/api/v1/users/twitter/callback`,
@@ -105,9 +111,13 @@ passport.use(new TwitterStrategy({
       } catch (err) {
         return done(err, null);
       }
-    }));
+    }
+  )
+);
 
-passport.use(new FacebookStrategy({
+passport.use(
+  new FacebookStrategy(
+    {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
       callbackURL: `http://${SERVER_URL}/api/v1/users/facebook/callback`
@@ -131,9 +141,13 @@ passport.use(new FacebookStrategy({
       } catch (error) {
         return done(error);
       }
-    }));
+    }
+  )
+);
 
-passport.use(new GoogleStrategy({
+passport.use(
+  new GoogleStrategy(
+    {
       clientID: GOOGLE_CONSUMER_KEY,
       clientSecret: GOOGLE_CONSUMER_SECRET,
       callbackURL: `http://${SERVER_URL}/api/v1/users/google/callback`
@@ -157,6 +171,8 @@ passport.use(new GoogleStrategy({
       } catch (err) {
         return done(err, null);
       }
-    }));
+    }
+  )
+);
 
 export default passport;

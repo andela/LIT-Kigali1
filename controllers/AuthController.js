@@ -42,8 +42,10 @@ class AuthController {
       password: passwordHashed
     });
 
-    const token = jwt.sign({ id: userModel.get().id, userType: userModel.get().userType },
-      JWT_SECRET);
+    const token = jwt.sign(
+      { id: userModel.get().id, userType: userModel.get().userType },
+      JWT_SECRET
+    );
     await userModel.createToken({ token });
 
     await sendEmailConfirmationLink({ ...userModel.get() });
@@ -65,9 +67,7 @@ class AuthController {
    * @param {*} next
    * @returns {Object} Returns the response
    */
-  static async login(
-req, res, next
-) {
+  static async login(req, res, next) {
     const { user: loginUser } = req.body;
     req.body.username = loginUser.username;
     req.body.password = loginUser.password;
@@ -79,9 +79,7 @@ req, res, next
       await Token.create({ token, userId: user.id });
       const { confirmationCode, ...userData } = user;
       return res.json({ status: 200, user: { ...userData, token } });
-    })(
-req, res, next
-);
+    })(req, res, next);
   }
 
   /**
@@ -108,9 +106,7 @@ req, res, next
     const { id, email } = reset.get();
     const createReset = await ResetPassword.create({ userId: id });
     const { resetCode } = createReset.get();
-    await resetPasswordEmail(
-id, email, resetCode
-);
+    await resetPasswordEmail(id, email, resetCode);
     res.status(201).json({
       status: 201,
       message: 'Password reset link sent sucessfully. Please check your email!'
@@ -176,8 +172,10 @@ id, email, resetCode
    */
   static async signout(req, res) {
     const { currentUser } = req;
-    await Token.update({ status: 'signout', signoutAt: moment().format() },
-      { where: { token: currentUser.token } });
+    await Token.update(
+      { status: 'signout', signoutAt: moment().format() },
+      { where: { token: currentUser.token } }
+    );
     return res.json({ status: 200, message: 'Signed out successfully' });
   }
 }

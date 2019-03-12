@@ -63,8 +63,7 @@ describe('articles', () => {
     await Favorite.destroy({ where: { articleId: newArticle.id } });
   });
 
-  test(
-'should return created article', async () => {
+  test('should return created article', async () => {
     expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
@@ -75,8 +74,7 @@ describe('articles', () => {
     expect(res.body.status).toBe(201);
     expect(res.body.article).toBeDefined();
     expect(res.body.article.slug).toBeDefined();
-  }, 30000
-);
+  }, 30000);
 
   test('Should return article not found', async () => {
     expect.assertions(2);
@@ -303,17 +301,9 @@ describe('articles', () => {
 
   test('Search article by author', async () => {
     expect.assertions(2);
-<<<<<<< HEAD
-<<<<<<< HEAD
     const res = await request(app).get(
       `${urlPrefix}/articles/search?author=${loginUser1.username}`
     );
-=======
-    const res = await request(app).get(`${urlPrefix}/articles/search?author=${loginUser1.username}`,);
->>>>>>> fix(hound): fix some prettier issues
-=======
-    const res = await request(app).get(`${urlPrefix}/articles/search?author=${loginUser1.username}`);
->>>>>>> fix(hound): fix some prettier issues
     expect(res.status).toBe(200);
     expect(res.body.articles).toBeDefined();
   });

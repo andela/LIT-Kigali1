@@ -18,5 +18,4 @@ export {
   CommentController,
   RatingController,
   FavoriteCommentController,
-  RatingController
 };

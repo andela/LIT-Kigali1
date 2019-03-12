@@ -36,12 +36,14 @@ class RatingController {
       });
     }
     const averageRate = await calculateRating(articleId);
-    const newRate = await Favorite.create({
+    const newRate = await Favorite.create(
+      {
         userId: currentUser.id,
         rating: rate,
         articleId
       },
-      { include: [{ model: User }, { model: Article }] });
+      { include: [{ model: User }, { model: Article }] }
+    );
     return res.status(201).send({
       status: 201,
       message: 'article has been rated successfully',

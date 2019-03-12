@@ -22,12 +22,12 @@ router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEma
 router.post(
   '/forget',
   celebrate({ body: authValidator.forgetPassword }),
-  AuthController.forgotPassword
+  AuthController.forgotPassword,
 );
 router.put(
   '/:userId/reset/:resetCode',
   celebrate({ body: authValidator.resetPassword }),
-  AuthController.resetPassword
+  AuthController.resetPassword,
 );
 
 /* FACEBOOK ROUTER */
@@ -38,7 +38,7 @@ router.get(
   passport.authenticate('facebook', { failureRedirect: '/' }),
   (req, res) => {
     res.status(302).redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  }
+  },
 );
 
 /* TWITTER ROUTER */
@@ -49,7 +49,7 @@ router.get(
   passport.authenticate('twitter', { failureRedirect: '/' }),
   (req, res) => {
     res.redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  }
+  },
 );
 
 /* GOOGLE ROUTER */
@@ -60,7 +60,7 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     res.redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  }
+  },
 );
 
 router.get('/:username/social/', async (req, res) => {
@@ -69,7 +69,7 @@ router.get('/:username/social/', async (req, res) => {
   if (!user) return res.status(404).json({ status: 404, message: 'Not found' });
   res.render('index', {
     user: user.get(),
-    title: 'User profile'
+    title: 'User profile',
   });
 });
 

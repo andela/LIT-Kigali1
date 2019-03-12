@@ -2,16 +2,10 @@
   "root": true,
   "extends": ["airbnb-base", "prettier"],
   "env": {
-    "node": true,
-    "es6": true,
-    "jest/globals": true
+    "jest": true
   },
-  "plugins": ["jest", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
-    "parserOptions": {
-      "allowImportExportEverywhere": true,
-      "sourceType": "module"
-    },
     "eol-last": ["error", "always"],
     "import/prefer-default-export": "off",
     "import/resolver": { "node": { "extensions": [".js"] } },

@@ -81,13 +81,13 @@ router.get(
 
 router.get(
   '/:slug/share/facebook',
-  verifyJwt({ tokenRequired: false }),
+  verifyJwt(),
   asyncHandler(ArticleController.shareArticleFacebook)
 );
 
 router.get(
   '/:slug/share/linkedin',
-  verifyJwt({ tokenRequired: false }),
+  verifyJwt(),
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 

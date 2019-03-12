@@ -49,8 +49,7 @@
         }
       }
     ],
-    "object-curly-newline": ["error", { "multiline": true, "minProperties": 4 }],
-    "no-useless-escape": 0,
-    "prettier/prettier": 0
+    "object-curly-newline": 0,
+    "no-useless-escape": 0
   }
 }

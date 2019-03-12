@@ -1,6 +1,5 @@
 eslint:
   enabled: true
-  version: 4.18.2
   config_file: .eslintrc
   ignore_file: .eslintignore
 

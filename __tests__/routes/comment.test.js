@@ -19,7 +19,7 @@ describe('comments', () => {
     await User.create({
       ...signupUser,
       confirmed: 'confirmed',
-      password: encryptedPassword
+      password: encryptedPassword,
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
@@ -28,7 +28,7 @@ describe('comments', () => {
     await User.create({
       ...signupUser2,
       confirmed: 'confirmed',
-      password: encryptedPassword2
+      password: encryptedPassword2,
     });
     const res2 = await request(app)
       .post(`${urlPrefix}/users/login`)
@@ -37,7 +37,7 @@ describe('comments', () => {
     const res3 = await Article.create({
       ...createArticle,
       slug: slugString(createArticle.title),
-      userId: loginUser1.id
+      userId: loginUser1.id,
     });
     newArticle = res3.get();
   });
@@ -45,14 +45,14 @@ describe('comments', () => {
   afterAll(async () => {
     await User.destroy({
       where: {
-        [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]
-      }
+        [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }],
+      },
     }).then(() => true);
     await Article.destroy({ where: { id: newArticle.id } });
     await Comment.destroy({
       where: {
-        [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]
-      }
+        [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }],
+      },
     });
   });
 

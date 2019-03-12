@@ -11,8 +11,8 @@ const signup = {
     email: Joi.string()
       .email()
       .required()
-      .trim()
-  })
+      .trim(),
+  }),
 };
 const login = {
   user: Joi.object().keys({
@@ -24,8 +24,8 @@ const login = {
       .required()
       .trim()
       .min(6)
-      .max(60)
-  })
+      .max(60),
+  }),
 };
 
 const forgetPassword = {
@@ -33,8 +33,8 @@ const forgetPassword = {
     email: Joi.string()
       .email()
       .required()
-      .trim()
-  })
+      .trim(),
+  }),
 };
 
 const resetPassword = {
@@ -45,12 +45,12 @@ const resetPassword = {
   confirmNewpassword: Joi.string()
     .required()
     .min(6)
-    .max(60)
+    .max(60),
 };
 
 export default {
   signup,
   login,
   forgetPassword,
-  resetPassword
+  resetPassword,
 };

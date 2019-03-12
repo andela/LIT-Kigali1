@@ -8,9 +8,9 @@ const createComment = {
         .required()
         .trim()
         .min(3)
-        .max(255)
+        .max(255),
     })
-    .required()
+    .required(),
 };
 
 const updateComment = {
@@ -20,9 +20,9 @@ const updateComment = {
         .required()
         .trim()
         .min(3)
-        .max(255)
+        .max(255),
     })
-    .required()
+    .required(),
 };
 
 const getArticleCommentsQuery = { page: Joi.number().min(1) };
@@ -30,5 +30,5 @@ const getArticleCommentsQuery = { page: Joi.number().min(1) };
 export default {
   createComment,
   updateComment,
-  getArticleCommentsQuery
+  getArticleCommentsQuery,
 };

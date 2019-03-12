@@ -4,6 +4,6 @@ const rating = Joi.object().keys({
   rate: Joi.number()
     .min(1)
     .max(5)
-    .required()
+    .required(),
 });
 export default rating;

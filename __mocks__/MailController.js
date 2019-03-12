@@ -1,8 +1,8 @@
 const response = user => [
   {
     statusCode: 202,
-    from: user.from
-  }
+    from: user.from,
+  },
 ];
 const sendEmailConfirmationLink = user => new Promise(resolve => resolve(response(user)));
 

@@ -35,8 +35,8 @@ app.use(
     secret: 'MYSECRETISVERYSECRET',
     store,
     resave: true,
-    saveUninitialized: true
-  })
+    saveUninitialized: true,
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,8 +66,8 @@ app.use((err, req, res) => {
   res.status(err.status || 500).json({
     errors: {
       message: err.message,
-      error: err
-    }
+      error: err,
+    },
   });
 });
 

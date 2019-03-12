@@ -483,7 +483,9 @@ class ArticleController {
     const { slug } = req.params;
     const { report } = req.body;
 
-    const article = await Article.findOne({where: { slug, status: { [Op.not]: ['deleted', 'unpublished'] } }});
+    const article = await Article.findOne({
+      where: { slug, status: { [Op.not]: ['deleted', 'unpublished'] } }
+    });
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }

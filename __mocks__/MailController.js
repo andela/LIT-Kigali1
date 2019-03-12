@@ -12,6 +12,4 @@ const newPasswordEmail = user => new Promise(resolve => resolve(response(user)))
 
 const sendEmailVerified = user => new Promise(resolve => resolve(response(user)));
 
-export {
- sendEmailConfirmationLink, resetPasswordEmail, newPasswordEmail, sendEmailVerified 
-};
+export { sendEmailConfirmationLink, resetPasswordEmail, newPasswordEmail, sendEmailVerified };

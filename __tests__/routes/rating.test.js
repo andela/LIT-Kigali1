@@ -104,7 +104,7 @@ describe('5 star Rating', () => {
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('Bad Request');
-    expect(res.body.errors[0].message).toBe('\"rate\" must be less than or equal to 5');
+    expect(res.body.errors[0].message).toBe('"rate" must be less than or equal to 5');
   });
   test('should not delete rate form unexisting article', async () => {
     expect.assertions(2);
@@ -139,8 +139,7 @@ describe('5 star Rating', () => {
   });
   test('should not get unexisting rating', async () => {
     expect.assertions(3);
-    const res = await request(app)
-      .get(`${urlPrefix}/articles/${articleSlug}/rating`);
+    const res = await request(app).get(`${urlPrefix}/articles/${articleSlug}/rating`);
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
@@ -150,8 +149,7 @@ describe('5 star Rating', () => {
     expect.assertions(3);
     const article = await Article.findOne({ where: { slug: articleSlug } });
     article.update({ status: 'unpublished' });
-    const res = await request(app)
-      .get(`${urlPrefix}/articles/${articleSlug}/rating`);
+    const res = await request(app).get(`${urlPrefix}/articles/${articleSlug}/rating`);
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
@@ -163,8 +161,7 @@ describe('5 star Rating', () => {
     article.update({ status: 'published' });
     const rate = await Favorite.findOne({ where: { articleId: article.get().id } });
     rate.update({ rating: 4 });
-    const res = await request(app)
-      .get(`${urlPrefix}/articles/${articleSlug}/rating`);
+    const res = await request(app).get(`${urlPrefix}/articles/${articleSlug}/rating`);
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);

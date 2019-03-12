@@ -96,11 +96,15 @@ router.get(
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 
+<<<<<<< HEAD
 router.get(
   '/:slug/share/email',
   verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleEmail)
 );
+=======
+router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
+>>>>>>> fix(hound): fix some prettier issues
 router
   .route('/:articleSlug/rating')
   .post(

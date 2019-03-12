@@ -22,7 +22,7 @@ class CommentController {
     if (!foundArticle) {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     if (comment.parentId) {
@@ -30,28 +30,26 @@ class CommentController {
       if (!parentComment) {
         return res.status(404).json({
           status: 404,
-          message: 'Parent comment not found',
+          message: 'Parent comment not found'
         });
       }
       parentId = parentComment.id;
     }
-    const newComment = await Comment.create(
-      {
+    const newComment = await Comment.create({
         ...comment,
         userId: currentUser.id,
         articleId: foundArticle.id,
-        parentId,
+        parentId
       },
       {
         include: [{ model: User, as: 'author' }],
-        attributes: ['username', 'firstName', 'lastName', 'image'],
-      },
-    );
+        attributes: ['username', 'firstName', 'lastName', 'image']
+      });
 
     return res.status(201).json({
       status: 201,
       message: 'Comment created successfully',
-      comment: newComment.get(),
+      comment: newComment.get()
     });
   }
 
@@ -72,14 +70,14 @@ class CommentController {
         {
           model: User,
           as: 'author',
-          attributes: ['username', 'firstName', 'lastName', 'image'],
-        },
-      ],
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ]
     });
     if (!foundComment) {
       return res.status(404).json({
         status: 404,
-        message: 'Comment not found',
+        message: 'Comment not found'
       });
     }
 
@@ -89,13 +87,13 @@ class CommentController {
 
     await foundComment.update({
       body: comment.body,
-      updateAt: moment().format(),
+      updateAt: moment().format()
     });
 
     return res.status(200).json({
       status: 200,
       message: 'Comment updated successfully',
-      comment: foundComment.get(),
+      comment: foundComment.get()
     });
   }
 
@@ -114,7 +112,7 @@ class CommentController {
     if (!foundArticle) {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     const comments = await Comment.findAndCountAll({
@@ -127,21 +125,21 @@ class CommentController {
             {
               model: User,
               as: 'author',
-              attributes: ['username', 'firstName', 'lastName', 'image'],
-            },
-          ],
-        },
+              attributes: ['username', 'firstName', 'lastName', 'image']
+            }
+          ]
+        }
       ],
       where: { articleId: foundArticle.id, parentId: null },
       offset: (page - 1) * limit,
-      limit,
+      limit
     });
     return res.status(200).json({
       status: 200,
       comments: comments.rows,
       commentsCount: comments.count,
       pages: Math.ceil(comments.count / limit),
-      page,
+      page
     });
   }
 
@@ -169,7 +167,7 @@ class CommentController {
 
     return res.status(200).json({
       status: 200,
-      message: 'Comment deleted successfully',
+      message: 'Comment deleted successfully'
     });
   }
 }

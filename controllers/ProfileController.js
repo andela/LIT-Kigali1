@@ -48,13 +48,13 @@ class ProfileController {
     }
     const profile = await User.findOne({
       attributes: { exclude: ['password', 'status', 'userType', 'createdAt'] },
-      where: { id },
+      where: { id }
     });
     profile.update({
       updateAt: new Date(),
       ...user,
       confirmationCode: uuid.v4(),
-      confirmed: 'pending',
+      confirmed: 'pending'
     });
     let message;
     if (user.email) {
@@ -67,7 +67,7 @@ class ProfileController {
     return res.status(200).send({
       statu: 200,
       message,
-      user: userData,
+      user: userData
     });
   }
 
@@ -87,17 +87,17 @@ class ProfileController {
         as: 'userFollower',
         where: { follower: currentUser.id },
         required: false,
-        attributes: ['followee'],
+        attributes: ['followee']
       };
     }
     let users = await User.findAll({
       where: {
         userType: 'user',
         confirmed: { [Op.ne]: 'pending' },
-        status: { [Op.ne]: 'blocked' },
+        status: { [Op.ne]: 'blocked' }
       },
       include,
-      attributes: ['firstName', 'lastName', 'image', 'bio'],
+      attributes: ['firstName', 'lastName', 'image', 'bio']
     });
     users = users.map(data => {
       const user = { ...data.get() };
@@ -119,7 +119,7 @@ class ProfileController {
     const profile = await User.findOne({
       where: { username, userType: 'user' },
       attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
-      include: { model: Article, attributes: ['title', 'description'] },
+      include: { model: Article, attributes: ['title', 'description'] }
     });
     if (!profile) {
       return res.status(404).json({ status: 404, message: 'User not found' });

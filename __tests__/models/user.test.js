@@ -22,7 +22,7 @@ describe('User model', () => {
     expect.assertions(1);
     const [, userData] = await User.update(
       { firstName: 'Olivier' },
-      { where: { email: signupUser.email }, returning: true, plain: true }
+      { where: { email: signupUser.email }, returning: true, plain: true },
     );
     expect(userData.firstName).toBe('Olivier');
   });

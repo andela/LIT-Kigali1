@@ -14,7 +14,7 @@ describe('5 star Rating', () => {
     await User.create({
       ...signupUser,
       confirmed: 'confirmed',
-      password: encryptedPassword
+      password: encryptedPassword,
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
@@ -28,8 +28,8 @@ describe('5 star Rating', () => {
         article: {
           title: 'HelloTest',
           description: 'Hello Test',
-          body: 'heloo  jnfdkenjsnfnvndn nnFDFKJN NFSJDNF NCDLFN  NJSNF'
-        }
+          body: 'heloo  jnfdkenjsnfnvndn nnFDFKJN NFSJDNF NCDLFN  NJSNF',
+        },
       });
     articleSlug = testArticle.body.article.slug;
   });

@@ -12,7 +12,7 @@ const profile = {
     gender: Joi.string().max(6),
     birthDate: Joi.date(),
     image: Joi.string(),
-    cover: Joi.string()
-  })
+    cover: Joi.string(),
+  }),
 };
 export default profile;

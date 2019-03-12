@@ -9,7 +9,7 @@ const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (req,
       const status = info.message === 'user does not exist' ? 404 : 401;
       return res.status(status).send({
         status,
-        message: info.message
+        message: info.message,
       });
     }
 

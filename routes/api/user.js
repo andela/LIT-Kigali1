@@ -11,7 +11,7 @@ router.put(
   '/',
   verifyJwt(),
   celebrate({ body: profileValidator }),
-  asyncHandler(ProfileController.createProfile)
+  asyncHandler(ProfileController.createProfile),
 );
 
 export default router;

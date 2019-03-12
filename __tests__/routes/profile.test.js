@@ -23,7 +23,7 @@ describe('Profile', () => {
       email,
       username,
       confirmed: 'confirmed',
-      password: encryptedPassword
+      password: encryptedPassword,
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
@@ -49,7 +49,7 @@ describe('Profile', () => {
       .send({ user: { ...profile } });
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation');
+    expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation',);
     expect(res.body.user.firstName).toBe(profile.firstName);
     expect(res.body.user.lastName).toBe(profile.lastName);
     expect(res.body.user.username).toBe(profile.username);
@@ -107,7 +107,7 @@ describe('Profile', () => {
       .send({ user: { email: 'doe@doe.com' } });
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation');
+    expect(res.body.message).toBe('Your email has changed. Please check your email for confirmation',);
     const user = await User.findOne({ where: { email: 'doe@doe.com' } });
     user.update({ email: profile.email });
     done();
@@ -144,8 +144,8 @@ describe('Profile', () => {
       .send({
         user: {
           username: 'claudine',
-          email: 'papasava@email.com'
-        }
+          email: 'papasava@email.com',
+        },
       });
 
     expect(res.status).toBe(409);
@@ -161,8 +161,8 @@ describe('Profile', () => {
       .send({
         user: {
           username: 'papasava',
-          email: profile.email
-        }
+          email: profile.email,
+        },
       });
 
     expect(res.status).toBe(409);
@@ -229,7 +229,7 @@ describe('Profile', () => {
       email,
       username,
       confirmed: 'confirmed',
-      password: encryptedPassword
+      password: encryptedPassword,
     });
     const res = await request(app).get(`${urlPrefix}/profiles/${aUser.username}`);
     expect(res.status).toBe(200);

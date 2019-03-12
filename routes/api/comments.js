@@ -11,7 +11,7 @@ router.put(
   '/:commentId',
   celebrate({ body: commentValidator.updateComment }),
   verifyJwt(),
-  asyncHandler(CommentController.updateComment)
+  asyncHandler(CommentController.updateComment),
 );
 
 router.delete('/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));

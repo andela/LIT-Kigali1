@@ -20,7 +20,7 @@ class RatingController {
     if (!article) {
       return res.status(404).send({
         status: 404,
-        errors: { body: ['Article not found'] }
+        errors: { body: ['Article not found'] },
       });
     }
     const articleId = article.id;
@@ -32,7 +32,7 @@ class RatingController {
         status: 200,
         message: 'Rating updated successfully',
         rate: { ...rating.get() },
-        averageRate
+        averageRate,
       });
     }
     const averageRate = await calculateRating(articleId);
@@ -40,15 +40,15 @@ class RatingController {
       {
         userId: currentUser.id,
         rating: rate,
-        articleId
+        articleId,
       },
-      { include: [{ model: User }, { model: Article }] }
+      { include: [{ model: User }, { model: Article }] },
     );
     return res.status(201).send({
       status: 201,
       message: 'article has been rated successfully',
       rate: { ...newRate.get() },
-      averageRate
+      averageRate,
     });
   }
 
@@ -70,8 +70,8 @@ class RatingController {
       where: {
         articleId,
         userId: currentUser.id,
-        rating: { [Op.ne]: null }
-      }
+        rating: { [Op.ne]: null },
+      },
     });
     if (!rating) {
       return res.status(404).send({ errors: { body: ['rating not found'] } });
@@ -79,7 +79,7 @@ class RatingController {
     rating.update({ rating: null, updatedAt: new Date() });
     return res.status(200).send({
       status: 200,
-      message: 'Rating removed successfully'
+      message: 'Rating removed successfully',
     });
   }
 
@@ -96,22 +96,22 @@ class RatingController {
     if (!article) {
       return res.status(404).send({
         status: 404,
-        message: 'Rating not found'
+        message: 'Rating not found',
       });
     }
     const limit = 20;
     const allRating = await Favorite.findAndCountAll({
       where: {
         articleId: article.id,
-        rating: { [Op.ne]: null }
+        rating: { [Op.ne]: null },
       },
       limit,
-      offset: (queryPage - 1) * limit
+      offset: (queryPage - 1) * limit,
     });
     if (!allRating.rows.length) {
       return res.status(404).send({
         status: 404,
-        message: 'No rating for such article'
+        message: 'No rating for such article',
       });
     }
     return res.status(200).send({
@@ -119,7 +119,7 @@ class RatingController {
       averageRate: await calculateRating(null, article.slug),
       ratings: allRating.rows,
       page: Number(queryPage),
-      pages: Math.ceil(allRating.count / limit)
+      pages: Math.ceil(allRating.count / limit),
     });
   }
 }

@@ -27,12 +27,12 @@ class ArticleController {
         userId: currentUser.id,
         slug,
         cover,
-        readingTime
+        readingTime,
       },
       {
         include: [{ model: User, as: 'author' }],
-        attributes: ['username', 'firstName', 'lastName', 'image']
-      }
+        attributes: ['username', 'firstName', 'lastName', 'image'],
+      },
     );
 
     if (newArticle.tagList && newArticle.tagList.length > 0) {
@@ -42,7 +42,7 @@ class ArticleController {
     return res.status(201).json({
       status: 201,
       message: 'Article created successfully',
-      article: newArticle.get()
+      article: newArticle.get(),
     });
   }
 
@@ -60,15 +60,15 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' }
+        status: { [Op.not]: 'deleted' },
       },
       include: [
         {
           model: User,
           as: 'author',
-          attributes: ['username', 'firstName', 'lastName', 'image']
-        }
-      ]
+          attributes: ['username', 'firstName', 'lastName', 'image'],
+        },
+      ],
     });
     if (
       !article ||
@@ -76,7 +76,7 @@ class ArticleController {
     ) {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found'
+        message: 'Article not found',
       });
     }
     const favoritesCount = await Favorite.count({ where: { articleId: article.get().id } });
@@ -91,8 +91,8 @@ class ArticleController {
         rating: await calculateRating(article.get().id),
         author: { ...article.get().author.get(), following },
         favorited,
-        favoritesCount
-      }
+        favoritesCount,
+      },
     });
   }
 
@@ -113,13 +113,13 @@ class ArticleController {
       where: {
         slug,
         userId: currentUser.id,
-        status: { [Op.not]: 'deleted' }
-      }
+        status: { [Op.not]: 'deleted' },
+      },
     });
     if (!dbArticle) {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found'
+        message: 'Article not found',
       });
     }
     if (dbArticle.get().title !== article.title) {
@@ -130,7 +130,7 @@ class ArticleController {
       userId: currentUser.id,
       slug,
       cover,
-      readingTime
+      readingTime,
     });
 
     return res.status(200).json({
@@ -138,8 +138,8 @@ class ArticleController {
       message: 'Article updated successfully',
       article: {
         ...newArticle.get(),
-        rating: await calculateRating(newArticle.id)
-      }
+        rating: await calculateRating(newArticle.id),
+      },
     });
   }
 
@@ -157,11 +157,11 @@ class ArticleController {
       favorited,
       limit = 20,
       offset: offsetQuery = 0,
-      page: queryPage
+      page: queryPage,
     } = req.query;
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };
     const include = [
-      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] }
+      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] },
     ];
     const offset = queryPage ? queryPage - 1 : offsetQuery;
     const page = queryPage || offset + 1;
@@ -181,7 +181,7 @@ class ArticleController {
       include,
       where,
       offset: offset * limit,
-      limit
+      limit,
     });
     const ratedArticles = async articleArray =>
       Promise.all(articleArray.map(async art => ({
@@ -196,14 +196,14 @@ class ArticleController {
           createdAt: art.createdAt,
           updatedAt: art.updatedAt,
           author: art.author,
-          rating: await calculateRating(null, art.slug)
-        })));
+          rating: await calculateRating(null, art.slug),
+        })),);
     return res.status(200).json({
       status: 200,
       articles: await ratedArticles(articles.rows),
       articlesCount: articles.count,
       pages: Math.ceil(articles.count / limit),
-      page
+      page,
     });
   }
 
@@ -231,7 +231,7 @@ class ArticleController {
 
     return res.status(200).json({
       status: 200,
-      message: 'Article deleted successfully'
+      message: 'Article deleted successfully',
     });
   }
 
@@ -253,8 +253,8 @@ class ArticleController {
     const liked = await Favorite.findOne({
       where: {
         userId: currentUser.id,
-        articleId: article.id
-      }
+        articleId: article.id,
+      },
     });
     if (liked && (liked.state === 'dislike' || liked.state === null)) {
       await liked.update({ state: 'like' });
@@ -267,7 +267,7 @@ class ArticleController {
     await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,
-      state: 'like'
+      state: 'like',
     });
     return res.status(201).json({ status: 201, message: 'Liked', article });
   }
@@ -291,8 +291,8 @@ class ArticleController {
     const liked = await Favorite.findOne({
       where: {
         userId: currentUser.id,
-        articleId: article.id
-      }
+        articleId: article.id,
+      },
     });
     if (liked && (liked.state === 'like' || liked.state === null)) {
       await liked.update({ state: 'dislike' });
@@ -308,7 +308,7 @@ class ArticleController {
     await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,
-      state: 'dislike'
+      state: 'dislike',
     });
     return res.status(200).json({ status: 200, message: 'Disliked', article });
   }
@@ -330,8 +330,8 @@ class ArticleController {
       {
         model: User,
         as: 'author',
-        attributes: ['username', 'firstName', 'lastName', 'image']
-      }
+        attributes: ['username', 'firstName', 'lastName', 'image'],
+      },
     ];
     if (title) {
       where.title = { [Op.iLike]: `%${title}%` };
@@ -342,9 +342,9 @@ class ArticleController {
           [Op.or]: [
             { username: { [Op.iLike]: `%${author}%` } },
             { firstName: { [Op.iLike]: `%${author}%` } },
-            { lastName: { [Op.iLike]: `%${author}%` } }
-          ]
-        }
+            { lastName: { [Op.iLike]: `%${author}%` } },
+          ],
+        },
       };
     }
     if (tag) {
@@ -354,7 +354,7 @@ class ArticleController {
       where,
       include,
       limit,
-      offset
+      offset,
     });
     pages = Math.ceil(articles.count / limit);
     if (articles.count <= 0) {
@@ -375,13 +375,13 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' }
-      }
+        status: { [Op.not]: 'deleted' },
+      },
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found'
+        message: 'Article not found',
       });
     }
     opn(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
@@ -400,16 +400,16 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' }
-      }
+        status: { [Op.not]: 'deleted' },
+      },
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found'
+        message: 'Article not found',
       });
     }
-    opn(`https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`);
+    opn(`https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`,);
     return res.status(200).json({ status: 200, message: 'Sharing article via Facebook' });
   }
 
@@ -425,18 +425,18 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' }
-      }
+        status: { [Op.not]: 'deleted' },
+      },
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found'
+        message: 'Article not found',
       });
     }
     opn(`https://www.linkedin.com/sharing/share-offsite/?url=${
         process.env.FRONTEND_URL
-      }/articles/${slug}`);
+      }/articles/${slug}`,);
     return res.status(200).json({ status: 200, message: 'Sharing article via Linkedin' });
   }
 
@@ -452,13 +452,13 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' }
-      }
+        status: { [Op.not]: 'deleted' },
+      },
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found'
+        message: 'Article not found',
       });
     }
     opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);

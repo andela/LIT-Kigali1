@@ -9,7 +9,7 @@ module.exports = {
     'index.js',
     'app.js',
     'database',
-    'config'
+    'config',
   ],
   coverageDirectory: 'coverage',
   collectCoverageFrom: ['**/*.js'],
@@ -17,7 +17,7 @@ module.exports = {
     global: {
       functions: 80,
       lines: 80,
-      statements: -10
-    }
-  }
+      statements: -10,
+    },
+  },
 };

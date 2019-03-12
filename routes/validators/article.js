@@ -17,10 +17,10 @@ const createArticle = {
         .items(Joi.string().trim()),
       status: Joi.string()
         .trim()
-        .valid(['unpublished', 'published']),
+        .valid(['unpublished', 'published'])
     })
     .required(),
-  cover: Joi.any(),
+  cover: Joi.any()
 };
 
 const getArticlesQuery = {
@@ -37,10 +37,10 @@ const getArticlesQuery = {
     .integer()
     .min(1),
   favorited: Joi.string(),
-  title: Joi.string().trim(),
+  title: Joi.string().trim()
 };
 
 export default {
   createArticle,
-  getArticlesQuery,
+  getArticlesQuery
 };

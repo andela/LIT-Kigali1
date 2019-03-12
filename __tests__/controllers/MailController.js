@@ -3,7 +3,7 @@ import {
   sendEmailConfirmationLink,
   resetPasswordEmail,
   newPasswordEmail,
-  sendEmailVerified,
+  sendEmailVerified
 } from '../../__mocks__/MailController';
 
 describe('sendgrid', () => {

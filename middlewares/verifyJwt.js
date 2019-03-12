@@ -1,7 +1,11 @@
 import passport from 'passport';
 
-const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (req, res, next) => {
-  passport.authenticate('jwt', (err, user, info) => {
+const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (
+req, res, next
+) => {
+  passport.authenticate('jwt', (
+err, user, info
+) => {
     if (err) {
       return res.status(520).send({ errors: { body: [err.message] } });
     }
@@ -9,7 +13,7 @@ const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (req,
       const status = info.message === 'user does not exist' ? 404 : 401;
       return res.status(status).send({
         status,
-        message: info.message,
+        message: info.message
       });
     }
 
@@ -21,7 +25,9 @@ const verifyJwt = ({ tokenRequired = true, confirmEmail = false } = {}) => (req,
     }
 
     return next();
-  })(req, res, next);
+  })(
+req, res, next
+);
 };
 
 export default verifyJwt;

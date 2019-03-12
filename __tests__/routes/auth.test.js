@@ -13,13 +13,13 @@ jest.setTimeout(30000);
 describe('auth', () => {
   beforeAll(async () => {
     await User.destroy({
-      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] },
+      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] }
     }).then(() => true);
   });
 
   afterAll(async () => {
     await User.destroy({
-      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] },
+      where: { [Op.or]: [{ email: signupUser.email }, { email }, { username: 'test' }] }
     }).then(() => true);
   });
 
@@ -43,11 +43,15 @@ describe('auth', () => {
     expect(res.body.user).toBeDefined();
     expect(res.body.user.token).toBeDefined();
 <<<<<<< HEAD
+<<<<<<< HEAD
     expect(res.body.message).toBe(
       'Account created sucessfully. Please check your email for confirmation'
     );
 =======
     expect(res.body.message).toBe('Account created sucessfully. Please check your email for confirmation',);
+>>>>>>> fix(hound): fix some prettier issues
+=======
+    expect(res.body.message).toBe('Account created sucessfully. Please check your email for confirmation');
 >>>>>>> fix(hound): fix some prettier issues
   });
 
@@ -87,7 +91,7 @@ describe('auth', () => {
       ...signupUser,
       email,
       username,
-      password: encryptedPassword,
+      password: encryptedPassword
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)

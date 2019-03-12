@@ -29,35 +29,31 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 const store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true });
-app.use(session({
+app.use(
+  session({
     name: 'JSESSION',
     secret: 'MYSECRETISVERYSECRET',
     store,
     resave: true,
     saveUninitialized: true
-  }));
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(routes);
 app.use(joiErrors());
-app.use(
-'/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs)
-);
+app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs));
 app.use('/', express.static('ui'));
 // development error handler
 if (!isProduction) {
   // / catch 404 and forward to error handler
-  app.use((
-req, res, next
-) => {
+  app.use((req, res, next) => {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
   });
-  app.get('/*', (
-req, res, next
-) => {
+  app.get('/*', (req, res, next) => {
     if (req.headers.host.match(/^www\./) != null) {
       res.redirect(`http://${req.headers.host.slice(4)}${req.url}`, 301);
     } else {
@@ -66,9 +62,7 @@ req, res, next
   });
 }
 
-app.use((
-err, req, res
-) => {
+app.use((err, req, res) => {
   res.status(err.status || 500).json({
     errors: {
       message: err.message,

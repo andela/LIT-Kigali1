@@ -14,8 +14,6 @@ router.put(
   asyncHandler(CommentController.updateComment)
 );
 
-router.delete(
-'/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment)
-);
+router.delete('/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
 
 export default router;

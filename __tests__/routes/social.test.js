@@ -14,9 +14,7 @@ describe('SOCIAL AUTHENTICATION', () => {
       await nock('https://www.twitter.com/')
         .filteringPath(() => '/')
         .get(`${urlPrefix}/users/twitter`)
-        .reply(
-302, undefined, { Location: `${urlPrefix}/users/${twitterUser.user.id}/social` }
-);
+        .reply(302, undefined, { Location: `${urlPrefix}/users/${twitterUser.user.id}/social` });
     });
 
     test('It should call twitter route', async () => {

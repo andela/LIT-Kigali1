@@ -12,22 +12,28 @@ dotenv.config();
 const router = express.Router();
 const { SERVER_URL } = process.env;
 
-router.post('/login', celebrate({ body: authValidator.login }), AuthController.login);
+router.post(
+'/login', celebrate({ body: authValidator.login }), AuthController.login
+);
 
-router.post('/', celebrate({ body: authValidator.signup }), AuthController.signup);
+router.post(
+'/', celebrate({ body: authValidator.signup }), AuthController.signup
+);
 
-router.post('/signout', verifyJwt(), AuthController.signout);
+router.post(
+'/signout', verifyJwt(), AuthController.signout
+);
 
 router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEmail);
 router.post(
   '/forget',
   celebrate({ body: authValidator.forgetPassword }),
-  AuthController.forgotPassword,
+  AuthController.forgotPassword
 );
 router.put(
   '/:userId/reset/:resetCode',
   celebrate({ body: authValidator.resetPassword }),
-  AuthController.resetPassword,
+  AuthController.resetPassword
 );
 
 /* FACEBOOK ROUTER */
@@ -38,7 +44,7 @@ router.get(
   passport.authenticate('facebook', { failureRedirect: '/' }),
   (req, res) => {
     res.status(302).redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  },
+  }
 );
 
 /* TWITTER ROUTER */
@@ -49,7 +55,7 @@ router.get(
   passport.authenticate('twitter', { failureRedirect: '/' }),
   (req, res) => {
     res.redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  },
+  }
 );
 
 /* GOOGLE ROUTER */
@@ -60,7 +66,7 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     res.redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  },
+  }
 );
 
 router.get('/:username/social/', async (req, res) => {
@@ -69,12 +75,16 @@ router.get('/:username/social/', async (req, res) => {
   if (!user) return res.status(404).json({ status: 404, message: 'Not found' });
   res.render('index', {
     user: user.get(),
-    title: 'User profile',
+    title: 'User profile'
   });
 });
 
-router.post('/:username/follow', verifyJwt(), asyncHandler(FollowController.follow));
+router.post(
+'/:username/follow', verifyJwt(), asyncHandler(FollowController.follow)
+);
 
-router.delete('/:username/unfollow', verifyJwt(), asyncHandler(FollowController.unfollow));
+router.delete(
+'/:username/unfollow', verifyJwt(), asyncHandler(FollowController.unfollow)
+);
 
 export default router;

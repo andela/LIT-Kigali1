@@ -34,24 +34,30 @@ app.use(session({
     secret: 'MYSECRETISVERYSECRET',
     store,
     resave: true,
-    saveUninitialized: true,
-  }),);
+    saveUninitialized: true
+  }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(routes);
 app.use(joiErrors());
-app.use('/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs));
+app.use(
+'/api-documentation', swaggerUI.serve, swaggerUI.setup(swaggerYAMLDocs)
+);
 app.use('/', express.static('ui'));
 // development error handler
 if (!isProduction) {
   // / catch 404 and forward to error handler
-  app.use((req, res, next) => {
+  app.use((
+req, res, next
+) => {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
   });
-  app.get('/*', (req, res, next) => {
+  app.get('/*', (
+req, res, next
+) => {
     if (req.headers.host.match(/^www\./) != null) {
       res.redirect(`http://${req.headers.host.slice(4)}${req.url}`, 301);
     } else {
@@ -60,12 +66,14 @@ if (!isProduction) {
   });
 }
 
-app.use((err, req, res) => {
+app.use((
+err, req, res
+) => {
   res.status(err.status || 500).json({
     errors: {
       message: err.message,
-      error: err,
-    },
+      error: err
+    }
   });
 });
 

@@ -84,8 +84,7 @@ passport.deserializeUser(async (user, callback) => {
   callback(null, foundUser);
 });
 
-passport.use(
-  new TwitterStrategy(
+passport.use(new TwitterStrategy(
     {
       consumerKey: TWITTER_CONSUMER_KEY,
       consumerSecret: TWITTER_CONSUMER_SECRET,
@@ -112,11 +111,9 @@ passport.use(
         return done(err, null);
       }
     },
-  ),
-);
+  ),);
 
-passport.use(
-  new FacebookStrategy(
+passport.use(new FacebookStrategy(
     {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
@@ -142,11 +139,9 @@ passport.use(
         return done(error);
       }
     },
-  ),
-);
+  ),);
 
-passport.use(
-  new GoogleStrategy(
+passport.use(new GoogleStrategy(
     {
       clientID: GOOGLE_CONSUMER_KEY,
       clientSecret: GOOGLE_CONSUMER_SECRET,
@@ -172,7 +167,6 @@ passport.use(
         return done(err, null);
       }
     },
-  ),
-);
+  ),);
 
 export default passport;

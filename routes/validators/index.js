@@ -11,5 +11,5 @@ export {
   profileValidator,
   commentValidator,
   ratingValidator,
-  profilesValidator
+  profilesValidator,
 };

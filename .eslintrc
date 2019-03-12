@@ -2,7 +2,9 @@
   "root": true,
   "extends": ["airbnb-base", "prettier"],
   "env": {
-    "jest": true
+    "node": true,
+    "es6": true,
+    "jest/globals": true
   },
   "plugins": ["jest", "prettier"],
   "rules": {
@@ -10,26 +12,42 @@
       "allowImportExportEverywhere": true,
       "sourceType": "module"
     },
-    "eol-last": ["error", "always"],
     "import/prefer-default-export": "off",
     "import/resolver": {
       "node": {
         "extensions": [".js"]
       }
     },
+<<<<<<< HEAD
     "no-underscore-dangle": 0,
+=======
+>>>>>>> fix(hound): fix some prettier issues
     "one-var": 0,
     "one-var-declaration-per-line": 0,
     "new-cap": 0,
     "consistent-return": 0,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "function-paren-newline": [
-      "error",
+=======
+    "no-param-reassign": 0,
+    "comma-dangle": 0,
+    "curly": ["error", "multi-line"],
+    "import/no-unresolved": [
+      2,
       {
-        "minItems": 3
+        "commonjs": true
       }
     ],
+    "no-shadow": [
+>>>>>>> fix(hound): fix some prettier issues
+      "error",
+      {
+        "allow": ["req", "res", "err"]
+      }
+    ],
+<<<<<<< HEAD
 >>>>>>> fix(hound): fix some prettier issues
     "no-param-reassign": 0,
     "comma-dangle": 0,
@@ -46,6 +64,8 @@
         "allow": ["req", "res", "err"]
       }
     ],
+=======
+>>>>>>> fix(hound): fix some prettier issues
     "valid-jsdoc": [
       "error",
       {
@@ -64,8 +84,6 @@
           "ClassDeclaration": true
         }
       }
-    ],
-    "object-curly-newline": 0,
-    "no-useless-escape": 0
+    ]
   }
 }

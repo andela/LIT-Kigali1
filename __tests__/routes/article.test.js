@@ -301,7 +301,9 @@ describe('articles', () => {
 
   test('Search article by author', async () => {
     expect.assertions(2);
-    const res = await request(app).get(`${urlPrefix}/articles/search?author=${loginUser1.username}`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/search?author=${loginUser1.username}`
+    );
     expect(res.status).toBe(200);
     expect(res.body.articles).toBeDefined();
   });

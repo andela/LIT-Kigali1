@@ -29,13 +29,15 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 const store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true });
-app.use(session({
+app.use(
+  session({
     name: 'JSESSION',
     secret: 'MYSECRETISVERYSECRET',
     store,
     resave: true,
     saveUninitialized: true,
-  }),);
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 

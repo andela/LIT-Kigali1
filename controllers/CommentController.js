@@ -35,7 +35,8 @@ class CommentController {
       }
       parentId = parentComment.id;
     }
-    const newComment = await Comment.create({
+    const newComment = await Comment.create(
+      {
         ...comment,
         userId: currentUser.id,
         articleId: foundArticle.id,
@@ -44,7 +45,8 @@ class CommentController {
       {
         include: [{ model: User, as: 'author' }],
         attributes: ['username', 'firstName', 'lastName', 'image']
-      });
+      }
+    );
 
     return res.status(201).json({
       status: 201,

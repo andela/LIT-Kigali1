@@ -21,7 +21,8 @@ class ArticleController {
     const cover = file.url || undefined;
     const slug = slugString(article.title);
     const readingTime = getReadingTime(article.body);
-    const newArticle = await Article.create({
+    const newArticle = await Article.create(
+      {
         ...article,
         userId: currentUser.id,
         slug,
@@ -31,7 +32,8 @@ class ArticleController {
       {
         include: [{ model: User, as: 'author' }],
         attributes: ['username', 'firstName', 'lastName', 'image']
-      });
+      }
+    );
 
     if (newArticle.tagList && newArticle.tagList.length > 0) {
       const tags = newArticle.tagList.map(val => ({ name: val }));
@@ -182,7 +184,8 @@ class ArticleController {
       limit
     });
     const ratedArticles = async articleArray =>
-      Promise.all(articleArray.map(async art => ({
+      Promise.all(
+        articleArray.map(async art => ({
           userId: art.userId,
           slug: art.slug,
           title: art.title,
@@ -195,7 +198,8 @@ class ArticleController {
           updatedAt: art.updatedAt,
           author: art.author,
           rating: await calculateRating(null, art.slug)
-        })));
+        }))
+      );
     return res.status(200).json({
       status: 200,
       articles: await ratedArticles(articles.rows),
@@ -407,7 +411,9 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    opn(`https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`);
+    opn(
+      `https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`
+    );
     return res.status(200).json({ status: 200, message: 'Sharing article via Facebook' });
   }
 
@@ -432,9 +438,11 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    opn(`https://www.linkedin.com/sharing/share-offsite/?url=${
+    opn(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${
         process.env.FRONTEND_URL
-      }/articles/${slug}`);
+      }/articles/${slug}`
+    );
     return res.status(200).json({ status: 200, message: 'Sharing article via Linkedin' });
   }
 

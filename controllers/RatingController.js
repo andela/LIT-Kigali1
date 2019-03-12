@@ -32,7 +32,7 @@ class RatingController {
         status: 200,
         message: 'Rating updated successfully',
         rate: { ...rating.get() },
-        averageRate,
+        averageRate
       });
     }
     const averageRate = await calculateRating(articleId);
@@ -40,7 +40,7 @@ class RatingController {
       {
         userId: currentUser.id,
         rating: rate,
-        articleId,
+        articleId
       },
       { include: [{ model: User }, { model: Article }] }
     );
@@ -48,7 +48,7 @@ class RatingController {
       status: 201,
       message: 'article has been rated successfully',
       rate: { ...newRate.get() },
-      averageRate,
+      averageRate
     });
   }
 
@@ -79,7 +79,7 @@ class RatingController {
     rating.update({ rating: null, updatedAt: new Date() });
     return res.status(200).send({
       status: 200,
-      message: 'Rating removed successfully',
+      message: 'Rating removed successfully'
     });
   }
 

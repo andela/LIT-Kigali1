@@ -42,7 +42,7 @@ describe('likeComment', () => {
 
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
-    expect(res.body.message).toBe('Comment liked successfully');
+    expect(res.body.message).toBe('Comment liked');
     expect(res.body.like.value).toBe('liked');
     done();
   });
@@ -54,7 +54,7 @@ describe('likeComment', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.message).toBe('Like removed successfully');
+    expect(res.body.message).toBe('Like removed');
   });
 
   test('should like a comment in case it was disliked', async (done) => {
@@ -68,7 +68,7 @@ describe('likeComment', () => {
 
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
-    expect(res.body.message).toBe('Comment liked successfully');
+    expect(res.body.message).toBe('Comment liked');
     expect(res.body.like.value).toBe('liked');
     done();
   });
@@ -105,7 +105,7 @@ describe('likeComment', () => {
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);
     expect(res.status).toBe(201);
-    expect(res.body.message).toBe('Comment disliked successfully');
+    expect(res.body.message).toBe('Comment disliked');
     expect(res.body.dislike.value).toBe('disliked');
   });
 
@@ -118,7 +118,7 @@ describe('likeComment', () => {
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);
     expect(res.status).toBe(201);
-    expect(res.body.message).toBe('Comment disliked successfully');
+    expect(res.body.message).toBe('Comment disliked');
     expect(res.body.dislike.value).toBe('disliked');
   });
 
@@ -130,7 +130,7 @@ describe('likeComment', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.message).toBe('Dislike removed successfully');
+    expect(res.body.message).toBe('Dislike removed');
   });
 
   test('should not dislike comment without authorization', async () => {

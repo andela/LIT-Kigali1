@@ -33,7 +33,7 @@ class FavoriteCommentController {
         await isFavorited.destroy();
         return res.status(200).send({
           status: 200,
-          message: 'Like removed successfully'
+          message: 'Like removed'
         });
       }
       await isFavorited.destroy();
@@ -44,7 +44,7 @@ class FavoriteCommentController {
       });
       return res.status(201).send({
         status: 201,
-        message: 'Comment liked successfully',
+        message: 'Comment liked',
         like: { ...liked.get() }
       });
     }
@@ -55,7 +55,7 @@ class FavoriteCommentController {
     });
     return res.status(201).send({
       status: 201,
-      message: 'Comment liked successfully',
+      message: 'Comment liked',
       like: { ...liked.get() }
     });
   }
@@ -88,7 +88,7 @@ class FavoriteCommentController {
         await isFavorited.destroy();
         return res.status(200).send({
           status: 200,
-          message: 'Dislike removed successfully'
+          message: 'Dislike removed'
         });
       }
       await isFavorited.destroy();
@@ -100,7 +100,7 @@ class FavoriteCommentController {
 
       return res.status(201).send({
         status: 201,
-        message: 'Comment disliked successfully',
+        message: 'Comment disliked',
         dislike: { ...dislike.get() }
       });
     }
@@ -111,7 +111,7 @@ class FavoriteCommentController {
     });
     return res.status(201).send({
       status: 201,
-      message: 'Comment disliked successfully',
+      message: 'Comment disliked',
       dislike: { ...dislike.get() }
     });
   }

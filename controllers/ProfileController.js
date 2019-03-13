@@ -79,33 +79,37 @@ class ProfileController {
    * @returns {*} Users object
    */
   static async getProfiles(req, res) {
+    const { page } = req.query;
+    const limit = 10;
+    const offset = (page - 1) * limit;
     const { currentUser } = req;
-    let include;
-    if (currentUser) {
-      include = {
-        model: Follow,
-        as: 'userFollower',
-        where: { follower: currentUser.id },
-        required: false,
-        attributes: ['followee']
-      };
-    }
-    let users = await User.findAll({
+    let users = await User.findAndCountAll({
       where: {
         userType: 'user',
         confirmed: { [Op.ne]: 'pending' },
         status: { [Op.ne]: 'blocked' }
       },
-      include,
-      attributes: ['firstName', 'lastName', 'image', 'bio']
+      include: {
+        model: Follow,
+        as: 'userFollower',
+        where: { follower: currentUser ? currentUser.id : null },
+        required: false,
+        attributes: ['followee']
+      },
+      attributes: ['firstName', 'lastName', 'image', 'bio'],
+      limit,
+      offset
     });
+    const pages = Math.ceil(users.count / limit);
+    // offset = limit * (no - 1);
+    users = users.rows;
     users = users.map(data => {
       const user = { ...data.get() };
       user.followed = user.userFollower && user.userFollower.length > 0;
       delete user.userFollower;
       return user;
     });
-    return res.status(200).json({ status: 200, profiles: users });
+    return res.status(200).json({ status: 200, profiles: users, page, totalPages: pages });
   }
 
   /**

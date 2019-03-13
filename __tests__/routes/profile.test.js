@@ -253,20 +253,42 @@ describe('Profile', () => {
   });
 
   test('Should get user profiles list', async done => {
+    expect.assertions(5);
     const res = await request(app)
-      .get(`${urlPrefix}/profiles`)
+      .get(`${urlPrefix}/profiles?page=1`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.profiles).toBeDefined();
+    expect(res.body.page).toBeDefined();
+    expect(res.body.totalPages).toBeDefined();
     done();
   });
 
   test('Should get user profiles without token list', async done => {
-    const res = await request(app).get(`${urlPrefix}/profiles`);
+    expect.assertions(5);
+    const res = await request(app).get(`${urlPrefix}/profiles?page=1`);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
     expect(res.body.profiles).toBeDefined();
+    expect(res.body.page).toBeDefined();
+    expect(res.body.totalPages).toBeDefined();
+    done();
+  });
+
+  test('Should ', async done => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/profiles?page=0`);
+    expect(res.body.message).toBe('Bad Request');
+    expect(res.body.errors[0].message).toBe('"page" must be larger than or equal to 1');
+    done();
+  });
+
+  test('should', async done => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/profiles`);
+    expect(res.body.message).toBe('Bad Request');
+    expect(res.body.errors[0].message).toBe('"page" is required');
     done();
   });
 });

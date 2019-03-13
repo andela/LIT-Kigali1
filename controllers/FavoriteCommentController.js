@@ -5,12 +5,12 @@ import { FavoriteComment, Comment } from '../database/models';
  * it includes a function to get all likes
  */
 class FavoriteCommentController {
-    /** 
-     * 
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} object
-     */
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} object
+   */
   static async likeComment(req, res) {
     const { currentUser } = req;
     const { commentId } = req.params;
@@ -74,7 +74,7 @@ class FavoriteCommentController {
     if (!comment) {
       return res.status(404).send({
         status: 404,
-        message: 'The comment you are trying to dislike does not exist',
+        message: 'The comment you are trying to dislike does not exist'
       });
     }
     const isFavorited = await FavoriteComment.findOne({

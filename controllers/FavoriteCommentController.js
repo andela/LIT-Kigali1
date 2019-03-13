@@ -6,7 +6,7 @@ import { FavoriteComment, Comment } from '../database/models';
  */
 class FavoriteCommentController {
   /**
-   *
+   * @author Daniel
    * @param {*} req
    * @param {*} res
    * @returns {*} object
@@ -61,7 +61,7 @@ class FavoriteCommentController {
   }
 
   /**
-   *
+   * @author Daniel
    * @param {*} req
    * @param {*} res
    * @returns {*} object

@@ -58,7 +58,7 @@ describe('articles', () => {
         ]
       }
     }).then(() => true);
-    await Article.destroy({ where: { tagList: { [Op.contains]: ['test'] } } });
+    await Article.destroy({ where: { tagList: { [Op.contains]: ['share'] } } });
   });
 
   test('should return created article', async () => {
@@ -75,6 +75,7 @@ describe('articles', () => {
   });
 
   test('should share article on twitter', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle2.slug}/share/twitter`)
       .set('Authorization', loginUser1.token);
@@ -84,15 +85,18 @@ describe('articles', () => {
   });
 
   test('should fail to share article on twitter', async () => {
+    expect.assertions(4);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${fakeSlug}/share/twitter`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('Article not found');
     expect(res.body.message).toBeDefined();
   });
 
   test('should share article on Facebook', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle2.slug}/share/facebook`)
       .set('Authorization', loginUser1.token);
@@ -102,15 +106,18 @@ describe('articles', () => {
   });
 
   test('should fail to share article on Facebook', async () => {
+    expect.assertions(4);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${fakeSlug}/share/facebook`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('Article not found');
     expect(res.body.message).toBeDefined();
   });
 
   test('should share article on Linkedin', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle2.slug}/share/linkedin`)
       .set('Authorization', loginUser1.token);
@@ -120,15 +127,18 @@ describe('articles', () => {
   });
 
   test('should fail to share article on Linkedin', async () => {
+    expect.assertions(4);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${fakeSlug}/share/linkedin`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('Article not found');
     expect(res.body.message).toBeDefined();
   });
 
   test('should share article on email', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle2.slug}/share/email`)
       .set('Authorization', loginUser1.token);
@@ -138,11 +148,13 @@ describe('articles', () => {
   });
 
   test('should fail to share article on email', async () => {
+    expect.assertions(4);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${fakeSlug}/share/email`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('Article not found');
     expect(res.body.message).toBeDefined();
   });
 });

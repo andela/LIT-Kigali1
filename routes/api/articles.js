@@ -25,7 +25,11 @@ router.get(
   asyncHandler(ArticleController.searchArticles)
 );
 
-router.get('/:slug', verifyJwt({ tokenRequired: false }), asyncHandler(ArticleController.getArticle));
+router.get(
+  '/:slug',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.getArticle)
+);
 router.put(
   '/:slug',
   celebrate({ body: articleValidator.createArticle }),
@@ -55,10 +59,12 @@ router.get(
   verifyJwt(),
   asyncHandler(CommentController.getArticleComments)
 );
-router.route('/:articleSlug/rating')
+router
+  .route('/:articleSlug/rating')
   .post(
     celebrate({ body: ratingValidator }),
-    verifyJwt(), asyncHandler(RatingController.rateArticle)
+    verifyJwt(),
+    asyncHandler(RatingController.rateArticle)
   )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
@@ -75,21 +81,27 @@ router.get(
 
 router.get(
   '/:slug/share/facebook',
-  verifyJwt(),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleFacebook)
 );
 
 router.get(
   '/:slug/share/linkedin',
-  verifyJwt(),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 
-router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
-router.route('/:articleSlug/rating')
+router.get(
+  '/:slug/share/email',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.shareArticleEmail)
+);
+router
+  .route('/:articleSlug/rating')
   .post(
     celebrate({ body: ratingValidator }),
-    verifyJwt(), asyncHandler(RatingController.rateArticle)
+    verifyJwt(),
+    asyncHandler(RatingController.rateArticle)
   )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));

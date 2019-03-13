@@ -84,7 +84,7 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async forgotPassword(req, res) {
-    const {body: { user }} = req;
+    const { body: { user } } = req;
 
     const reset = await User.findOne({
       where: { email: user.email, confirmed: 'confirmed' },

@@ -2,7 +2,12 @@ import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
 import { articleValidator, commentValidator, ratingValidator } from '../validators';
-import { ArticleController, CommentController, RatingController } from '../../controllers';
+import {
+  ArticleController,
+  CommentController,
+  RatingController,
+  FavoriteCommentController
+} from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
 import { asyncHandler } from '../../helpers';
@@ -105,5 +110,12 @@ router
   )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
+
+router.route('/:articleSlug/comments/:commentId/like')
+  .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
+  .get(asyncHandler(FavoriteCommentController.getAllLikes));
+router.route('/:articleSlug/comments/:commentId/dislike')
+  .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
+  .get(asyncHandler(FavoriteCommentController.getAllDislikes));
 
 export default router;

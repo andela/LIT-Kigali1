@@ -1,6 +1,7 @@
 import { FavoriteComment, Comment } from '../database/models';
+
 /**
- * @author Daniel
+ *
  * a class controller for adding like and dislike to the comment on article
  * it includes a function to get all likes
  */

@@ -3,7 +3,10 @@ import { celebrate } from 'celebrate';
 import multer from 'multer';
 import { articleValidator, commentValidator, ratingValidator } from '../validators';
 import {
-  ArticleController, CommentController, RatingController, FavoriteCommentController
+  ArticleController,
+  CommentController,
+  RatingController,
+  FavoriteCommentController
 } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag, Report } from '../database/models';
+import { User, Article, Favorite, Follow, Tag, Report, Reader } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 import newArticleNotification from '../helpers/notification/newArticleNotification';
 import newInteractionNotification from '../helpers/notification/newInteractionNotification';
@@ -87,14 +87,26 @@ class ArticleController {
     if (currentUser) {
       const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
       following = followingCount !== 0;
+      if (currentUser.username !== article.author.username) {
+        const reader = await Reader.findOne({where: { articleId: article.id, userId: currentUser.id }});
+        if (!reader) {
+          await Reader.create({ articleId: article.id, userId: currentUser.id });
+        }
+      }
     }
+    if (!currentUser) {
+      await Reader.create({ articleId: article.id });
+    }
+    const views = await Reader.count({ where: { articleId: article.id } });
+
     return res.status(200).json({
       article: {
         ...article.get(),
         rating: await calculateRating(article.get().id),
         author: { ...article.get().author.get(), following },
         favorited,
-        favoritesCount
+        favoritesCount,
+        views
       }
     });
   }
@@ -311,7 +323,6 @@ class ArticleController {
         .status(200)
         .json({ status: 200, message: 'Dislike Removed successfully', article });
     }
-
     await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,

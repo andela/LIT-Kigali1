@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { User } from '../database/models';
+import { User, Reader } from '../database/models';
 import { sendEmailVerified } from './MailController';
 
 /**
@@ -32,6 +32,19 @@ class UserController {
 
     await sendEmailVerified(user.get());
     return res.json({ message: `${user.email} has been confirmed` });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async readingStats(req, res) {
+    const { currentUser } = req;
+    const readingStats = await Reader.count({ where: { userId: currentUser.id } });
+    return res.status(200).json({ status: 200, readingStats });
   }
 }
 

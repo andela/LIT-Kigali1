@@ -23,6 +23,8 @@ router.post('/', celebrate({ body: authValidator.signup }), AuthController.signu
 
 router.post('/signout', verifyJwt(), AuthController.signout);
 
+router.get('/stats', verifyJwt({ tokenRequired: true }), asyncHandler(UserController.readingStats));
+
 router.get('/:userId/confirm_email/:confirmationCode', UserController.confirmEmail);
 router.post(
   '/forget',

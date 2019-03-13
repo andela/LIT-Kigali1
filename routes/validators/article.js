@@ -27,10 +27,15 @@ const getArticlesQuery = {
   tag: Joi.string().trim(),
   author: Joi.string().trim(),
   limit: Joi.number()
+    .integer()
     .min(1)
     .max(25),
-  offset: Joi.number().min(0),
-  page: Joi.number().min(1),
+  offset: Joi.number()
+    .integer()
+    .min(0),
+  page: Joi.number()
+    .integer()
+    .min(1),
   favorited: Joi.string(),
   title: Joi.string().trim()
 };

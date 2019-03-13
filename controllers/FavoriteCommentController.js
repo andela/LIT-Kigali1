@@ -5,8 +5,8 @@ import { FavoriteComment, Comment } from '../database/models';
  * it includes a function to get all likes
  */
 class FavoriteCommentController {
-  /**
-     *
+    /** 
+     * 
      * @param {*} req
      * @param {*} res
      * @returns {*} object

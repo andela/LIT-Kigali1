@@ -101,10 +101,8 @@ class ProfileController {
       offset
     });
     const pages = Math.ceil(users.count / limit);
-    // offset = limit * (no - 1);
     users = users.rows;
     users = users.map(data => {
-      // const user = { ...data.get(), followed: false };
       const user = { ...data.get() };
       user.followed = user.userFollower && user.userFollower.length > 0;
       delete user.userFollower;

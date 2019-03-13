@@ -276,7 +276,7 @@ describe('Profile', () => {
     done();
   });
 
-  test('Should ', async done => {
+  test('Should return page must be larger than or equal to 1', async done => {
     expect.assertions(2);
     const res = await request(app).get(`${urlPrefix}/profiles?page=0`);
     expect(res.body.message).toBe('Bad Request');
@@ -284,11 +284,20 @@ describe('Profile', () => {
     done();
   });
 
-  test('should', async done => {
+  test('should return page is required', async done => {
     expect.assertions(2);
     const res = await request(app).get(`${urlPrefix}/profiles`);
     expect(res.body.message).toBe('Bad Request');
     expect(res.body.errors[0].message).toBe('"page" is required');
+    done();
+  });
+  test('Should return page does not exist', async done => {
+    expect.assertions(3);
+    const res = await request(app).get(`${urlPrefix}/profiles?page=1000`);
+    console.log(res.body);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBe('The page does not exist');
     done();
   });
 });

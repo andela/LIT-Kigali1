@@ -117,7 +117,7 @@ class FavoriteCommentController {
   }
 
   /**
-   *
+   * @author Daniel
    * @param {*} req
    * @param {*} res
    * @returns {*} object
@@ -155,7 +155,7 @@ class FavoriteCommentController {
   }
 
   /**
-   *
+   * @author Daniel
    * @param {*} req
    * @param {*} res
    * @returns {*} object

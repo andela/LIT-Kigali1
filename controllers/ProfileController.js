@@ -100,7 +100,7 @@ class ProfileController {
       limit,
       offset
     });
-   
+
     const pages = Math.ceil(users.count / limit);
     users = users.rows;
     users = users.map(data => {
@@ -121,7 +121,7 @@ class ProfileController {
   }
 
   /**
-   * @author Manzi
+   *@author Manzi
    * @param {*} req
    * @param {*} res
    * @returns {*} User object

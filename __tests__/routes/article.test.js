@@ -374,12 +374,8 @@ describe('articles', () => {
         }
       });
     expect(res.status).toBe(201);
-<<<<<<< HEAD
-    expect(res.body.message).toBe('Article Reported successfully');
-=======
     expect(res.body.status).toBe(201);
     expect(res.body.message).toBe(`${testArticle.title} is bookmarked`);
->>>>>>> fix(tests): fix test issues
   });
 
   test('Report --Should return article not found', async () => {
@@ -394,12 +390,8 @@ describe('articles', () => {
         }
       });
     expect(res.status).toBe(404);
-<<<<<<< HEAD
-    expect(res.body.message).toBe('Article not found');
-=======
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
->>>>>>> fix(tests): fix test issues
   });
 
   test('Report --Should return access not allowed', async () => {
@@ -438,6 +430,7 @@ describe('articles', () => {
       expect(res.body.status).toBe(400);
       expect(res.body.message).toBe('Article does not exist');
     });
+<<<<<<< HEAD
 =======
     expect(res.body.status).toBe(200);
     expect(res.body.message).toBe(`${testArticle.title} was removed from bookmarks`);
@@ -452,6 +445,8 @@ describe('articles', () => {
     expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
   });
 >>>>>>> fix(tests): fix test issues
+=======
+>>>>>>> feat(bookmark): add unit tests [Starts #163519156]
 
     test('Should return unauthorized', async () => {
       expect.assertions(3);
@@ -485,7 +480,6 @@ describe('articles', () => {
       expect(res.status.body).toBe(401);
       expect(res.body.message).toBe('Unauthorized user');
     });
-  });
 
   test('Should return bookmark', async () => {
     await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });

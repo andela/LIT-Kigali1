@@ -487,9 +487,6 @@ class ArticleController {
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article does not exist' });
     }
-    if (!id) {
-      return res.status(401).json({ status: 401, message: 'Unauthorized user' });
-    }
     await Bookmark.findOrCreate({ where: { userId: id, articleId: article.id } });
 
     return res.status(201).json({ status: 201, message: 'Bookmarked' });
@@ -509,9 +506,6 @@ class ArticleController {
     });
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article does not exist' });
-    }
-    if (!id) {
-      return res.status(401).json({ status: 401, message: 'Unauthorized user' });
     }
     const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
     if (!bookmark) {

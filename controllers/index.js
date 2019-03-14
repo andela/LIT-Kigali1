@@ -17,5 +17,5 @@ export {
   FollowController,
   CommentController,
   RatingController,
-  FavoriteCommentController
+  FavoriteCommentController,
 };

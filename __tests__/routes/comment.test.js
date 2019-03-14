@@ -4,9 +4,7 @@ import { Op } from 'sequelize';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
 import { User, Article, Comment } from '../../database/models';
-import {
-  createArticle, signupUser, signupUser2, createComment
-} from '../mocks/db.json';
+import { createArticle, signupUser, signupUser2, createComment } from '../mocks/db.json';
 import { slugString } from '../../helpers';
 
 let loginUser1;
@@ -47,22 +45,20 @@ describe('comments', () => {
   afterAll(async () => {
     await User.destroy({
       where: {
-        [Op.or]: [{ email: signupUser.email },
-          { email: signupUser2.email }]
+        [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]
       }
     }).then(() => true);
     await Article.destroy({ where: { id: newArticle.id } });
     await Comment.destroy({
       where: {
-        [Op.or]: [{ userId: loginUser1.id },
-          { userId: loginUser2.id }]
+        [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]
       }
     });
   });
 
   /* Create a comment test cases */
 
-  test('CREATE - should return Bad Request', async (done) => {
+  test('CREATE - should return Bad Request', async done => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.id}/comments`)
@@ -72,7 +68,7 @@ describe('comments', () => {
     done();
   });
 
-  test('CREATE - should return No auth token', async (done) => {
+  test('CREATE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.id}/comments`)
@@ -83,7 +79,7 @@ describe('comments', () => {
     done();
   });
 
-  test('CREATE - should return Article not found', async (done) => {
+  test('CREATE - should return Article not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/fake-slug/comments`)
@@ -95,7 +91,7 @@ describe('comments', () => {
     done();
   });
 
-  test('CREATE - should return created comment', async (done) => {
+  test('CREATE - should return created comment', async done => {
     expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -109,7 +105,7 @@ describe('comments', () => {
     done();
   });
 
-  test('CREATE - should return Parent comment not found', async (done) => {
+  test('CREATE - should return Parent comment not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -121,7 +117,7 @@ describe('comments', () => {
     done();
   });
 
-  test('CREATE - should return created comment with parentId', async (done) => {
+  test('CREATE - should return created comment with parentId', async done => {
     expect.assertions(4);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -137,7 +133,7 @@ describe('comments', () => {
 
   /* View a articles' comment test cases */
 
-  test('VIEW - should return No auth token', async (done) => {
+  test('VIEW - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app).get(`${urlPrefix}/articles/${newArticle.id}/comments`);
     expect(res.status).toBe(401);
@@ -146,7 +142,7 @@ describe('comments', () => {
     done();
   });
 
-  test('VIEW - should return Article not found', async (done) => {
+  test('VIEW - should return Article not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/fake-article-slug/comments`)
@@ -157,7 +153,7 @@ describe('comments', () => {
     done();
   });
 
-  test("VIEW - should return articles' comments", async (done) => {
+  test("VIEW - should return articles' comments", async done => {
     expect.assertions(3);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle.slug}/comments`)
@@ -168,7 +164,7 @@ describe('comments', () => {
     done();
   });
 
-  test("VIEW - should return articles' comments for page 1", async (done) => {
+  test("VIEW - should return articles' comments for page 1", async done => {
     expect.assertions(5);
     const res = await request(app)
       .get(`${urlPrefix}/articles/${newArticle.slug}/comments?page=1`)
@@ -184,7 +180,7 @@ describe('comments', () => {
 
   /* Update a comment test cases */
 
-  test('UPDATE - should return Bad Request', async (done) => {
+  test('UPDATE - should return Bad Request', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/comments/${newComment.id}`)
@@ -194,7 +190,7 @@ describe('comments', () => {
     done();
   });
 
-  test('UPDATE - should return No auth token', async (done) => {
+  test('UPDATE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/comments/${newComment.id}`)
@@ -205,7 +201,7 @@ describe('comments', () => {
     done();
   });
 
-  test('UPDATE - should return Unauthorized access', async (done) => {
+  test('UPDATE - should return Unauthorized access', async done => {
     expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/comments/${newComment.id}`)
@@ -217,7 +213,7 @@ describe('comments', () => {
     done();
   });
 
-  test('UPDATE - should return internal error', async (done) => {
+  test('UPDATE - should return internal error', async done => {
     expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/comments/fake-comment-id`)
@@ -228,7 +224,7 @@ describe('comments', () => {
     done();
   });
 
-  test('UPDATE - should return Comment not found', async (done) => {
+  test('UPDATE - should return Comment not found', async done => {
     const commentBody = 'New body';
     expect.assertions(3);
     const res = await request(app)
@@ -241,7 +237,7 @@ describe('comments', () => {
     done();
   });
 
-  test('UPDATE - should return updated comment', async (done) => {
+  test('UPDATE - should return updated comment', async done => {
     const commentBody = 'New body';
     expect.assertions(4);
     const res = await request(app)
@@ -258,7 +254,7 @@ describe('comments', () => {
 
   /* Delete a comment test cases */
 
-  test('DELETE - should return No auth token', async (done) => {
+  test('DELETE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newComment.id}`)
@@ -269,7 +265,7 @@ describe('comments', () => {
     done();
   });
 
-  test('DELETE - should return Unauthorized access', async (done) => {
+  test('DELETE - should return Unauthorized access', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newComment.id}`)
@@ -281,7 +277,7 @@ describe('comments', () => {
     done();
   });
 
-  test('DELETE - should return internal error', async (done) => {
+  test('DELETE - should return internal error', async done => {
     expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/fake-comment-id`)
@@ -292,7 +288,7 @@ describe('comments', () => {
     done();
   });
 
-  test('DELETE - should return Comment not found', async (done) => {
+  test('DELETE - should return Comment not found', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newArticle.id}`)
@@ -304,7 +300,7 @@ describe('comments', () => {
     done();
   });
 
-  test('DELETE - should return Comment deleted successfully', async (done) => {
+  test('DELETE - should return Comment deleted successfully', async done => {
     expect.assertions(3);
     const res = await request(app)
       .delete(`${urlPrefix}/comments/${newComment.id}`)

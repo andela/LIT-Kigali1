@@ -329,4 +329,57 @@ describe('articles', () => {
       .set('Authorization', loginUser2.token);
     expect(res.body.article.readingTime).toBeDefined();
   });
+
+  test('Should return article was added to bookmarks', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(201);
+    expect(res.body.status).toBe(201);
+    expect(res.body.message).toBe('Bookmarked');
+  });
+
+  test('Should return does not exist', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(400);
+    expect(res.body.message).toBe('Article does not exist');
+  });
+
+  test('Should return unauthorized', async () => {
+    expect.assertions(3);
+    const res = await request(app).post(`${urlPrefix}/articles/${testArticle.slug}/bookmark`);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBe('Unauthorized user');
+  });
+
+  test('Should return article was removed from bookmarks', async () => {
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(200);
+    expect(res.status.body).toBe(200);
+    expect(res.body.message).toBe('Article was removed from bookmarks');
+  });
+
+  test('Should return article does not exit', async () => {
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.status.body).toBe(404);
+    expect(res.body.message).toBe('Article does not exist');
+  });
+
+  test('Should return unauthorized', async () => {
+    const res = await request(app).delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`);
+    expect(res.status).toBe(401);
+    expect(res.status.body).toBe(401);
+    expect(res.body.message).toBe('Unauthorized user');
+  });
 });

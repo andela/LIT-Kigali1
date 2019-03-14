@@ -3,7 +3,9 @@ import {
   sendEmailConfirmationLink,
   resetPasswordEmail,
   newPasswordEmail,
-  sendEmailVerified
+  sendEmailVerified,
+  newArticledEmail,
+  newFollowerEmail
 } from '../../__mocks__/MailController';
 
 describe('sendgrid', () => {
@@ -36,6 +38,22 @@ describe('sendgrid', () => {
   test('should send password changed email', async done => {
     expect.assertions(2);
     const res = await newPasswordEmail(db.mailUser);
+    expect(res).toBeDefined();
+    expect(res[0].statusCode).toBe(202);
+    done();
+  });
+
+  test('should send new article notification', async done => {
+    expect.assertions(2);
+    const res = await newArticledEmail(db.mailUser);
+    expect(res).toBeDefined();
+    expect(res[0].statusCode).toBe(202);
+    done();
+  });
+
+  test('should send new article notification', async done => {
+    expect.assertions(2);
+    const res = await newFollowerEmail(db.mailUser);
     expect(res).toBeDefined();
     expect(res[0].statusCode).toBe(202);
     done();

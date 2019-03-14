@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import moment from 'moment';
 import { Comment, User, Article } from '../database/models';
+import newInteractionNotification from '../helpers/notification/newInteractionNotification';
 
 /**
  * @description Comment Controller class
@@ -46,6 +47,13 @@ class CommentController {
         include: [{ model: User, as: 'author' }],
         attributes: ['username', 'firstName', 'lastName', 'image']
       }
+    );
+
+    await newInteractionNotification(
+      foundArticle.id,
+      await newComment.getAuthor(),
+      foundArticle.title,
+      foundArticle.slug
     );
 
     return res.status(201).json({

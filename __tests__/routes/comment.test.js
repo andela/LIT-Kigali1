@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Comment } from '../../database/models';
+import { User, Article, Comment, Notification } from '../../database/models';
 import { createArticle, signupUser, signupUser2, createComment } from '../mocks/db.json';
 import { slugString } from '../../helpers';
 

@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Follow } from '../../database/models';
+import { User, Follow, Notification } from '../../database/models';
 import { signupUser } from '../mocks/db.json';
 
 let loginUser1;
@@ -55,6 +55,9 @@ describe('articles', () => {
       }
     }).then(() => true);
     await Follow.destroy({ where: { followee: loginUser1.id, follower: loginUser2.id } });
+    await Notification.destroy({
+      where: { userId: loginUser1.id }
+    });
   });
 
   test("Should return you can't follow yourself", async () => {

@@ -90,3 +90,43 @@ export const newPasswordEmail = email => {
 
   return sendgrid({ to: email, subject: 'Password Changed', html: mailBody });
 };
+
+export const newArticledEmail = (action, subject, email, author, slug, title) => {
+  const mailBody = `
+  <div style="color: #5a5a5a;">
+      <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">
+        <h2 style="color: #2ABDEB; text-align: center;">Authors Haven - ${subject}</h2>
+      </div>
+
+      <div style="text-align: center; padding: 20px;">
+      <a href="${FRONTEND_URL}/articles/${slug}"
+        style="color: #fff; background-color: #2ABDEB; padding: 10px 20px; font-size: 1.2rem; text-align: center; text-decoration: none;"
+      > ${author} ${action} "${title}" </a>
+
+      <p style="font-size: 1.5rem; margin-top: 30px; color: #5a5a5a !important">
+    <p style="color: #5a5a5a !important;">Thank you, <br> Authors Haven Team</p>
+  </div>
+      `;
+
+  return sendgrid({ bcc: email, subject, html: mailBody });
+};
+
+export const newFollowerEmail = (email, follower, link) => {
+  const mailBody = `
+  <div style="color: #5a5a5a;">
+      <div style="border-bottom: 1px solid #2ABDEB; padding: 15px;">
+        <h2 style="color: #2ABDEB; text-align: center;">Authors Haven - New Follower</h2>
+      </div>
+
+      <div style="text-align: center; padding: 20px;">
+      <a href="${FRONTEND_URL}/users/${link}"
+        style="color: #fff; background-color: #2ABDEB; padding: 10px 20px; font-size: 1.2rem; text-align: center; text-decoration: none;"
+      > ${follower} started following you! </a>
+
+      <p style="font-size: 1.5rem; margin-top: 30px; color: #5a5a5a !important">
+    <p style="color: #5a5a5a !important;">Thank you, <br> Authors Haven Team</p>
+  </div>
+      `;
+
+  return sendgrid({ to: email, subject: 'New Follower', html: mailBody });
+};

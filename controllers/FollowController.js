@@ -1,4 +1,5 @@
 import { Follow, User } from '../database/models';
+import newFollowerNotification from '../helpers/notification/newFollowerNotification';
 
 /**
  * @description Followers controller class
@@ -22,6 +23,7 @@ class FollowController {
     }
 
     await Follow.findOrCreate({ where: { followee: followee.id, follower: currentUser.id } });
+    await newFollowerNotification(followee.id, currentUser.id);
 
     return res.status(201).json({ status: 201, message: `You followed ${followee.firstName}` });
   }

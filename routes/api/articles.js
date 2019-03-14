@@ -1,12 +1,17 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
-import { articleValidator, commentValidator, ratingValidator, reportValidator } from '../validators';
+import {
+  articleValidator,
+  commentValidator,
+  ratingValidator,
+  reportValidator
+} from '../validators';
 import {
   ArticleController,
   CommentController,
   RatingController,
-  FavoriteCommentController,
+  FavoriteCommentController
 } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
@@ -20,14 +25,14 @@ router.post(
   celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
-  asyncHandler(ArticleController.createArticle),
+  asyncHandler(ArticleController.createArticle)
 );
 
 router.get(
   '/search',
   celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
-  asyncHandler(ArticleController.searchArticles),
+  asyncHandler(ArticleController.searchArticles)
 );
 router.get(
   '/report',
@@ -43,21 +48,21 @@ router.get(
 router.get(
   '/:slug',
   verifyJwt({ tokenRequired: false }),
-  asyncHandler(ArticleController.getArticle),
+  asyncHandler(ArticleController.getArticle)
 );
 router.put(
   '/:slug',
   celebrate({ body: articleValidator.createArticle }),
   verifyJwt(),
   fileParser.single('cover'),
-  asyncHandler(ArticleController.updateArticle),
+  asyncHandler(ArticleController.updateArticle)
 );
 
 router.get(
   '/',
   celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
-  asyncHandler(ArticleController.getArticles),
+  asyncHandler(ArticleController.getArticles)
 );
 
 router.delete('/:slug', verifyJwt(), ArticleController.deleteArticle);
@@ -66,14 +71,23 @@ router.post(
   '/:articleSlug/comments',
   celebrate({ body: commentValidator.createComment }),
   verifyJwt(),
-  asyncHandler(CommentController.createArticleComment),
+  asyncHandler(CommentController.createArticleComment)
 );
 router.get(
   '/:articleSlug/comments',
   celebrate({ query: commentValidator.getArticleCommentsQuery }),
   verifyJwt(),
-  asyncHandler(CommentController.getArticleComments),
+  asyncHandler(CommentController.getArticleComments)
 );
+router
+  .route('/:articleSlug/rating')
+  .post(
+    celebrate({ body: ratingValidator }),
+    verifyJwt(),
+    asyncHandler(RatingController.rateArticle)
+  )
+  .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
+  .get(asyncHandler(RatingController.getAllRating));
 
 router.post('/:slug/like', verifyJwt(), asyncHandler(ArticleController.likeArticle));
 
@@ -82,19 +96,19 @@ router.post('/:slug/dislike', verifyJwt(), asyncHandler(ArticleController.dislik
 router.get(
   '/:slug/share/twitter',
   verifyJwt({ tokenRequired: false }),
-  asyncHandler(ArticleController.shareArticleTwitter),
+  asyncHandler(ArticleController.shareArticleTwitter)
 );
 
 router.get(
   '/:slug/share/facebook',
   verifyJwt(),
-  asyncHandler(ArticleController.shareArticleFacebook),
+  asyncHandler(ArticleController.shareArticleFacebook)
 );
 
 router.get(
   '/:slug/share/linkedin',
   verifyJwt(),
-  asyncHandler(ArticleController.shareArticleLinkedin),
+  asyncHandler(ArticleController.shareArticleLinkedin)
 );
 
 router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
@@ -103,7 +117,7 @@ router
   .post(
     celebrate({ body: ratingValidator }),
     verifyJwt(),
-    asyncHandler(RatingController.rateArticle),
+    asyncHandler(RatingController.rateArticle)
   )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
@@ -123,5 +137,8 @@ router.post(
   celebrate({ body: reportValidator }),
   asyncHandler(ArticleController.reportArticle)
 );
-
+router
+  .route('/:articleSlug/bookmark')
+  .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
+  .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
 export default router;

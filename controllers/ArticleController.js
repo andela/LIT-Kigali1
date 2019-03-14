@@ -1,7 +1,11 @@
 import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
+<<<<<<< HEAD
 import { User, Article, Favorite, Follow, Tag, Report } from '../database/models';
+=======
+import { User, Article, Favorite, Follow, Tag, Bookmark } from '../database/models';
+>>>>>>> feat(bookmark): implement bookmark/remove bookmark functionality [Finishes #163519156
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 
 /**
@@ -27,12 +31,12 @@ class ArticleController {
         userId: currentUser.id,
         slug,
         cover,
-        readingTime,
+        readingTime
       },
       {
         include: [{ model: User, as: 'author' }],
-        attributes: ['username', 'firstName', 'lastName', 'image'],
-      },
+        attributes: ['username', 'firstName', 'lastName', 'image']
+      }
     );
 
     if (newArticle.tagList && newArticle.tagList.length > 0) {
@@ -42,7 +46,7 @@ class ArticleController {
     return res.status(201).json({
       status: 201,
       message: 'Article created successfully',
-      article: newArticle.get(),
+      article: newArticle.get()
     });
   }
 
@@ -60,15 +64,15 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' },
+        status: { [Op.not]: 'deleted' }
       },
       include: [
         {
           model: User,
           as: 'author',
-          attributes: ['username', 'firstName', 'lastName', 'image'],
-        },
-      ],
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ]
     });
     if (
       !article ||
@@ -76,7 +80,7 @@ class ArticleController {
     ) {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     const favoritesCount = await Favorite.count({ where: { articleId: article.get().id } });
@@ -91,8 +95,8 @@ class ArticleController {
         rating: await calculateRating(article.get().id),
         author: { ...article.get().author.get(), following },
         favorited,
-        favoritesCount,
-      },
+        favoritesCount
+      }
     });
   }
 
@@ -113,13 +117,13 @@ class ArticleController {
       where: {
         slug,
         userId: currentUser.id,
-        status: { [Op.not]: 'deleted' },
-      },
+        status: { [Op.not]: 'deleted' }
+      }
     });
     if (!dbArticle) {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     if (dbArticle.get().title !== article.title) {
@@ -130,7 +134,7 @@ class ArticleController {
       userId: currentUser.id,
       slug,
       cover,
-      readingTime,
+      readingTime
     });
 
     return res.status(200).json({
@@ -138,8 +142,8 @@ class ArticleController {
       message: 'Article updated successfully',
       article: {
         ...newArticle.get(),
-        rating: await calculateRating(newArticle.id),
-      },
+        rating: await calculateRating(newArticle.id)
+      }
     });
   }
 
@@ -157,11 +161,11 @@ class ArticleController {
       favorited,
       limit = 20,
       offset: offsetQuery = 0,
-      page: queryPage,
+      page: queryPage
     } = req.query;
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };
     const include = [
-      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] },
+      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] }
     ];
     const offset = queryPage ? queryPage - 1 : offsetQuery;
     const page = queryPage || offset + 1;
@@ -181,7 +185,7 @@ class ArticleController {
       include,
       where,
       offset: offset * limit,
-      limit,
+      limit
     });
     const ratedArticles = async articleArray =>
       Promise.all(
@@ -197,15 +201,15 @@ class ArticleController {
           createdAt: art.createdAt,
           updatedAt: art.updatedAt,
           author: art.author,
-          rating: await calculateRating(null, art.slug),
-        })),
+          rating: await calculateRating(null, art.slug)
+        }))
       );
     return res.status(200).json({
       status: 200,
       articles: await ratedArticles(articles.rows),
       articlesCount: articles.count,
       pages: Math.ceil(articles.count / limit),
-      page,
+      page
     });
   }
 
@@ -228,6 +232,7 @@ class ArticleController {
     if (article.userId === currentUser.id || currentUser.userType === 'admin') {
       await article.update({ status: 'deleted' });
 
+<<<<<<< HEAD
       return res.status(200).json({
         status: 200,
         message: 'Article deleted successfully',
@@ -235,6 +240,12 @@ class ArticleController {
       
     }
     return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+=======
+    return res.status(200).json({
+      status: 200,
+      message: 'Article deleted successfully'
+    });
+>>>>>>> feat(bookmark): implement bookmark/remove bookmark functionality [Finishes #163519156
   }
 
   /**
@@ -255,8 +266,8 @@ class ArticleController {
     const liked = await Favorite.findOne({
       where: {
         userId: currentUser.id,
-        articleId: article.id,
-      },
+        articleId: article.id
+      }
     });
     if (liked && (liked.state === 'dislike' || liked.state === null)) {
       await liked.update({ state: 'like' });
@@ -269,7 +280,7 @@ class ArticleController {
     await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,
-      state: 'like',
+      state: 'like'
     });
     return res.status(201).json({ status: 201, message: 'Liked', article });
   }
@@ -293,8 +304,8 @@ class ArticleController {
     const liked = await Favorite.findOne({
       where: {
         userId: currentUser.id,
-        articleId: article.id,
-      },
+        articleId: article.id
+      }
     });
     if (liked && (liked.state === 'like' || liked.state === null)) {
       await liked.update({ state: 'dislike' });
@@ -310,7 +321,7 @@ class ArticleController {
     await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,
-      state: 'dislike',
+      state: 'dislike'
     });
     return res.status(201).json({ status: 201, message: 'Disliked', article });
   }
@@ -332,8 +343,8 @@ class ArticleController {
       {
         model: User,
         as: 'author',
-        attributes: ['username', 'firstName', 'lastName', 'image'],
-      },
+        attributes: ['username', 'firstName', 'lastName', 'image']
+      }
     ];
     if (title) {
       where.title = { [Op.iLike]: `%${title}%` };
@@ -344,9 +355,9 @@ class ArticleController {
           [Op.or]: [
             { username: { [Op.iLike]: `%${author}%` } },
             { firstName: { [Op.iLike]: `%${author}%` } },
-            { lastName: { [Op.iLike]: `%${author}%` } },
-          ],
-        },
+            { lastName: { [Op.iLike]: `%${author}%` } }
+          ]
+        }
       };
     }
     if (tag) {
@@ -356,7 +367,7 @@ class ArticleController {
       where,
       include,
       limit,
-      offset,
+      offset
     });
     pages = Math.ceil(articles.count / limit);
     if (articles.count <= 0) {
@@ -377,13 +388,13 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' },
-      },
+        status: { [Op.not]: 'deleted' }
+      }
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     opn(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
@@ -402,17 +413,17 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' },
-      },
+        status: { [Op.not]: 'deleted' }
+      }
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     opn(
-      `https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`,
+      `https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`
     );
     return res.status(200).json({ status: 200, message: 'Sharing article via Facebook' });
   }
@@ -429,19 +440,19 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' },
-      },
+        status: { [Op.not]: 'deleted' }
+      }
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     opn(
       `https://www.linkedin.com/sharing/share-offsite/?url=${
         process.env.FRONTEND_URL
-      }/articles/${slug}`,
+      }/articles/${slug}`
     );
     return res.status(200).json({ status: 200, message: 'Sharing article via Linkedin' });
   }
@@ -458,13 +469,13 @@ class ArticleController {
     const article = await Article.findOne({
       where: {
         slug,
-        status: { [Op.not]: 'deleted' },
-      },
+        status: { [Op.not]: 'deleted' }
+      }
     });
     if (!article || article.status === 'unpublished') {
       return res.status(404).json({
         status: 404,
-        message: 'Article not found',
+        message: 'Article not found'
       });
     }
     opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
@@ -472,6 +483,7 @@ class ArticleController {
   }
 
   /**
+<<<<<<< HEAD
    * @author Chris
    * @param {Object} req
    * @param {Object} res
@@ -533,6 +545,57 @@ class ArticleController {
     const pages = Math.ceil(reports.count / limit);
 
     return res.status(200).json({ status: 201, ...reports, pages });
+=======
+   *
+   * @author Manzi
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object} Returns a response
+   */
+  static async bookmarkArticle(req, res) {
+    const { articleSlug } = req.params;
+    const { id } = req.currentUser;
+    const article = await Article.findOne({
+      where: { slug: articleSlug, status: { [Op.not]: 'deleted', [Op.not]: 'unpublished' } }
+    });
+    if (!article) {
+      return res.status(404).json({ status: 404, message: 'Article does not exist' });
+    }
+    if (!id) {
+      return res.status(401).json({ status: 401, message: 'Unauthorized user' });
+    }
+    await Bookmark.findOrCreate({ where: { userId: id, articleId: article.id } });
+
+    return res.status(201).json({ status: 201, message: 'Bookmarked' });
+  }
+
+  /**
+   * @author Manzi
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object} Returns a response
+   */
+  static async removeFromBookmarks(req, res) {
+    const { articleSlug } = req.params;
+    const { id } = req.currentUser;
+    const article = await Article.findOne({
+      where: { slug: articleSlug, status: { [Op.not]: 'deleted', [Op.not]: 'unpublished' } }
+    });
+    if (!article) {
+      return res.status(404).json({ status: 404, message: 'Article does not exist' });
+    }
+    if (!id) {
+      return res.status(401).json({ status: 401, message: 'Unauthorized user' });
+    }
+    const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
+    if (!bookmark) {
+      return res.status(404).json({ status: 404, message: 'The bookmark does not exists' });
+    }
+
+    await Bookmark.destroy({ where: { userId: id, articleId: article.id } });
+
+    return res.status(200).json({ status: 200, message: 'Article was removed from bookmarks' });
+>>>>>>> feat(bookmark): implement bookmark/remove bookmark functionality [Finishes #163519156
   }
 }
 

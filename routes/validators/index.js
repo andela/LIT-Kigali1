@@ -6,7 +6,6 @@ import ratingValidator from './rating';
 import profilesValidator from './profile';
 import reportValidator from './report';
 
-
 export {
   authValidator,
   articleValidator,
@@ -14,5 +13,5 @@ export {
   commentValidator,
   ratingValidator,
   profilesValidator,
-  reportValidator  
+  reportValidator
 };

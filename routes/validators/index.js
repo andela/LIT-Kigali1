@@ -5,4 +5,11 @@ import commentValidator from './comment';
 import ratingValidator from './rating';
 import profilesValidator from './profile';
 
-export { authValidator, articleValidator, profileValidator, commentValidator, ratingValidator };
+export {
+  authValidator,
+  articleValidator,
+  profileValidator,
+  commentValidator,
+  ratingValidator,
+  profilesValidator
+};

@@ -5,7 +5,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'coverage',
     'node_modules',
-    'middlewares',
+    'middlewares/passportStrategies.js',
     'index.js',
     'app.js',
     'database',

@@ -7,6 +7,7 @@ import profilesValidator from './profile';
 import reportValidator from './report';
 import roleValidator from './role';
 
+<<<<<<< HEAD
 export {
   authValidator,
   articleValidator,
@@ -17,3 +18,6 @@ export {
   reportValidator,
   roleValidator
 };
+=======
+export { authValidator, articleValidator, profileValidator, commentValidator, ratingValidator };
+>>>>>>> feat(bookmark): implement bookmark/remove bookmark [Finishes #163519156]

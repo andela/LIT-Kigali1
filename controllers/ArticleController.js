@@ -1,11 +1,7 @@
 import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
-<<<<<<< HEAD
-import { User, Article, Favorite, Follow, Tag, Report } from '../database/models';
-=======
-import { User, Article, Favorite, Follow, Tag, Bookmark } from '../database/models';
->>>>>>> feat(bookmark): implement bookmark/remove bookmark functionality [Finishes #163519156
+import { User, Article, Favorite, Follow, Tag, Report, Bookmark } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 
 /**
@@ -232,20 +228,12 @@ class ArticleController {
     if (article.userId === currentUser.id || currentUser.userType === 'admin') {
       await article.update({ status: 'deleted' });
 
-<<<<<<< HEAD
       return res.status(200).json({
         status: 200,
-        message: 'Article deleted successfully',
+        message: 'Article deleted successfully'
       });
-      
     }
     return res.status(401).json({ status: 401, message: 'Unauthorized access' });
-=======
-    return res.status(200).json({
-      status: 200,
-      message: 'Article deleted successfully'
-    });
->>>>>>> feat(bookmark): implement bookmark/remove bookmark functionality [Finishes #163519156
   }
 
   /**
@@ -483,7 +471,6 @@ class ArticleController {
   }
 
   /**
-<<<<<<< HEAD
    * @author Chris
    * @param {Object} req
    * @param {Object} res
@@ -545,7 +532,9 @@ class ArticleController {
     const pages = Math.ceil(reports.count / limit);
 
     return res.status(200).json({ status: 201, ...reports, pages });
-=======
+  }
+
+  /**
    *
    * @author Manzi
    * @param {*} req
@@ -560,9 +549,6 @@ class ArticleController {
     });
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article does not exist' });
-    }
-    if (!id) {
-      return res.status(401).json({ status: 401, message: 'Unauthorized user' });
     }
     await Bookmark.findOrCreate({ where: { userId: id, articleId: article.id } });
 
@@ -584,9 +570,6 @@ class ArticleController {
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article does not exist' });
     }
-    if (!id) {
-      return res.status(401).json({ status: 401, message: 'Unauthorized user' });
-    }
     const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
     if (!bookmark) {
       return res.status(404).json({ status: 404, message: 'The bookmark does not exists' });
@@ -595,7 +578,6 @@ class ArticleController {
     await Bookmark.destroy({ where: { userId: id, articleId: article.id } });
 
     return res.status(200).json({ status: 200, message: 'Article was removed from bookmarks' });
->>>>>>> feat(bookmark): implement bookmark/remove bookmark functionality [Finishes #163519156
   }
 }
 

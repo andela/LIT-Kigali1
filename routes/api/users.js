@@ -3,8 +3,13 @@ import { celebrate } from 'celebrate';
 import passport from 'passport';
 import dotenv from 'dotenv';
 import { User } from '../../database/models';
-import { authValidator } from '../validators';
-import { AuthController, UserController, FollowController } from '../../controllers';
+import { authValidator, roleValidator } from '../validators';
+import {
+  AuthController,
+  UserController,
+  FollowController,
+  GrantRoleController
+} from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import { asyncHandler } from '../../helpers';
 
@@ -76,5 +81,12 @@ router.get('/:username/social/', async (req, res) => {
 router.post('/:username/follow', verifyJwt(), asyncHandler(FollowController.follow));
 
 router.delete('/:username/unfollow', verifyJwt(), asyncHandler(FollowController.unfollow));
+
+router.put(
+  '/:username/grant',
+  verifyJwt(),
+  celebrate({ body: roleValidator }),
+  asyncHandler(GrantRoleController.assignRole)
+);
 
 export default router;

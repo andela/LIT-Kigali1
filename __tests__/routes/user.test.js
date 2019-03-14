@@ -21,11 +21,7 @@ describe('users', () => {
   test('should return invalid confirmation code -fake userid and confirmationCode', async () => {
     expect.assertions(2);
     const res = await request(app).get(
-<<<<<<< HEAD
       `${urlPrefix}/users/${fakeUserId}/confirm_email/${fakeConfirmationCode}`,
-=======
-      `${urlPrefix}/users/${fakeUserId}/confirm_email/${fakeConfirmationCode}`
->>>>>>> feat(report article): fix hound violations
     );
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('Invalid confirmation code');
@@ -34,11 +30,7 @@ describe('users', () => {
   test('should return invalid confirmation code -correct userId -fake confirmationCode', async () => {
     expect.assertions(2);
     const res = await request(app).get(
-<<<<<<< HEAD
       `${urlPrefix}/users/${user.id}/confirm_email/${fakeConfirmationCode}`,
-=======
-      `${urlPrefix}/users/${user.id}/confirm_email/${fakeConfirmationCode}`
->>>>>>> feat(report article): fix hound violations
     );
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('Invalid confirmation code');
@@ -48,11 +40,7 @@ describe('users', () => {
     expect.assertions(2);
     await user.update({ confirmationCode: fakeConfirmationCode, confirmed: 'pending' });
     const res = await request(app).get(
-<<<<<<< HEAD
       `${urlPrefix}/users/${user.id}/confirm_email/${fakeConfirmationCode}`,
-=======
-      `${urlPrefix}/users/${user.id}/confirm_email/${fakeConfirmationCode}`
->>>>>>> feat(report article): fix hound violations
     );
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('test@email.com has been confirmed');
@@ -62,11 +50,7 @@ describe('users', () => {
     expect.assertions(2);
     await user.update({ confirmationCode: null, confirmed: 'confirmed' });
     const res = await request(app).get(
-<<<<<<< HEAD
       `${urlPrefix}/users/${user.id}/confirm_email/${fakeConfirmationCode}`,
-=======
-      `${urlPrefix}/users/${user.id}/confirm_email/${fakeConfirmationCode}`
->>>>>>> feat(report article): fix hound violations
     );
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('test@email.com has already been confirmed');

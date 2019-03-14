@@ -108,6 +108,7 @@ class ProfileController {
       delete user.userFollower;
       return user;
     });
+
     if (page > pages) {
       return res.status(401).json({ status: 401, message: 'The page does not exist' });
     }

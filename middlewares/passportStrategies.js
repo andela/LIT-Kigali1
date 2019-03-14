@@ -111,13 +111,8 @@ passport.use(
       } catch (err) {
         return done(err, null);
       }
-<<<<<<< HEAD
     },
   ),
-=======
-    }
-  )
->>>>>>> feat(report article): fix hound violations
 );
 
 passport.use(
@@ -146,13 +141,8 @@ passport.use(
       } catch (error) {
         return done(error);
       }
-<<<<<<< HEAD
     },
   ),
-=======
-    }
-  )
->>>>>>> feat(report article): fix hound violations
 );
 
 passport.use(
@@ -181,13 +171,8 @@ passport.use(
       } catch (err) {
         return done(err, null);
       }
-<<<<<<< HEAD
     },
   ),
-=======
-    }
-  )
->>>>>>> feat(report article): fix hound violations
 );
 
 export default passport;

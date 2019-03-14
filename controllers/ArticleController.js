@@ -233,7 +233,6 @@ class ArticleController {
         message: 'Article deleted successfully'
       });
     }
-    return res.status(401).json({ status: 401, message: 'Unauthorized access' });
   }
 
   /**

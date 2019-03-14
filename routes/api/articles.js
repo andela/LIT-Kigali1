@@ -150,4 +150,9 @@ router
   .route('/:articleSlug/comments/:commentId/dislike')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
   .get(asyncHandler(FavoriteCommentController.getAllDislikes));
+
+router
+  .route('/:articleSlug/bookmark')
+  .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
+  .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
 export default router;

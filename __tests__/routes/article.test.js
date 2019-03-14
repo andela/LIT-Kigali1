@@ -265,11 +265,10 @@ describe('articles', () => {
 
   test('dislike an article', async () => {
     expect.assertions(3);
-    await Favorite.destroy({ where: { articleId: newArticle.id } });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
+    expect(res.status).toBe(200);
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
   });
@@ -374,12 +373,10 @@ describe('articles', () => {
         }
       });
     expect(res.status).toBe(201);
-    expect(res.body.status).toBe(201);
-    expect(res.body.message).toBe(`${testArticle.title} is bookmarked`);
+    expect(res.body.message).toBe('Article Reported successfully');
   });
 
-  test('Report --Should return article not found', async () => {
-    expect.assertions(2);
+  test('Should return does not exist', async () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${fakeSlug}/report`)
       .set('Authorization', loginUser2.token)
@@ -391,16 +388,14 @@ describe('articles', () => {
       });
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
+    expect(res.body.message).toBe('Article does not exist');
   });
 
-  test('Report --Should return access not allowed', async () => {
-    expect.assertions(2);
-    const res = await request(app)
-      .get(`${urlPrefix}/articles/report`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(403);
-    expect(res.body.message).toBe('Access not allowed');
+  test('Should return unauthorized', async () => {
+    const res = await request(app).post(`${urlPrefix}/articles/${testArticle.slug}/bookmark`);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBe('No auth token');
   });
 
   test('Report --Should return all reports', async () => {
@@ -409,7 +404,6 @@ describe('articles', () => {
       .get(`${urlPrefix}/articles/report`)
       .set('Authorization', admin.token);
     expect(res.status).toBe(200);
-<<<<<<< HEAD
     expect(res.body.rows).toBeDefined();
     test('Should return article was added to bookmarks', async () => {
       expect.assertions(3);
@@ -430,23 +424,6 @@ describe('articles', () => {
       expect(res.body.status).toBe(400);
       expect(res.body.message).toBe('Article does not exist');
     });
-<<<<<<< HEAD
-=======
-    expect(res.body.status).toBe(200);
-    expect(res.body.message).toBe(`${testArticle.title} was removed from bookmarks`);
-  });
-
-  test('Should return article does not exist', async () => {
-    const res = await request(app)
-      .delete(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
-      .set('Authorization', loginUser1.token);
-    expect(res.status).toBe(404);
-    expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
-  });
->>>>>>> fix(tests): fix test issues
-=======
->>>>>>> feat(bookmark): add unit tests [Starts #163519156]
 
     test('Should return unauthorized', async () => {
       expect.assertions(3);
@@ -480,14 +457,5 @@ describe('articles', () => {
       expect(res.status.body).toBe(401);
       expect(res.body.message).toBe('Unauthorized user');
     });
-
-  test('Should return bookmark', async () => {
-    await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });
-    const res = await request(app)
-      .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
-      .set('Authorization', loginUser1.token);
-    expect(res.status).toBe(404);
-    expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('The bookmark does not exist');
   });
 });

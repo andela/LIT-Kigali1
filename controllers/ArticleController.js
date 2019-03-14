@@ -312,7 +312,7 @@ class ArticleController {
       articleId: article.id,
       state: 'dislike',
     });
-    return res.status(200).json({ status: 200, message: 'Disliked', article });
+    return res.status(201).json({ status: 201, message: 'Disliked', article });
   }
 
   /**

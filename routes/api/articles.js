@@ -1,6 +1,7 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
+<<<<<<< HEAD
 import {
   articleValidator,
   commentValidator,
@@ -13,6 +14,10 @@ import {
   RatingController,
   FavoriteCommentController
 } from '../../controllers';
+=======
+import { articleValidator, commentValidator, ratingValidator } from '../validators';
+import { ArticleController, CommentController, RatingController } from '../../controllers';
+>>>>>>> fix(conflicts): fix conflicts from rebase
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
 import { asyncHandler } from '../../helpers';

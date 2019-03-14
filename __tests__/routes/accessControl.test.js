@@ -5,17 +5,18 @@ import { User } from '../../database/models';
 import { urlPrefix } from '../mocks/variables.json';
 import { signupUser, signupUser2 } from '../mocks/db.json';
 
-let admin;
+let superAdmin;
 let user1;
 let user2;
+let admin;
 
 describe('RBAC', () => {
   beforeAll(async () => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
-      username: 'admin',
+      username: 'superAdmin',
       userType: 'super-admin',
-      email: 'admin@author.haven',
+      email: 'superadmin@author.haven',
       password: encryptedPassword,
       confirmed: 'confirmed'
     });
@@ -29,15 +30,22 @@ describe('RBAC', () => {
       confirmed: 'confirmed',
       password: encryptedPassword
     });
+    await User.create({
+      username: 'admin',
+      userType: 'admin',
+      email: 'admin@author.haven',
+      password: encryptedPassword,
+      confirmed: 'confirmed'
+    });
     const res1 = await request(app)
       .post(`${urlPrefix}/users/login`)
       .send({
         user: {
-          username: 'admin@author.haven',
+          username: 'superadmin@author.haven',
           password: '123456'
         }
       });
-    admin = res1.body.user;
+    superAdmin = res1.body.user;
     const res2 = await request(app)
       .post(`${urlPrefix}/users/login`)
       .send({
@@ -56,12 +64,22 @@ describe('RBAC', () => {
         }
       });
     user2 = res3.body.user;
+    const res4 = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({
+        user: {
+          username: 'admin@author.haven',
+          password: '123456'
+        }
+      });
+    admin = res4.body.user;
   });
 
   afterAll(async () => {
-    await User.destroy({ where: { id: admin.id } });
+    await User.destroy({ where: { id: superAdmin.id } });
     await User.destroy({ where: { id: user1.id } });
     await User.destroy({ where: { id: user2.id } });
+    await User.destroy({ where: { id: admin.id } });
   });
 
   test('should not grant access if user not admin', async () => {
@@ -78,7 +96,7 @@ describe('RBAC', () => {
   test('should not grant access with invalid input', async () => {
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
-      .set('authorization', admin.token)
+      .set('authorization', superAdmin.token)
       .send({ role: 'dhfjs' });
 
     expect(res.status).toBe(400);
@@ -88,7 +106,7 @@ describe('RBAC', () => {
   test('should grant access', async () => {
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
-      .set('authorization', admin.token)
+      .set('authorization', superAdmin.token)
       .send({ role: 'admin' });
 
     expect(res.status).toBe(200);
@@ -100,7 +118,7 @@ describe('RBAC', () => {
   test('should inform a user in case role is already granted', async () => {
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
-      .set('authorization', admin.token)
+      .set('authorization', superAdmin.token)
       .send({ role: 'admin' });
 
     expect(res.status).toBe(409);
@@ -111,7 +129,7 @@ describe('RBAC', () => {
   test('should inform a user in case role is already granted', async () => {
     const res = await request(app)
       .put(`${urlPrefix}/users/${user2.username}/grant`)
-      .set('authorization', admin.token)
+      .set('authorization', superAdmin.token)
       .send({ role: 'user' });
 
     expect(res.status).toBe(409);
@@ -123,11 +141,22 @@ describe('RBAC', () => {
     const fakeName = 'rtvdr';
     const res = await request(app)
       .put(`${urlPrefix}/users/${fakeName}/grant`)
-      .set('authorization', admin.token)
+      .set('authorization', superAdmin.token)
       .send({ role: 'admin' });
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('User not found');
+  });
+
+  test('should not grant super-admin when you are an admin', async () => {
+    const res = await request(app)
+      .put(`${urlPrefix}/users/${user2.username}/grant`)
+      .set('authorization', admin.token)
+      .send({ role: 'super-admin' });
+
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBe('Not authorized');
   });
 });

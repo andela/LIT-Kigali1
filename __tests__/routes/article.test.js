@@ -272,6 +272,16 @@ describe('articles', () => {
     expect(res.body.message).toBe('Disliked');
   });
 
+  test('dislike an article', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/dislike`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.article).toBeDefined();
+    expect(res.body.message).toBe('Disliked');
+  });
+
   test('dislike an unexisting article', async () => {
     expect.assertions(2);
     const res = await request(app)

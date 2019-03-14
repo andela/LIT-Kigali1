@@ -14,7 +14,7 @@ class grantRoleController {
     const { username } = req.params;
     const { currentUser } = req;
     const { role } = req.body;
-    if (currentUser.userType !== 'super-admin' && currentUser.userType !== 'admin') {
+    if (currentUser.userType === 'admin' && role === 'super-admin') {
       return res.status(401).send({
         status: 401,
         message: 'Not authorized'

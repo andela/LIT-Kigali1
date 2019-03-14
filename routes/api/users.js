@@ -84,7 +84,7 @@ router.delete('/:username/unfollow', verifyJwt(), asyncHandler(FollowController.
 
 router.put(
   '/:username/grant',
-  verifyJwt(),
+  verifyJwt({ access: ['admin'] }),
   celebrate({ body: roleValidator }),
   asyncHandler(GrantRoleController.assignRole)
 );

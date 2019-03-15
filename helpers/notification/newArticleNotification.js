@@ -4,7 +4,7 @@ import { newArticledEmail } from '../../controllers/MailController';
 import inAppNotification from './inAppNotification';
 
 dotenv.config();
-const { FRONTEND_URL = '/' } = process.env;
+const { FRONTEND_URL } = process.env;
 
 export default async (author, title, slug) => {
   const emails = [];

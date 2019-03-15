@@ -141,4 +141,13 @@ router
   .route('/:articleSlug/bookmark')
   .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
   .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
+
+router
+  .route('/:articleSlug/comments/:commentId/like')
+  .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
+  .get(asyncHandler(FavoriteCommentController.getAllLikes));
+router
+  .route('/:articleSlug/comments/:commentId/dislike')
+  .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
+  .get(asyncHandler(FavoriteCommentController.getAllDislikes));
 export default router;

@@ -111,7 +111,7 @@ describe('RBAC', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.message).toBe('admin role granted');
+    expect(res.body.message).toBe(`admin role granted to ${user1.username}`);
     expect(res.body.user.userType).toBe('admin');
   });
 
@@ -123,7 +123,7 @@ describe('RBAC', () => {
 
     expect(res.status).toBe(409);
     expect(res.body.status).toBe(409);
-    expect(res.body.message).toBe('already an admin');
+    expect(res.body.message).toBe(`${user1.username} is already an admin`);
   });
 
   test('should inform a user in case role is already granted', async () => {
@@ -134,7 +134,7 @@ describe('RBAC', () => {
 
     expect(res.status).toBe(409);
     expect(res.body.status).toBe(409);
-    expect(res.body.message).toBe('already a user');
+    expect(res.body.message).toBe(`${user2.username} is already a user`);
   });
 
   test('should not grant access if user does not exist', async () => {

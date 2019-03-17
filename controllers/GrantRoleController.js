@@ -30,14 +30,14 @@ class grantRoleController {
     if (user.userType === role) {
       return res.status(409).send({
         status: 409,
-        message: `already ${role === 'admin' ? 'an' : 'a'} ${role}`
+        message: `${user.username} is already ${role === 'admin' ? 'an' : 'a'} ${role}`
       });
     }
     user.update({ userType: role });
     const { password, confirmationCode, ...userData } = user.get();
     return res.status(200).send({
       status: 200,
-      message: `${role} role granted`,
+      message: `${role} role granted to ${user.username}`,
       user: userData
     });
   }

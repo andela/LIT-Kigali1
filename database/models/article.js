@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'unpublished'
       },
-      cover: {type: DataTypes.STRING},
-      readingTime: {type: DataTypes.STRING},
+      cover: { type: DataTypes.STRING },
+      readingTime: { type: DataTypes.STRING },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
@@ -52,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     Article.belongsTo(models.User, { as: 'author', foreignKey: 'userId' });
     Article.hasMany(models.Favorite, { foreignKey: 'articleId' });
     Article.hasMany(models.Comment, { foreignKey: 'articleId' });
+    Article.hasMany(models.Report, { foreignKey: 'articleId' }, { onDelete: 'cascade' });
   };
   return Article;
 };

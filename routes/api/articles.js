@@ -1,7 +1,7 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
-import { articleValidator, commentValidator, ratingValidator } from '../validators';
+import { articleValidator, commentValidator, ratingValidator, reportValidator } from '../validators';
 import {
   ArticleController,
   CommentController,
@@ -28,6 +28,16 @@ router.get(
   celebrate({ query: articleValidator.getArticlesQuery }),
   verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.searchArticles),
+);
+router.get(
+  '/report',
+  verifyJwt({ tokenRequired: true }),
+  asyncHandler(ArticleController.getArticleReports)
+);
+router.get(
+  '/report',
+  verifyJwt({ tokenRequired: true }),
+  asyncHandler(ArticleController.getArticleReports)
 );
 
 router.get(
@@ -115,5 +125,12 @@ router
   .route('/:articleSlug/comments/:commentId/dislike')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
   .get(asyncHandler(FavoriteCommentController.getAllDislikes));
+
+router.post(
+  '/:slug/report',
+  verifyJwt({ tokenRequired: true }),
+  celebrate({ body: reportValidator }),
+  asyncHandler(ArticleController.reportArticle)
+);
 
 export default router;

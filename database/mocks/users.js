@@ -5,6 +5,7 @@ const password = bcrypt.hashSync('123456', 10);
 const createdAt = moment('2018-01-07').format();
 const updatedAt = createdAt;
 const gender = 'Male';
+const userType = 'user';
 module.exports = [
   {
     id: '4b134316-966b-47f8-bb47-2fb27a36b40c',
@@ -15,6 +16,7 @@ module.exports = [
     confirmed: 'confirmed',
     password,
     gender,
+    userType,
     createdAt,
     updatedAt
   },
@@ -27,6 +29,7 @@ module.exports = [
     confirmed: 'confirmed',
     password,
     gender,
+    userType,
     createdAt,
     updatedAt
   },
@@ -39,6 +42,7 @@ module.exports = [
     confirmed: 'confirmed',
     password,
     gender,
+    userType,
     createdAt,
     updatedAt
   },
@@ -51,6 +55,7 @@ module.exports = [
     confirmed: 'confirmed',
     password,
     gender,
+    userType,
     createdAt,
     updatedAt
   },
@@ -61,6 +66,20 @@ module.exports = [
     username: 'olivier',
     email: 'olivier@email.com',
     confirmed: 'confirmed',
+    password,
+    gender,
+    userType,
+    createdAt,
+    updatedAt
+  },
+  {
+    id: 'cfb94dfa-a03b-4fc2-9e08-376681707418',
+    firstName: 'Admin',
+    lastName: 'admin',
+    username: 'admin',
+    email: 'admin@email.com',
+    confirmed: 'confirmed',
+    userType: 'admin',
     password,
     gender,
     createdAt,

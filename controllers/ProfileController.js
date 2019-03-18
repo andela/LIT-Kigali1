@@ -79,7 +79,7 @@ class ProfileController {
    * @returns {*} Users object
    */
   static async getProfiles(req, res) {
-    const { page } = req.query;
+    const { page = 1 } = req.query;
     const limit = 10;
     const offset = (page - 1) * limit;
     const { currentUser } = req;
@@ -100,6 +100,7 @@ class ProfileController {
       limit,
       offset
     });
+   
     const pages = Math.ceil(users.count / limit);
     users = users.rows;
     users = users.map(data => {

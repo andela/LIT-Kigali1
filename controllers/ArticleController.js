@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag } from '../database/models';
+import { User, Article, Favorite, Follow, Tag, Report } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 
 /**
@@ -219,22 +219,22 @@ class ArticleController {
   static async deleteArticle(req, res) {
     const { currentUser = {} } = req;
     const { slug } = req.params;
-    const article = await Article.findOne({ where: { slug } });
+    const article = await Article.findOne({ where: { slug, status: { [Op.not]: ['deleted'] } } });
 
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }
 
-    if (article.userId !== currentUser.id) {
-      return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+    if (article.userId === currentUser.id || currentUser.userType === 'admin') {
+      await article.update({ status: 'deleted' });
+
+      return res.status(200).json({
+        status: 200,
+        message: 'Article deleted successfully',
+      });
+      
     }
-
-    await article.update({ status: 'deleted' });
-
-    return res.status(200).json({
-      status: 200,
-      message: 'Article deleted successfully',
-    });
+    return res.status(401).json({ status: 401, message: 'Unauthorized access' });
   }
 
   /**
@@ -469,6 +469,70 @@ class ArticleController {
     }
     opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
     return res.status(200).json({ status: 200, message: 'Sharing article via Email' });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async reportArticle(req, res) {
+    const userId = req.currentUser.id;
+    const { slug } = req.params;
+    const { report } = req.body;
+
+    const article = await Article.findOne({
+      where: { slug, status: { [Op.not]: ['deleted', 'unpublished'] } }
+    });
+    if (!article) {
+      return res.status(404).json({ status: 404, message: 'Article not found' });
+    }
+
+    await Report.create({
+      userId,
+      articleId: article.id,
+      ...report
+    });
+    return res.status(201).json({ status: 201, message: 'Article Reported successfully' });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async getArticleReports(req, res) {
+    const { page = 1 } = req.query;
+    const { currentUser } = req;
+    if (currentUser.userType !== 'admin') {
+      return res.status(403).json({ status: 403, message: 'Access not allowed' });
+    }
+
+    const limit = 20;
+    const offset = limit * (page - 1);
+    const reports = await Report.findAndCountAll({
+      include: [
+        {
+          model: User,
+          as: 'reporter',
+          attributes: ['firstName', 'lastName', 'image']
+        },
+        {
+          model: Article,
+          as: 'article',
+          attributes: ['title', 'slug']
+        }
+      ],
+      limit,
+      offset
+    });
+    const pages = Math.ceil(reports.count / limit);
+
+    return res.status(200).json({ status: 201, ...reports, pages });
   }
 }
 

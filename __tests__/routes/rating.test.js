@@ -44,7 +44,6 @@ describe('5 star Rating', () => {
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('Authorization', testUserToken)
       .send({ rate: 3 });
-
     expect(res.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('Article not found');
   });

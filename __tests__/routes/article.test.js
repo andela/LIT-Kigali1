@@ -365,7 +365,12 @@ describe('articles', () => {
         }
       });
     expect(res.status).toBe(201);
+<<<<<<< HEAD
     expect(res.body.message).toBe('Article Reported successfully');
+=======
+    expect(res.body.status).toBe(201);
+    expect(res.body.message).toBe(`${testArticle.title} is bookmarked`);
+>>>>>>> fix(tests): fix test issues
   });
 
   test('Should return does not exist', async () => {
@@ -380,7 +385,7 @@ describe('articles', () => {
       });
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('Article does not exist');
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
   });
 
   test('Should return unauthorized', async () => {
@@ -452,16 +457,16 @@ describe('articles', () => {
     });
 =======
     expect(res.body.status).toBe(200);
-    expect(res.body.message).toBe('Article was removed from bookmarks');
+    expect(res.body.message).toBe(`${testArticle.title} was removed from bookmarks`);
   });
 
-  test('Should return article does not exit', async () => {
+  test('Should return article does not exist', async () => {
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('Article does not exist');
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
   });
 
   test('Should return unauthorized', async () => {
@@ -479,6 +484,6 @@ describe('articles', () => {
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('The bookmark does not exists');
+    expect(res.body.message).toBe('The bookmark does not exist');
   });
 });

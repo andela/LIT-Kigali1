@@ -13,8 +13,7 @@ let admin;
 describe('RBAC', () => {
   beforeAll(async () => {
     await User.destroy({
-      where: {},
-      truncate: true
+      where: {}
     });
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({

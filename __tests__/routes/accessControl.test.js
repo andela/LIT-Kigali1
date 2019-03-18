@@ -57,6 +57,8 @@ describe('RBAC', () => {
         }
       });
     user1 = res2.body.user;
+    console.log(user1);
+    console.log(res2.body);
     const res3 = await request(app)
       .post(`${urlPrefix}/users/login`)
       .send({

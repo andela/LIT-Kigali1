@@ -485,11 +485,13 @@ class ArticleController {
       where: { slug: articleSlug, status: { [Op.not]: 'deleted', [Op.not]: 'unpublished' } }
     });
     if (!article) {
-      return res.status(404).json({ status: 404, message: 'Article does not exist' });
+      return res
+        .status(404)
+        .json({ status: 404, message: `The article with slug ${articleSlug} does not exist` });
     }
     await Bookmark.findOrCreate({ where: { userId: id, articleId: article.id } });
 
-    return res.status(201).json({ status: 201, message: 'Bookmarked' });
+    return res.status(201).json({ status: 201, message: `${article.title} is bookmarked` });
   }
 
   /**
@@ -505,17 +507,21 @@ class ArticleController {
       where: { slug: articleSlug, status: { [Op.not]: 'deleted', [Op.not]: 'unpublished' } }
     });
     if (!article) {
-      return res.status(404).json({ status: 404, message: 'Article does not exist' });
+      return res
+        .status(404)
+        .json({ status: 404, message: `The article with slug ${articleSlug} does not exist` });
     }
     const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
 
     if (!bookmark) {
-      res.status(404).json({ status: 404, message: 'The bookmark does not exists' });
+      res.status(404).json({ status: 404, message: 'The bookmark does not exist' });
     }
 
     await Bookmark.destroy({ where: { userId: id, articleId: article.id } });
 
-    return res.status(200).json({ status: 200, message: 'Article was removed from bookmarks' });
+    return res
+      .status(200)
+      .json({ status: 200, message: `${article.title} was removed from bookmarks` });
   }
 }
 

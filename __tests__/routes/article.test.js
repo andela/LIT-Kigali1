@@ -373,7 +373,12 @@ describe('articles', () => {
         }
       });
     expect(res.status).toBe(201);
+<<<<<<< HEAD
     expect(res.body.message).toBe('Article Reported successfully');
+=======
+    expect(res.body.status).toBe(201);
+    expect(res.body.message).toBe(`${testArticle.title} is bookmarked`);
+>>>>>>> fix(tests): fix test issues
   });
 
   test('Report --Should return article not found', async () => {
@@ -388,7 +393,12 @@ describe('articles', () => {
         }
       });
     expect(res.status).toBe(404);
+<<<<<<< HEAD
     expect(res.body.message).toBe('Article not found');
+=======
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
+>>>>>>> fix(tests): fix test issues
   });
 
   test('Report --Should return access not allowed', async () => {
@@ -406,6 +416,7 @@ describe('articles', () => {
       .get(`${urlPrefix}/articles/report`)
       .set('Authorization', admin.token);
     expect(res.status).toBe(200);
+<<<<<<< HEAD
     expect(res.body.rows).toBeDefined();
     test('Should return article was added to bookmarks', async () => {
       expect.assertions(3);
@@ -426,6 +437,20 @@ describe('articles', () => {
       expect(res.body.status).toBe(400);
       expect(res.body.message).toBe('Article does not exist');
     });
+=======
+    expect(res.body.status).toBe(200);
+    expect(res.body.message).toBe(`${testArticle.title} was removed from bookmarks`);
+  });
+
+  test('Should return article does not exist', async () => {
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
+  });
+>>>>>>> fix(tests): fix test issues
 
     test('Should return unauthorized', async () => {
       expect.assertions(3);
@@ -468,6 +493,6 @@ describe('articles', () => {
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('The bookmark does not exists');
+    expect(res.body.message).toBe('The bookmark does not exist');
   });
 });

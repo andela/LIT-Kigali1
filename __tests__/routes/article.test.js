@@ -386,6 +386,8 @@ describe('articles', () => {
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
       .set('Authorization', loginUser1.token);
-    console.log(res.body);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('The bookmark does not exists');
   });
 });

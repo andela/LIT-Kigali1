@@ -9,6 +9,7 @@ let superAdmin;
 let author1;
 let author2;
 let admin;
+let password = '123456';
 
 describe('RBAC', () => {
   beforeAll(async () => {
@@ -44,7 +45,7 @@ describe('RBAC', () => {
       .send({
         user: {
           username: 'superadmin@author.haven',
-          password: '123456'
+          password
         }
       });
     superAdmin = res1.body.user;
@@ -53,7 +54,7 @@ describe('RBAC', () => {
       .send({
         user: {
           username: signupUser.email,
-          password: '123456'
+          password
         }
       });
     author1 = res2.body.user;
@@ -62,7 +63,7 @@ describe('RBAC', () => {
       .send({
         user: {
           username: signupUser2.email,
-          password: '123456'
+          password
         }
       });
     author2 = res3.body.user;
@@ -71,7 +72,7 @@ describe('RBAC', () => {
       .send({
         user: {
           username: 'admin@author.haven',
-          password: '123456'
+          password
         }
       });
     admin = res4.body.user;

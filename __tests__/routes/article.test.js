@@ -277,7 +277,18 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
+    expect(res.body.article).toBeDefined();
+    expect(res.body.message).toBe('Disliked');
+  });
+
+  test('dislike an article', async () => {
+    await Favorite.destroy({ where: { articleId: newArticle.id } });
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(201);
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
   });

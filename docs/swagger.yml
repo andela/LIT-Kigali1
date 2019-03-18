@@ -165,7 +165,7 @@ paths:
           schema:
             $ref: '#/definitions/profile'
 
-  /profile/{username}/follow:
+  /profiles/{username}/follow:
     post:
       summary: 'Follow a specific user'
       security:
@@ -174,6 +174,11 @@ paths:
         - 'Profiles'
       operationId: followUser
       parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
         - name: username
           in: path
           required: true
@@ -191,6 +196,11 @@ paths:
         - 'Profiles'
       operationId: unFollowUser
       parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
         - name: username
           in: path
           required: true
@@ -278,6 +288,11 @@ paths:
         - bearerAuth: []
       operationId: updateArticle
       parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
         - name: slug
           in: path
           required: true
@@ -300,6 +315,11 @@ paths:
         - bearerAuth: []
       operationId: deleteArticle
       parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
         - name: slug
           in: path
           required: true
@@ -319,6 +339,11 @@ paths:
       description: Add Comments to an Article
       operationId: commentArticle
       parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
         - name: slug
           in: path
           required: true
@@ -411,6 +436,229 @@ paths:
           description: return an unfavorited article
           schema:
             $ref: '#/definitions/article'
+  /articles/{articleSlug}/rating:
+   post:
+    tags:
+     - 'Articles'
+    summary: Rate a specific article
+    security:
+        - bearerAuth: []
+    operationId: rateArticle
+    parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+    responses:
+      '200':
+        description: return rating information
+        schema:
+         $ref: '#/definitions/rating'
+   delete:
+    tags:
+     - 'Articles'
+    summary: delete rating from an article
+    security:
+      - bearerAuth: []
+    operationId: deleteRating
+    parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+    responses:
+      '200':
+       description: return message
+       schema:
+         type: object
+         properties:
+           status:
+            type: string
+           message:
+            type: string
+   get:
+    tags:
+     - 'Articles'
+    summary: Get all ratings for a specific article
+    operationId: getAllRating
+    parameters:
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+    responses:
+      '200':
+       description: return ratings information
+       schema:
+        $ref: '#/definitions/allRatings'
+  /articles/{slug}/like:
+    post:
+      tags:
+       - 'Articles'
+      summary: Like a specific article
+      security:
+      - bearerAuth: []
+      operationId: likeArticle
+      parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+      responses:
+       '200':
+        description: return an article
+        schema: 
+         $ref: '#/definitions/article'
+  /articles/{slug}/dislike:
+    post:
+      tags:
+       - 'Articles'
+      summary: Dislike a specific article
+      security:
+      - bearerAuth: []
+      operationId: dislikeArticle
+      parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+      responses:
+       '200':
+        description: return an article
+        schema: 
+         $ref: '#/definitions/article'
+  /articles/{slug}/share/twitter:
+    get:
+     tags:
+      - 'Articles'
+     summary: Share article via twitter
+     security: 
+      - bearerAuth: []
+     operationId: shareViaTwitter
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+        description: return message
+        schema:
+          type: object
+          properties:
+           status: 
+            type: number
+           message:
+            type: string
+  /articles/{slug}/share/facebook:
+    get:
+     tags:
+      - 'Articles'
+     summary: Share article via facebook
+     security: 
+      - bearerAuth: []
+     operationId: shareViaFacebook
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+        description: return message
+        schema:
+          type: object
+          properties:
+           status: 
+            type: number
+           message:
+            type: string
+  /articles/{slug}/share/linkedin:
+    get:
+     tags:
+      - 'Articles'
+     summary: Share article via linkedin
+     security: 
+      - bearerAuth: []
+     operationId: shareViaLinkedin
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+        description: return message
+        schema:
+          type: object
+          properties:
+           status: 
+            type: number
+           message:
+            type: string
+  /articles/{slug}/share/email:
+    get:
+     tags:
+      - 'Articles'
+     summary: Share article via email
+     security: 
+      - bearerAuth: []
+     operationId: shareViaEmail
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+        description: return message
+        schema:
+          type: object
+          properties:
+           status: 
+            type: number
+           message:
+            type: string
   /tags:
     get:
       tags:
@@ -422,6 +670,162 @@ paths:
           description: returns an array of all the tags
           schema:
             $ref: '#/definitions/tags'
+  /articles/{articleSlug}/comments/{commentId}/like:
+    post:
+      tags:
+      - 'Articles'
+      summary: Like a comment
+      security: 
+      - bearerAuth: []
+      operationId: likeComment
+      parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+        - name: commentId
+          in: path
+          required: true
+          type: string
+      responses:
+       '200':
+         description: returns like information
+         schema:
+           $ref: '#/definitions/likeComment'
+    get:
+     tags:
+     - 'Articles'
+     summary: Get all likes for a given comment
+     security: 
+      - bearerAuth: []
+     operationId: getAllLikes
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+        - name: commentId
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+       description: returns all dislikes for a given comment
+       schema:
+        $ref: '#/definitions/allDislikeComments'
+  /articles/{articleSlug}/comments/{commentId}/dislike:
+    post:
+      tags:
+      - 'Articles'
+      summary: Like a comment
+      security: 
+      - bearerAuth: []
+      operationId: dislikeComment
+      parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+        - name: commentId
+          in: path
+          required: true
+          type: string
+      responses:
+       '200':
+         description: returns like information
+         schema:
+           $ref: '#/definitions/dislikeComment'
+    get:
+     tags:
+     - 'Articles'
+     summary: Get all dislike for a given comment
+     security: 
+      - bearerAuth: []
+     operationId: getAllDislikes
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+        - name: commentId
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+       description: returns all dislikes for a given comment
+       schema:
+        $ref: '#/definitions/allDislikeComments'
+  /comments/{commentId}:
+   put:
+    tags:
+     - 'Comments'
+    summary: Update a comment
+    security: 
+      - bearerAuth: []
+    operationId: updateComment
+    parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: commentId
+          in: path
+          required: true
+          type: string
+    responses:
+     '200':
+      description: return a comment
+      schema:
+       $ref: '#/definitions/comment'
+   delete:
+    tags:
+     - "Comments"
+    summary: delete a comment
+    security: 
+      - bearerAuth: []
+    operationId: deleteaComment
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+       - name: commentId
+         in: path
+         required: true
+         type: string
+    responses:
+     '200':
+      description: return a message
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+        message:
+         type: string
 definitions:
   user:
     type: object
@@ -443,7 +847,7 @@ definitions:
       gender:
         type: string
       birthDate:
-        type: date
+        type: string
         example: '2019-01-07'
       bio:
         type: string
@@ -646,3 +1050,90 @@ definitions:
             type: string
     required:
       - comment
+  rating:
+   type: object
+   properties:
+     rate:
+      type: number
+  allRatings:
+   type: object
+   properties:
+    status:
+     type: number
+    message:
+     type: string
+    averageRate:
+     type: number
+    ratings:
+     type: array
+     items:
+       type: object
+       properties:
+        id:
+         type: string
+        userId:
+         type: string
+        rating:
+         type: number
+        articleId:
+         type: string
+  likeComment:
+   type: object
+   properties:
+    status:
+     type: number
+    message: 
+     type: string
+    like:
+     type: object
+     properties:
+      id:
+       type: string
+      userId:
+       type: string
+      commentId:
+       type: string
+      value:
+       type: string
+  dislikeComment:
+   type: object
+   properties:
+    status:
+     type: number
+    message: 
+     type: string
+    dislike:
+     type: object
+     properties:
+      id:
+       type: string
+      userId:
+       type: string
+      commentId:
+       type: string
+      value:
+       type: string
+  allDislikeComments:
+   type: object
+   properties:
+    status:
+     type: number
+    counts: 
+     type: number
+    dislikes: 
+     type: array
+     items:
+       type: object
+       properties:
+        id:
+         type: string
+        userId:
+         type: string
+        commentId:
+         type: string
+        value:
+         type: string
+    page:
+     type: number
+    pages:
+     type: number

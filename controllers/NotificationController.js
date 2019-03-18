@@ -16,9 +16,13 @@ class NotificationController {
     const { page = 1 } = req.query;
     const limit = 25;
 
+    if (currentUser.notification === 'disabled') {
+      return res.status(400).json({ status: 400, message: 'Your notifications are disabled' });
+    }
+
     const notifications = await Notification.findAndCountAll({
-      where: { userId: currentUser.id, status: 'unread' },
-      attributes: ['id', 'userId', 'notification', 'link'],
+      where: { userId: currentUser.id },
+      attributes: ['id', 'userId', 'notification', 'link', 'status'],
       offset: (page - 1) * limit,
       limit
     });
@@ -93,13 +97,15 @@ class NotificationController {
   static async enableNotification(req, res) {
     const { currentUser } = req;
 
-    const updateUser = await User.findOne({where: { id: currentUser.id, notification: 'disabled' }});
+    const updateUser = await User.findOne({
+      where: { id: currentUser.id, notification: 'disabled' }
+    });
 
     if (!updateUser) {
       return res.status(400).json({ status: 400, message: 'Notifications are already enabled' });
     }
     await updateUser.update({ notification: 'enabled' });
-    return res.status(201).json({ status: 201, message: 'Notifications enabled' });
+    return res.status(200).json({ status: 200, message: 'Notifications enabled' });
   }
 
   /**
@@ -112,13 +118,15 @@ class NotificationController {
   static async disableNotification(req, res) {
     const { currentUser } = req;
 
-    const updateUser = await User.findOne({where: { id: currentUser.id, notification: 'enabled' }});
+    const updateUser = await User.findOne({
+      where: { id: currentUser.id, notification: 'enabled' }
+    });
 
     if (!updateUser) {
       return res.status(400).json({ status: 400, message: 'Notifications are already disabled' });
     }
     await updateUser.update({ notification: 'disabled' });
-    return res.status(201).json({ status: 201, message: 'Notifications disabled' });
+    return res.status(200).json({ status: 200, message: 'Notifications disabled' });
   }
 }
 export default NotificationController;

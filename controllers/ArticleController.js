@@ -269,12 +269,14 @@ class ArticleController {
       await liked.update({ state: null });
       return res.status(200).json({ status: 200, message: 'Like Removed successfully', article });
     }
-    const favorited = await Favorite.create({
+    await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,
       state: 'like'
     });
-    await newInteractionNotification(article.id, favorited.userId, article.title, article.slug);
+
+    await newInteractionNotification(article.id, currentUser, article.title, article.slug);
+
     return res.status(201).json({ status: 201, message: 'Liked', article });
   }
 

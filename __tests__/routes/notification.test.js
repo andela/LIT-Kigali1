@@ -12,6 +12,8 @@ const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
 let notificationId;
+let newArticle2;
+let newArticle;
 
 describe('articles', () => {
   beforeAll(async done => {
@@ -64,6 +66,16 @@ describe('articles', () => {
     await Article.destroy({ where: { tagList: { [Op.contains]: ['test'] } } });
   });
 
+  test('get notification - should fail to return notification for user 1', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/notifications`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBeDefined();
+  });
+
   test('Should return you followed', async () => {
     expect.assertions(2);
     const res = await request(app)
@@ -80,6 +92,7 @@ describe('articles', () => {
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
       .send({ article: createArticle });
+    newArticle = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
     expect(res.body.article).toBeDefined();
@@ -92,11 +105,92 @@ describe('articles', () => {
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
       .send({ article: createArticle });
+    newArticle2 = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
     expect(res.body.article).toBeDefined();
     expect(res.body.article.slug).toBeDefined();
   }, 30000);
+
+  test('like an article', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${newArticle2.slug}/like`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(201);
+    expect(res.body.message).toBe('Liked');
+    expect(res.body.article).toBeDefined();
+  });
+
+  test('like an article', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${newArticle2.slug}/like`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(201);
+    expect(res.body.message).toBe('Liked');
+    expect(res.body.article).toBeDefined();
+  });
+
+  test('dislike a liked article', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.article).toBeDefined();
+    expect(res.body.message).toBe('Disliked');
+  });
+
+  test('disable notification - success', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .put(`${urlPrefix}/notifications/disable`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.message).toBeDefined();
+  });
+
+  test('disable notification - fail', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .put(`${urlPrefix}/notifications/disable`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(400);
+    expect(res.body.status).toBe(400);
+    expect(res.body.message).toBeDefined();
+  });
+
+  test('get notification - should fail to return notification for user 1', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .get(`${urlPrefix}/notifications`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(400);
+    expect(res.body.status).toBe(400);
+    expect(res.body.message).toBeDefined();
+  });
+
+  test('enable notification - success', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .put(`${urlPrefix}/notifications/enable`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.message).toBeDefined();
+  });
+
+  test('enable notification - fail', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .put(`${urlPrefix}/notifications/enable`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(400);
+    expect(res.body.status).toBe(400);
+    expect(res.body.message).toBeDefined();
+  });
 
   test('get notification - should return notification for user 1', async () => {
     expect.assertions(4);
@@ -139,16 +233,6 @@ describe('articles', () => {
     expect(res.body.status).toBe(404);
   });
 
-  test('get notification - should fail to return notification for user 1', async () => {
-    expect.assertions(3);
-    const res = await request(app)
-      .get(`${urlPrefix}/notifications`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(404);
-    expect(res.body.status).toBe(404);
-    expect(res.body.message).toBeDefined();
-  });
-
   test('get notification - should fail to mark all notification as read', async () => {
     expect.assertions(3);
     const res = await request(app)
@@ -156,46 +240,6 @@ describe('articles', () => {
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
-    expect(res.body.message).toBeDefined();
-  });
-
-  test('disable notification - success', async () => {
-    expect.assertions(3);
-    const res = await request(app)
-      .put(`${urlPrefix}/notifications/disable`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
-    expect(res.body.status).toBe(201);
-    expect(res.body.message).toBeDefined();
-  });
-
-  test('disable notification - fail', async () => {
-    expect.assertions(3);
-    const res = await request(app)
-      .put(`${urlPrefix}/notifications/disable`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(400);
-    expect(res.body.status).toBe(400);
-    expect(res.body.message).toBeDefined();
-  });
-
-  test('enable notification - success', async () => {
-    expect.assertions(3);
-    const res = await request(app)
-      .put(`${urlPrefix}/notifications/enable`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
-    expect(res.body.status).toBe(201);
-    expect(res.body.message).toBeDefined();
-  });
-
-  test('enable notification - fail', async () => {
-    expect.assertions(3);
-    const res = await request(app)
-      .put(`${urlPrefix}/notifications/enable`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(400);
-    expect(res.body.status).toBe(400);
     expect(res.body.message).toBeDefined();
   });
 });

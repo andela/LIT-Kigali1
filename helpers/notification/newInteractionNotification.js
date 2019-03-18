@@ -58,7 +58,7 @@ export default async (articleId, author, title, slug) => {
       combinedNotifications.push({
         userId: combinedId[i],
         action: 'reacted on this article!',
-        notification: `${author.firstName} reacted on this article! '${title}'`,
+        notification: `${author.username} reacted on this article! '${title}'`,
         link: `${FRONTEND_URL}/articles/${slug}`
       });
     }

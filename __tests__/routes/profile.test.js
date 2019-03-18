@@ -294,8 +294,8 @@ describe('Profile', () => {
   test('Should return page does not exist', async done => {
     expect.assertions(3);
     const res = await request(app).get(`${urlPrefix}/profiles?page=1000`);
-    expect(res.status).toBe(401);
-    expect(res.body.status).toBe(401);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('The page does not exist');
     done();
   });

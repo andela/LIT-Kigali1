@@ -23,7 +23,7 @@ describe('5 star Rating', () => {
     testUserId = res.body.user.id;
     const testArticle = await request(app)
       .post(`${urlPrefix}/articles`)
-      .set('authorization', testUserToken)
+      .set('authorization', res.body.user.token)
       .send({
         article: {
           title: 'HelloTest',

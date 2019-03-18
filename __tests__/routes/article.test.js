@@ -365,6 +365,14 @@ describe('articles', () => {
     expect(res.body.article.readingTime).toBeDefined();
   });
 
+  test('Get reading stats of an article', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}`)
+      .set('Authorization', loginUser2.token);
+    expect(res.body.article.views).toBeDefined();
+  });
+
   test('Should report an article', async () => {
     expect.assertions(2);
     const res = await request(app)

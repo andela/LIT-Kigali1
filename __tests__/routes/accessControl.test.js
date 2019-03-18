@@ -12,6 +12,7 @@ let admin;
 
 describe('RBAC', () => {
   beforeAll(async () => {
+    await User.destroy();
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
       username: 'superAdmin',
@@ -54,7 +55,6 @@ describe('RBAC', () => {
           password: '123456'
         }
       });
-    console.log(res2);
     user1 = res2.body.user;
     const res3 = await request(app)
       .post(`${urlPrefix}/users/login`)

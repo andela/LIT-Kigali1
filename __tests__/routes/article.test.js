@@ -460,4 +460,12 @@ describe('articles', () => {
       expect(res.body.message).toBe('Unauthorized user');
     });
   });
+
+  test('Should return bookmark', async () => {
+    await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    console.log(res.body);
+  });
 });

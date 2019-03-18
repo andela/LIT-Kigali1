@@ -23,11 +23,13 @@ describe('RBAC', () => {
     await User.create({
       ...signupUser,
       confirmed: 'confirmed',
+      userType: 'user',
       password: encryptedPassword
     });
     await User.create({
       ...signupUser2,
       confirmed: 'confirmed',
+      userType: 'user',
       password: encryptedPassword
     });
     await User.create({

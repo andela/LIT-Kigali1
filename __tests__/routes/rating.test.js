@@ -21,7 +21,6 @@ describe('5 star Rating', () => {
       .send({ user: { username: signupUser.email, password: signupUser.password } });
     testUserToken = res.body.user.token;
     testUserId = res.body.user.id;
-    console.log(testUserToken);
     const testArticle = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('authorization', testUserToken)

@@ -14,6 +14,6 @@ export {
   commentValidator,
   ratingValidator,
   profilesValidator,
-  reportValidator,  
+  reportValidator,
   roleValidator
 };

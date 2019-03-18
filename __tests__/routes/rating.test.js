@@ -11,14 +11,15 @@ let testUserId;
 describe('5 star Rating', () => {
   beforeAll(async () => {
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
+    const signUpUser = {...signupUser, email: 'newTest@email.com'};
     await User.create({
-      ...signupUser,
+      ...signUpUser,
       confirmed: 'confirmed',
       password: encryptedPassword
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
-      .send({ user: { username: signupUser.email, password: signupUser.password } });
+      .send({ user: { username: signUpUser.email, password: signUpUser.password } });
     testUser = res.body.user;
     testUserId = res.body.user.id;
     const testArticle = await request(app)
@@ -34,7 +35,7 @@ describe('5 star Rating', () => {
     articleSlug = testArticle.body.article.slug;
   });
   afterAll(async () => {
-    await User.destroy({ where: { email: signupUser.email } });
+    await User.destroy({ where: { email: 'newTest@email.com' } });
     await Favorite.destroy({ where: { userId: testUserId } });
     await Article.destroy({ where: { title: 'HelloTest' } });
   });

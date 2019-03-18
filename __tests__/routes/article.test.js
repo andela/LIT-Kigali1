@@ -3,9 +3,7 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import {
- User, Article, Favorite, Bookmark 
-} from '../../database/models';
+import { User, Article, Favorite, Bookmark } from '../../database/models';
 import { createArticle, signupUser } from '../mocks/db.json';
 
 let loginUser1;
@@ -381,5 +379,13 @@ describe('articles', () => {
     expect(res.status).toBe(401);
     expect(res.body.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
+  });
+
+  test('Should return bookmark', async () => {
+    await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    console.log(res.body);
   });
 });

@@ -508,8 +508,9 @@ class ArticleController {
       return res.status(404).json({ status: 404, message: 'Article does not exist' });
     }
     const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
+
     if (!bookmark) {
-      return res.status(404).json({ status: 404, message: 'The bookmark does not exists' });
+      res.status(404).json({ status: 404, message: 'The bookmark does not exists' });
     }
 
     await Bookmark.destroy({ where: { userId: id, articleId: article.id } });

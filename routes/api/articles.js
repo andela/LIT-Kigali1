@@ -1,7 +1,6 @@
 import express from 'express';
 import { celebrate } from 'celebrate';
 import multer from 'multer';
-<<<<<<< HEAD
 import {
   articleValidator,
   commentValidator,
@@ -14,19 +13,6 @@ import {
   RatingController,
   FavoriteCommentController
 } from '../../controllers';
-=======
-import { articleValidator, commentValidator, ratingValidator } from '../validators';
-<<<<<<< HEAD
-import { ArticleController, CommentController, RatingController } from '../../controllers';
->>>>>>> fix(conflicts): fix conflicts from rebase
-=======
-import {
-  ArticleController,
-  CommentController,
-  RatingController,
-  FavoriteCommentController
-} from '../../controllers';
->>>>>>> fix(tests): fix test issues
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
 import { asyncHandler } from '../../helpers';
@@ -137,6 +123,7 @@ router
   .get(asyncHandler(RatingController.getAllRating));
 
 router
+<<<<<<< HEAD
   .route('/:articleSlug/comments/:commentId/like')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
   .get(asyncHandler(FavoriteCommentController.getAllLikes));
@@ -171,6 +158,8 @@ router
   .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
 
 router
+=======
+>>>>>>> fix(conflicts): fix conflicts form rebase develop
   .route('/:articleSlug/comments/:commentId/like')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
   .get(asyncHandler(FavoriteCommentController.getAllLikes));
@@ -178,4 +167,17 @@ router
   .route('/:articleSlug/comments/:commentId/dislike')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
   .get(asyncHandler(FavoriteCommentController.getAllDislikes));
+
+router.post(
+  '/:slug/report',
+  verifyJwt({ tokenRequired: true }),
+  celebrate({ body: reportValidator }),
+  asyncHandler(ArticleController.reportArticle)
+);
+
+router
+  .route('/:articleSlug/bookmark')
+  .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
+  .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
+
 export default router;

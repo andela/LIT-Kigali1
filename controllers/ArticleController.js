@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag, Report, Bookmark } from '../database/models';
+import { User, Article, Favorite, Follow, Tag, Report, Bookmark, Reader } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 import newArticleNotification from '../helpers/notification/newArticleNotification';
 import newInteractionNotification from '../helpers/notification/newInteractionNotification';
@@ -18,9 +18,9 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async createArticle(req, res) {
-    const { file = {}, currentUser } = req;
+    const { file, currentUser } = req;
     const { article } = req.body;
-    const cover = file.url || undefined;
+    const cover = file ? file.url : undefined;
     const slug = slugString(article.title);
     const readingTime = getReadingTime(article.body);
     const newArticle = await Article.create(
@@ -87,14 +87,26 @@ class ArticleController {
     if (currentUser) {
       const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
       following = followingCount !== 0;
+      if (currentUser.username !== article.author.username) {
+        const reader = await Reader.findOne({where: { articleId: article.id, userId: currentUser.id }});
+        if (!reader) {
+          await Reader.create({ articleId: article.id, userId: currentUser.id });
+        }
+      }
     }
+    if (!currentUser) {
+      await Reader.create({ articleId: article.id });
+    }
+    const views = await Reader.count({ where: { articleId: article.id } });
+
     return res.status(200).json({
       article: {
         ...article.get(),
         rating: await calculateRating(article.get().id),
         author: { ...article.get().author.get(), following },
         favorited,
-        favoritesCount
+        favoritesCount,
+        views
       }
     });
   }
@@ -220,7 +232,7 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async deleteArticle(req, res) {
-    const { currentUser = {} } = req;
+    const { currentUser } = req;
     const { slug } = req.params;
     const article = await Article.findOne({ where: { slug } });
 
@@ -320,7 +332,6 @@ class ArticleController {
         .status(200)
         .json({ status: 200, message: 'Dislike Removed successfully', article });
     }
-
     await Favorite.create({
       userId: currentUser.id,
       articleId: article.id,

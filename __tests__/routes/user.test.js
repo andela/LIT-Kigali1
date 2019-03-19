@@ -1,4 +1,5 @@
 import request from 'supertest';
+import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
 import { User, ResetPassword } from '../../database/models';
@@ -6,12 +7,18 @@ import { signupUser } from '../mocks/db.json';
 
 const fakeConfirmationCode = '07e83585-41e5-4fb2-b5d0-a7b52b55aba1';
 const fakeUserId = '457d032c-6d0f-4be5-b46a-032def5d6f2e';
-let user;
+const password = bcrypt.hashSync(signupUser.password, 10);
+let user, loginUser1;
 jest.setTimeout(30000);
 describe('users', () => {
   beforeAll(async () => {
     await User.destroy({ where: { email: signupUser.email } });
-    user = await User.create({ ...signupUser });
+    user = await User.create({ ...signupUser, password });
+
+    const res = await request(app)
+      .post(`${urlPrefix}/users/login`)
+      .send({ user: { username: signupUser.email, password: signupUser.password } });
+    loginUser1 = res.body.user;
   });
 
   afterAll(async () => {
@@ -150,5 +157,13 @@ describe('users', () => {
       .send({ newPassword: 'mugisha', confirmNewpassword: 'mugisha' });
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Your password has been reset successfully!');
+  });
+
+  test('shuold return readin stats', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get(`${urlPrefix}/users/stats`)
+      .set('Authorization', loginUser1.token);
+    expect(res.body.readingStats).toBeDefined();
   });
 });

@@ -18,7 +18,7 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async createArticle(req, res) {
-    const { file = {}, currentUser = {} } = req;
+    const { file = {}, currentUser } = req;
     const { article } = req.body;
     const cover = file.url || undefined;
     const slug = slugString(article.title);
@@ -233,9 +233,8 @@ class ArticleController {
 
       return res.status(200).json({
         status: 200,
-        message: 'Article deleted successfully',
+        message: 'Article deleted successfully'
       });
-      
     }
     return res.status(401).json({ status: 401, message: 'Unauthorized access' });
   }

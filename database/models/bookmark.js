@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     }
   });
-
   Bookmark.associate = function(models) {
     Bookmark.belongsTo(models.User, { foreignKey: 'userId' });
     Bookmark.belongsTo(models.Article, { foreignKey: 'articleId' });

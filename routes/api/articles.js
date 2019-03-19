@@ -39,6 +39,7 @@ router.get(
   verifyJwt({ tokenRequired: true }),
   asyncHandler(ArticleController.getArticleReports)
 );
+
 router.get(
   '/report',
   verifyJwt({ tokenRequired: true }),
@@ -123,6 +124,11 @@ router
   .get(asyncHandler(RatingController.getAllRating));
 
 router
+  .route('/:articleSlug/bookmark')
+  .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
+  .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
+
+router
   .route('/:articleSlug/comments/:commentId/like')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
   .get(asyncHandler(FavoriteCommentController.getAllLikes));
@@ -171,6 +177,11 @@ router.post(
   celebrate({ body: reportValidator }),
   asyncHandler(ArticleController.reportArticle)
 );
+
+router
+  .route('/:articleSlug/bookmark')
+  .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
+  .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
 
 router
   .route('/:articleSlug/bookmark')

@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'pending'
     },
+    notification: {
+      type: DataTypes.STRING,
+      defaultValue: 'enabled'
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE

@@ -11,7 +11,9 @@ mail.setApiKey(process.env.SENDGRID_API_KEY);
  */
 const send = msg => {
   const defaultMsg = {
-    to: msg.to || 'test@authors-haven.com',
+    to: msg.to || 'admin@authors-haven.com',
+    bcc: msg.bcc || undefined,
+    cc: msg.cc || undefined,
     from: msg.from || 'Authors Haven <no_reply@authors-haven.com>',
     subject: msg.subject || 'Authors Haven',
     text: msg.text || undefined,

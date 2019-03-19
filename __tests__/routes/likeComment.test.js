@@ -1,8 +1,9 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
+import { Op } from 'sequelize';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Comment } from '../../database/models';
+import { User, Article, Comment, Notification } from '../../database/models';
 import { createArticle, signupUser, createComment } from '../mocks/db.json';
 
 let testToken, testComment, testArticle;
@@ -33,9 +34,12 @@ describe('likeComment', () => {
     await User.destroy({ where: { email: signupUser.email } });
     await Article.destroy({ where: { id: testArticle.id } });
     await Comment.destroy({ where: { id: testComment.id } });
+    await Notification.destroy({
+      where: { Notification: { [Op.like]: `%${testArticle.title}%` } }
+    });
   });
 
-  test('should like a comment', async (done) => {
+  test('should like a comment', async done => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
@@ -57,7 +61,7 @@ describe('likeComment', () => {
     expect(res.body.message).toBe('Like removed');
   });
 
-  test('should like a comment in case it was disliked', async (done) => {
+  test('should like a comment in case it was disliked', async done => {
     await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);
@@ -75,8 +79,9 @@ describe('likeComment', () => {
 
   test('should not like comment without authorization', async () => {
     expect.assertions(2);
-    const res = await request(app)
-      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`);
+    const res = await request(app).post(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`
+    );
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
@@ -135,7 +140,9 @@ describe('likeComment', () => {
 
   test('should not dislike comment without authorization', async () => {
     expect.assertions(2);
-    const res = await request(app).post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`);
+    const res = await request(app).post(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`
+    );
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
@@ -173,7 +180,9 @@ describe('likeComment', () => {
       body: testComment.body,
       articleId: testComment.articleId
     });
-    const res = await request(app).get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`
+    );
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
@@ -185,8 +194,9 @@ describe('likeComment', () => {
     await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
-    const res = await request(app)
-      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`
+    );
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
@@ -197,7 +207,9 @@ describe('likeComment', () => {
 
   test('should get not likes for unexisting comment', async () => {
     expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${testArticle.slug}/comments/4b557e5f-d3da-4ac0-a25b-cfd2b244eedc/like`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/4b557e5f-d3da-4ac0-a25b-cfd2b244eedc/like`
+    );
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
@@ -206,7 +218,9 @@ describe('likeComment', () => {
 
   test('should get not likes', async () => {
     expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`
+    );
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
@@ -218,7 +232,9 @@ describe('likeComment', () => {
     await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);
-    const res = await request(app).get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`
+    );
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
@@ -230,7 +246,9 @@ describe('likeComment', () => {
   test('should get not likes for unexisting comment', async () => {
     expect.assertions(3);
     const fakeId = '4b557e5f-d3da-4ac0-a25b-cfd2b244eedc';
-    const res = await request(app).get(`${urlPrefix}/articles/${testArticle.slug}/comments/${fakeId}/dislike`);
+    const res = await request(app).get(
+      `${urlPrefix}/articles/${testArticle.slug}/comments/${fakeId}/dislike`
+    );
 
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);

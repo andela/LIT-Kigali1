@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { sendgrid } from '../helpers';
 
 dotenv.config();
-const { FRONTEND_URL = '/' } = process.env;
+const { FRONTEND_URL } = process.env;
 
 /**
  * @author Olivier

@@ -33,6 +33,13 @@
     "status": "published",
     "tagList": ["test", "article"]
   },
+  "createArticleTwo": {
+    "title": "Test article",
+    "body": "Quis culpa ad exercitation sunt pariatur ut commodo ipsum ipsum. Labore velit laborum cupidatat laborum excepteur. Lorem eu do cupidatat amet eiusmod veniam.",
+    "description": "exercitation",
+    "status": "unpublished",
+    "tagList": ["test", "article"]
+  },
   "profile": {
     "firstName": "John",
     "lastName": "Doe",

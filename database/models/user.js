@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Article, { foreignKey: 'userId' });
     User.hasMany(models.Follow, { foreignKey: 'follower', as: 'userFollower' });
     User.hasMany(models.Report, { foreignKey: 'userId' });
+    User.hasMany(models.Reader, { foreignKey: 'userId' });
   };
   return User;
 };

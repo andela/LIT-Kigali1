@@ -3,14 +3,14 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Favorite, Report, Notification } from '../../database/models';
-import { createArticle, signupUser } from '../mocks/db.json';
+import { User, Article, Favorite, Report, Notification, Reader} from '../../database/models';
+import { createArticle, signupUser, createArticleTwo } from '../mocks/db.json';
 
 let loginUser1;
 let loginUser2;
 let admin;
 let newArticle;
-let testArticle;
+let testArticle, testArticleTwo;
 const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
@@ -53,6 +53,12 @@ describe('articles', () => {
       .set('Authorization', loginUser1.token)
       .send({ article: createArticle });
     testArticle = res.body.article;
+
+    res = await request(app)
+      .post(`${urlPrefix}/articles`)
+      .set('Authorization', loginUser1.token)
+      .send({ article: createArticleTwo });
+    testArticleTwo = res.body.article;
     done();
   });
 
@@ -73,6 +79,8 @@ describe('articles', () => {
     await Notification.destroy({
       where: { Notification: { [Op.like]: `%${newArticle.title}%` } }
     });
+    await Reader.destroy({ where: { articleId: newArticle.id } });
+    await Reader.destroy({ where: { articleId: testArticle.id } });
   });
 
   test('should return created article', async () => {
@@ -91,6 +99,15 @@ describe('articles', () => {
   test('Should return article not found', async () => {
     expect.assertions(2);
     const res = await request(app).get(`${urlPrefix}/articles/${fakeSlug}`);
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe('Article not found');
+  });
+
+  test('Should return article not found', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticleTwo.slug}`)
+      .set('Authorization', loginUser2.token);
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
   });
@@ -361,6 +378,14 @@ describe('articles', () => {
       .get(`${urlPrefix}/articles/${testArticle.slug}`)
       .set('Authorization', loginUser2.token);
     expect(res.body.article.readingTime).toBeDefined();
+  });
+
+  test('Get reading stats of an article', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}`)
+      .set('Authorization', loginUser2.token);
+    expect(res.body.article.views).toBeDefined();
   });
 
   test('Should report an article', async () => {

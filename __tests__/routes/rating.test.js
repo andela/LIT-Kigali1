@@ -5,25 +5,26 @@ import { User, Article, Favorite } from '../../database/models';
 import app from '../../app';
 import { signupUser } from '../mocks/db.json';
 
-let testUserToken;
+let testUser;
 let articleSlug;
 let testUserId;
 describe('5 star Rating', () => {
   beforeAll(async () => {
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
+    const signUpUser = {...signupUser, email: 'newTest@email.com'};
     await User.create({
-      ...signupUser,
+      ...signUpUser,
       confirmed: 'confirmed',
       password: encryptedPassword
     });
     const res = await request(app)
       .post(`${urlPrefix}/users/login`)
-      .send({ user: { username: signupUser.email, password: signupUser.password } });
-    testUserToken = res.body.user.token;
+      .send({ user: { username: signUpUser.email, password: signUpUser.password } });
+    testUser = res.body.user;
     testUserId = res.body.user.id;
     const testArticle = await request(app)
       .post(`${urlPrefix}/articles`)
-      .set('authorization', testUserToken)
+      .set('authorization', testUser.token)
       .send({
         article: {
           title: 'HelloTest',
@@ -34,7 +35,7 @@ describe('5 star Rating', () => {
     articleSlug = testArticle.body.article.slug;
   });
   afterAll(async () => {
-    await User.destroy({ where: { email: signupUser.email } });
+    await User.destroy({ where: { email: 'newTest@email.com' } });
     await Favorite.destroy({ where: { userId: testUserId } });
     await Article.destroy({ where: { title: 'HelloTest' } });
   });
@@ -42,9 +43,8 @@ describe('5 star Rating', () => {
     expect.assertions(2);
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', testUser.token)
       .send({ rate: 3 });
-
     expect(res.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('Article not found');
   });
@@ -54,7 +54,7 @@ describe('5 star Rating', () => {
     article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', testUser.token)
       .send({ rate: 3 });
 
     expect(res.status).toBe(201);
@@ -68,7 +68,7 @@ describe('5 star Rating', () => {
     article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', testUser.token)
       .send({ rate: 4 });
 
     expect(res.status).toBe(200);
@@ -80,7 +80,7 @@ describe('5 star Rating', () => {
     expect.assertions(3);
     const res = await request(app)
       .post(`${urlPrefix}/articles/hjakksmjjfklaldk/rating`)
-      .set('Authorization', testUserToken)
+      .set('Authorization', testUser.token)
       .send({ rate: 3 });
 
     expect(res.status).toBe(404);
@@ -112,7 +112,7 @@ describe('5 star Rating', () => {
     article.update({ status: 'unpublished' });
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${articleSlug}/rating`)
-      .set('authorization', testUserToken);
+      .set('authorization', testUser.token);
 
     expect(res.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('rating not found');
@@ -123,7 +123,7 @@ describe('5 star Rating', () => {
     article.update({ status: 'published' });
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${articleSlug}/rating`)
-      .set('authorization', testUserToken);
+      .set('authorization', testUser.token);
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Rating removed successfully');
@@ -132,7 +132,7 @@ describe('5 star Rating', () => {
     expect.assertions(2);
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${articleSlug}/rating`)
-      .set('authorization', testUserToken);
+      .set('authorization', testUser.token);
 
     expect(res.status).toBe(404);
     expect(res.body.errors.body[0]).toBe('rating not found');

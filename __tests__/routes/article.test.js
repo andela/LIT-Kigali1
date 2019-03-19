@@ -265,6 +265,7 @@ describe('articles', () => {
 
   test('dislike an article', async () => {
     expect.assertions(3);
+    await Favorite.destroy({ where: { articleId: newArticle.id } });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
@@ -278,18 +279,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
-    expect(res.body.article).toBeDefined();
-    expect(res.body.message).toBe('Disliked');
-  });
-
-  test('dislike an article', async () => {
-    await Favorite.destroy({ where: { articleId: newArticle.id } });
-    expect.assertions(3);
-    const res = await request(app)
-      .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
+    expect(res.status).toBe(200);
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
   });
@@ -415,7 +405,7 @@ describe('articles', () => {
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
-    expect(res.body.message).toBe('Bookmarked');
+    expect(res.body.message).toBe(`${testArticle.title} is bookmarked`);
   });
 
   test('Should return does not exist', async () => {
@@ -424,8 +414,8 @@ describe('articles', () => {
       .post(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
-    expect(res.body.status).toBe(400);
-    expect(res.body.message).toBe('Article does not exist');
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
   });
 
   test('Should return unauthorized', async () => {
@@ -433,7 +423,7 @@ describe('articles', () => {
     const res = await request(app).post(`${urlPrefix}/articles/${testArticle.slug}/bookmark`);
     expect(res.status).toBe(401);
     expect(res.body.status).toBe(401);
-    expect(res.body.message).toBe('Unauthorized user');
+    expect(res.body.message).toBe('No auth token');
   });
 
   test('Should return article was removed from bookmarks', async () => {

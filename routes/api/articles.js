@@ -123,7 +123,6 @@ router
   .get(asyncHandler(RatingController.getAllRating));
 
 router
-<<<<<<< HEAD
   .route('/:articleSlug/comments/:commentId/like')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
   .get(asyncHandler(FavoriteCommentController.getAllLikes));
@@ -158,8 +157,6 @@ router
   .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
 
 router
-=======
->>>>>>> fix(conflicts): fix conflicts form rebase develop
   .route('/:articleSlug/comments/:commentId/like')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
   .get(asyncHandler(FavoriteCommentController.getAllLikes));

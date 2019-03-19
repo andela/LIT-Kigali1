@@ -100,7 +100,7 @@ class ProfileController {
       limit,
       offset
     });
-   
+
     const pages = Math.ceil(users.count / limit);
     users = users.rows;
     users = users.map(data => {
@@ -110,13 +110,18 @@ class ProfileController {
       return user;
     });
     if (page > pages) {
-      return res.status(401).json({ status: 401, message: 'The page does not exist' });
+      return res.status(404).json({ status: 404, message: 'The page does not exist' });
     }
-    return res.status(200).json({ status: 200, profiles: users, page, totalPages: pages });
+    return res.status(200).json({
+      status: 200,
+      profiles: users,
+      page,
+      totalPages: pages
+    });
   }
 
   /**
-   * @author Manzi
+   *@author Manzi
    * @param {*} req
    * @param {*} res
    * @returns {*} User object

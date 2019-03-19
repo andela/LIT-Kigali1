@@ -3,7 +3,15 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Favorite, Report, Notification, Reader} from '../../database/models';
+import {
+  User,
+  Article,
+  Favorite,
+  Report,
+  Notification,
+  Reader,
+  Bookmark
+} from '../../database/models';
 import { createArticle, signupUser, createArticleTwo } from '../mocks/db.json';
 
 let loginUser1;
@@ -76,6 +84,7 @@ describe('articles', () => {
     await Article.destroy({ where: { tagList: { [Op.contains]: ['test'] } } });
     await Favorite.destroy({ where: { articleId: newArticle.id } });
     await Report.destroy({ where: { reason: 'test' } });
+    await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });
     await Notification.destroy({
       where: { Notification: { [Op.like]: `%${newArticle.title}%` } }
     });
@@ -284,6 +293,7 @@ describe('articles', () => {
 
   test('dislike an article', async () => {
     expect.assertions(3);
+    await Favorite.destroy({ where: { articleId: newArticle.id } });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
@@ -297,18 +307,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/dislike`)
       .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
-    expect(res.body.article).toBeDefined();
-    expect(res.body.message).toBe('Disliked');
-  });
-
-  test('dislike an article', async () => {
-    await Favorite.destroy({ where: { articleId: newArticle.id } });
-    expect.assertions(3);
-    const res = await request(app)
-      .post(`${urlPrefix}/articles/${newArticle.slug}/dislike`)
-      .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(201);
+    expect(res.status).toBe(200);
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
   });
@@ -434,5 +433,67 @@ describe('articles', () => {
       .set('Authorization', admin.token);
     expect(res.status).toBe(200);
     expect(res.body.rows).toBeDefined();
+  });
+  test('Should return article was added to bookmarks', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(201);
+    expect(res.body.status).toBe(201);
+    expect(res.body.message).toBe(`${testArticle.title} is bookmarked`);
+  });
+
+  test('Should return does not exist', async () => {
+    expect.assertions(3);
+    const res = await request(app)
+      .post(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
+  });
+
+  test('Should return unauthorized', async () => {
+    expect.assertions(3);
+    const res = await request(app).post(`${urlPrefix}/articles/${testArticle.slug}/bookmark`);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBe('No auth token');
+  });
+
+  test('Should return article was removed from bookmarks', async () => {
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.message).toBe(`${testArticle.title} was removed from bookmarks`);
+  });
+
+  test('Should return article does not exist', async () => {
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${fakeSlug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe(`The article with slug ${fakeSlug} does not exist`);
+  });
+
+  test('Should return unauthorized', async () => {
+    const res = await request(app).delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBe('No auth token');
+  });
+
+  test('Should return bookmark', async () => {
+    await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });
+    const res = await request(app)
+      .delete(`${urlPrefix}/articles/${testArticle.slug}/bookmark`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBe('The bookmark does not exist');
   });
 });

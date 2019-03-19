@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import opn from 'opn';
 import { Op } from 'sequelize';
-import { User, Article, Favorite, Follow, Tag, Report, Reader } from '../database/models';
+import { User, Article, Favorite, Follow, Tag, Report, Bookmark, Reader } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 import newArticleNotification from '../helpers/notification/newArticleNotification';
 import newInteractionNotification from '../helpers/notification/newInteractionNotification';
@@ -234,12 +234,15 @@ class ArticleController {
   static async deleteArticle(req, res) {
     const { currentUser } = req;
     const { slug } = req.params;
-    const article = await Article.findOne({ where: { slug, status: { [Op.not]: ['deleted'] } } });
+    const article = await Article.findOne({ where: { slug } });
 
     if (!article) {
       return res.status(404).json({ status: 404, message: 'Article not found' });
     }
 
+    if (article.userId !== currentUser.id) {
+      return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+    }
     if (article.userId === currentUser.id || currentUser.userType === 'admin') {
       await article.update({ status: 'deleted' });
 
@@ -248,7 +251,13 @@ class ArticleController {
         message: 'Article deleted successfully'
       });
     }
-    return res.status(401).json({ status: 401, message: 'Unauthorized access' });
+
+    await article.update({ status: 'deleted' });
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Article deleted successfully'
+    });
   }
 
   /**
@@ -328,7 +337,7 @@ class ArticleController {
       articleId: article.id,
       state: 'dislike'
     });
-    return res.status(201).json({ status: 201, message: 'Disliked', article });
+    return res.status(200).json({ status: 200, message: 'Disliked', article });
   }
 
   /**
@@ -485,6 +494,59 @@ class ArticleController {
     }
     opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
     return res.status(200).json({ status: 200, message: 'Sharing article via Email' });
+  }
+
+  /**
+   *
+   * @author Manzi
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object} Returns a response
+   */
+  static async bookmarkArticle(req, res) {
+    const { articleSlug } = req.params;
+    const { id } = req.currentUser;
+    const article = await Article.findOne({
+      where: { slug: articleSlug, status: { [Op.not]: 'deleted', [Op.not]: 'unpublished' } }
+    });
+    if (!article) {
+      return res
+        .status(404)
+        .json({ status: 404, message: `The article with slug ${articleSlug} does not exist` });
+    }
+    await Bookmark.findOrCreate({ where: { userId: id, articleId: article.id } });
+
+    return res.status(201).json({ status: 201, message: `${article.title} is bookmarked` });
+  }
+
+  /**
+   * @author Manzi
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object} Returns a response
+   */
+  static async removeFromBookmarks(req, res) {
+    const { articleSlug } = req.params;
+    const { id } = req.currentUser;
+    const article = await Article.findOne({
+      where: { slug: articleSlug, status: { [Op.not]: 'deleted', [Op.not]: 'unpublished' } }
+    });
+    if (!article) {
+      return res
+        .status(404)
+        .json({ status: 404, message: `The article with slug ${articleSlug} does not exist` });
+    }
+    const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
+
+    if (!bookmark) {
+      res.status(404).json({ status: 404, message: 'The bookmark does not exist' });
+    }
+
+    await Bookmark.destroy({ where: { userId: id, articleId: article.id } });
+
+    return res
+      .status(200)
+      .json({ status: 200, message: `${article.title} was removed from bookmarks` });
   }
 
   /**

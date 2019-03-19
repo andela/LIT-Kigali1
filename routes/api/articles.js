@@ -39,6 +39,7 @@ router.get(
   verifyJwt({ tokenRequired: true }),
   asyncHandler(ArticleController.getArticleReports)
 );
+
 router.get(
   '/report',
   verifyJwt({ tokenRequired: true }),
@@ -101,13 +102,13 @@ router.get(
 
 router.get(
   '/:slug/share/facebook',
-  verifyJwt({ tokenRequired: false }),
+  verifyJwt(),
   asyncHandler(ArticleController.shareArticleFacebook)
 );
 
 router.get(
   '/:slug/share/linkedin',
-  verifyJwt({ tokenRequired: false }),
+  verifyJwt(),
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 
@@ -125,6 +126,11 @@ router
   )
   .delete(verifyJwt(), asyncHandler(RatingController.deleteRating))
   .get(asyncHandler(RatingController.getAllRating));
+
+router
+  .route('/:articleSlug/bookmark')
+  .post(verifyJwt(), asyncHandler(ArticleController.bookmarkArticle))
+  .delete(verifyJwt(), asyncHandler(ArticleController.removeFromBookmarks));
 
 router
   .route('/:articleSlug/comments/:commentId/like')

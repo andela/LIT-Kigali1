@@ -43,7 +43,6 @@ describe('likeComment', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
-
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
     expect(res.body.message).toBe('Comment liked');

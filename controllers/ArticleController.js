@@ -238,7 +238,6 @@ class ArticleController {
         status: 200,
         message: 'Article deleted successfully'
       });
-
     }
 
     await article.update({ status: 'deleted' });

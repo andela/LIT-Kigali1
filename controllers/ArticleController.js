@@ -232,7 +232,7 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async deleteArticle(req, res) {
-    const { currentUser = {} } = req;
+    const { currentUser } = req;
     const { slug } = req.params;
     const article = await Article.findOne({ where: { slug, status: { [Op.not]: ['deleted'] } } });
 

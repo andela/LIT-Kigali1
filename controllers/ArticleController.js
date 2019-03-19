@@ -3,6 +3,8 @@ import opn from 'opn';
 import { Op } from 'sequelize';
 import { User, Article, Favorite, Follow, Tag, Report, Bookmark } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
+import newArticleNotification from '../helpers/notification/newArticleNotification';
+import newInteractionNotification from '../helpers/notification/newInteractionNotification';
 
 /**
  * @description Article Controller class
@@ -16,7 +18,7 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async createArticle(req, res) {
-    const { file = {}, currentUser = {} } = req;
+    const { file = {}, currentUser } = req;
     const { article } = req.body;
     const cover = file.url || undefined;
     const slug = slugString(article.title);
@@ -39,6 +41,7 @@ class ArticleController {
       const tags = newArticle.tagList.map(val => ({ name: val }));
       await Tag.bulkCreate(tags, { ignoreDuplicates: true });
     }
+    await newArticleNotification(await newArticle.getAuthor(), newArticle.slug, newArticle.title);
     return res.status(201).json({
       status: 201,
       message: 'Article created successfully',
@@ -228,6 +231,15 @@ class ArticleController {
     if (article.userId !== currentUser.id) {
       return res.status(401).json({ status: 401, message: 'Unauthorized access' });
     }
+    if (article.userId === currentUser.id || currentUser.userType === 'admin') {
+      await article.update({ status: 'deleted' });
+
+      return res.status(200).json({
+        status: 200,
+        message: 'Article deleted successfully'
+      });
+
+    }
 
     await article.update({ status: 'deleted' });
 
@@ -271,6 +283,9 @@ class ArticleController {
       articleId: article.id,
       state: 'like'
     });
+
+    await newInteractionNotification(article.id, currentUser, article.title, article.slug);
+
     return res.status(201).json({ status: 201, message: 'Liked', article });
   }
 

@@ -112,7 +112,11 @@ router.get(
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 
-router.get('/:slug/share/email', verifyJwt(), asyncHandler(ArticleController.shareArticleEmail));
+router.get(
+  '/:slug/share/email',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.shareArticleEmail)
+);
 router
   .route('/:articleSlug/rating')
   .post(

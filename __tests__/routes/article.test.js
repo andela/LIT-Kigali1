@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Favorite, Report, Bookmark } from '../../database/models';
+import { User, Article, Favorite, Report, Bookmark, Notification  } from '../../database/models';
 import { createArticle, signupUser } from '../mocks/db.json';
 
 let loginUser1;
@@ -71,6 +71,9 @@ describe('articles', () => {
     await Favorite.destroy({ where: { articleId: newArticle.id } });
     await Report.destroy({ where: { reason: 'test' } });
     await Bookmark.destroy({ where: { userId: loginUser1.id, articleId: testArticle.id } });
+    await Notification.destroy({
+      where: { Notification: { [Op.like]: `%${newArticle.title}%` } }
+    });
   });
 
   test('should return created article', async () => {

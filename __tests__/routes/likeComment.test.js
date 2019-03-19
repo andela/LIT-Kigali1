@@ -1,8 +1,9 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
+import { Op } from 'sequelize';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Comment } from '../../database/models';
+import { User, Article, Comment, Notification } from '../../database/models';
 import { createArticle, signupUser, createComment } from '../mocks/db.json';
 
 let testToken, testComment, testArticle;
@@ -33,6 +34,9 @@ describe('likeComment', () => {
     await User.destroy({ where: { email: signupUser.email } });
     await Article.destroy({ where: { id: testArticle.id } });
     await Comment.destroy({ where: { id: testComment.id } });
+    await Notification.destroy({
+      where: { Notification: { [Op.like]: `%${testArticle.title}%` } }
+    });
   });
 
   test('should like a comment', async done => {

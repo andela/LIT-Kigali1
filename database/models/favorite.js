@@ -8,12 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
       },
-      userId: {
-        type: DataTypes.STRING
-      },
-      articleId: {
-        type: DataTypes.STRING
-      },
+      userId: { type: DataTypes.UUID },
+      articleId: { type: DataTypes.UUID },
       state: {
         type: DataTypes.STRING
       },
@@ -31,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Favorite.associate = function (models) {
+  Favorite.associate = function(models) {
     Favorite.belongsTo(models.User, { foreignKey: 'userId' });
     Favorite.belongsTo(models.Article, { foreignKey: 'articleId' });
   };

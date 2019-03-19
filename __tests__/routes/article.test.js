@@ -3,7 +3,15 @@ import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article, Favorite, Report, Notification, Reader} from '../../database/models';
+import {
+  User,
+  Article,
+  Favorite,
+  Report,
+  Notification,
+  Reader,
+  Bookmark
+} from '../../database/models';
 import { createArticle, signupUser, createArticleTwo } from '../mocks/db.json';
 
 let loginUser1;

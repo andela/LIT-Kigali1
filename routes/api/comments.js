@@ -16,4 +16,6 @@ router.put(
 
 router.delete('/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
 
+router.get('/:commentId/edited', verifyJwt(), asyncHandler(CommentController.ViewCommentEdit));
+
 export default router;

@@ -18,9 +18,9 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async createArticle(req, res) {
-    const { file = {}, currentUser } = req;
+    const { file, currentUser } = req;
     const { article } = req.body;
-    const cover = file.url || undefined;
+    const cover = file ? file.url : undefined;
     const slug = slugString(article.title);
     const readingTime = getReadingTime(article.body);
     const newArticle = await Article.create(

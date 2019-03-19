@@ -252,6 +252,38 @@ paths:
             properties:
               user:
                 $ref: '#/definitions/user'
+  /users/{username}/grant:
+   put:
+    summary: Grant role to the user
+    security:
+     - bearerAuth: []
+    tags:
+     - 'Auth'
+    operationId: grantRole
+    parameters:
+      - name: username
+        in: path
+        required: true
+        type: string
+      - name: body
+        in: body
+        required: true
+        schema:
+         type: object
+         properties:
+          role:
+           type: string
+    responses:
+     '200':
+       description: returns a message
+       schema:
+        type: object
+        properties:
+         status:
+           type: number
+           example: 200
+         message: 
+           type: string
                 
   /profiles/{username}:
     put:
@@ -322,6 +354,7 @@ paths:
           description: return a user profile
           schema:
             $ref: '#/definitions/updateProfile'
+  /profiles/{username}/unfollow:
     delete:
       summary: 'Follow a specific user'
       security:

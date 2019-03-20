@@ -13,6 +13,9 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false
       },
+      highlightedText: {
+        type: Sequelize.STRING
+      },
       userId: {
         type: Sequelize.UUID,
         allowNull: false

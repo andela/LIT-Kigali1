@@ -201,6 +201,7 @@ class CommentController {
    * @returns {Object} Returns the response
    */
   static async ViewCommentEdit(req, res) {
+    const { currentUser } = req;
     const { commentId } = req.params;
     const foundComment = await Comment.findOne({
       where: { id: commentId }
@@ -213,21 +214,28 @@ class CommentController {
       });
     }
 
-    if (foundComment.version !== 'edited') {
-      return res.status(404).json({ status: 404, message: 'This comment was not edited' });
-    }
-    const commentHistory = await OldComment.findOne({
-      where: { commentId },
-      include: [
-        {
-          model: User,
-          as: 'author',
-          attributes: ['username', 'firstName', 'lastName', 'image']
-        }
-      ]
-    });
+    if (
+      foundComment.userId === currentUser.id ||
+      currentUser.userType === 'admin' ||
+      currentUser.userType === 'super-admin'
+    ) {
+      if (foundComment.version !== 'edited') {
+        return res.status(404).json({ status: 404, message: 'This comment was not edited' });
+      }
+      const commentHistory = await OldComment.findOne({
+        where: { commentId },
+        include: [
+          {
+            model: User,
+            as: 'author',
+            attributes: ['username', 'firstName', 'lastName', 'image']
+          }
+        ]
+      });
 
-    return res.status(200).json({ status: 200, editedComment: commentHistory });
+      return res.status(200).json({ status: 200, editedComment: commentHistory });
+    }
+    return res.status(401).json({ status: 401, message: 'Unauthorized access' });
   }
 }
 

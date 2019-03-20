@@ -273,6 +273,17 @@ describe('comments', () => {
     done();
   });
 
+  test('Comment history - should fail to return old version- wrong token', async done => {
+    const res = await request(app)
+      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBeDefined();
+    done();
+  });
+
   test('Comment history - should fail to return old version', async done => {
     const res = await request(app)
       .get(`${urlPrefix}/comments/0ded7537-c7c2-4d4c-84d8-e941c84e965f/edited`)

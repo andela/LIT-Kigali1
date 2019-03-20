@@ -197,11 +197,11 @@ describe('articles', () => {
     const res = await request(app)
       .get(`${urlPrefix}/notifications`)
       .set('Authorization', loginUser2.token);
-    notificationId = res.body.notification.rows[0].id;
+    notificationId = res.body.notifications[0].id;
     expect(res.status).toBe(200);
-    expect(res.body.notification).toBeDefined();
+    expect(res.body.notifications).toBeDefined();
     expect(res.body.status).toBe(200);
-    expect(res.body.notification.count).toBeDefined();
+    expect(res.body.notificationsCount).toBeDefined();
   });
 
   test('get one notification', async () => {

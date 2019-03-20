@@ -98,7 +98,7 @@ class ArticleController {
       await Reader.create({ articleId: article.id });
     }
     const views = await Reader.count({ where: { articleId: article.id } });
-
+  
     return res.status(200).json({
       article: {
         ...article.get(),
@@ -611,6 +611,72 @@ class ArticleController {
     const pages = Math.ceil(reports.count / limit);
 
     return res.status(200).json({ status: 201, ...reports, pages });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async getFeed(req, res){
+    const { currentUser } = req;
+    const { page = 1 } = req.query;
+    const limit = 20;
+    const offset = limit * (page - 1);
+
+    const following = await Follow.findAll({ where: { follower: currentUser.id }, attributes: ['followee'] });
+    const filteredFollowing = await following.map(a => a.followee);
+
+    const reads = await Reader.findAll({ where: { userId: currentUser.id }, attributes: ['articleId'], include: [{
+      model: Article,
+      as: 'article',
+      attributes: ['title', 'tagList'],
+    }] });
+    
+    const filteredReads = await reads.filter( r => r.article.tagList);
+    const tags = [];
+    if (filteredReads) {
+      for(let i = 0; i < filteredReads.length; i +=1){
+        tags.push(...filteredReads[i].article.tagList);
+      }      
+    }
+
+    let articles = await Article.findAndCountAll({ 
+      where: 
+      {
+        [Op.or]: 
+        [
+          { 
+            tagList: {[Op.contained]: tags}
+          },
+          {
+            [Op.or]: [ { userId:  filteredFollowing } ] 
+          }
+        ]
+      },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ],
+      offset,
+      limit
+    });
+
+    let pages = Math.ceil(articles.count / limit);
+    if (page > pages) {
+       articles = await Article.findAndCountAll({
+        offset, 
+        limit
+      });
+       pages = Math.ceil(articles.count / limit);
+    }
+
+    return res.status(200).json({ tags, filteredFollowing, ...articles, pages, page });
   }
 }
 

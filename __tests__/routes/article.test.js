@@ -41,6 +41,14 @@ describe('articles', () => {
       confirmed: 'confirmed',
       password: encryptedPassword
     });
+    await User.create({
+      ...signupUser,
+      email: 'admin_test@email.com',
+      username: 'admin_test',
+      confirmed: 'confirmed',
+      password: encryptedPassword,
+      userType: 'admin'
+    });
     let res = await request(app)
       .post(`${urlPrefix}/users/login`)
       .send({ user: { username, password } });
@@ -53,7 +61,7 @@ describe('articles', () => {
 
     res = await request(app)
       .post(`${urlPrefix}/users/login`)
-      .send({ user: { username: 'admin@email.com', password } });
+      .send({ user: { username: 'admin_test@email.com', password } });
     admin = res.body.user;
 
     res = await request(app)
@@ -434,6 +442,7 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.rows).toBeDefined();
   });
+  
   test('Should return article was added to bookmarks', async () => {
     expect.assertions(3);
     const res = await request(app)
@@ -496,4 +505,32 @@ describe('articles', () => {
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('The bookmark does not exist');
   });
+
+  test('Feed - Should get random feed', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/feed?page=3`)
+      .set('Authorization', loginUser2.token);
+      expect(res.status).toBe(200);
+      expect(res.body.rows).toBeDefined();
+  });
+
+  test('should return article', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${testArticle.slug}`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.article).toBeDefined();
+  });
+
+  test('Feed - Should get feed', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/feed`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.rows).toBeDefined();
+  });
+
 });

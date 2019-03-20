@@ -228,7 +228,7 @@ describe('comments', () => {
     const commentBody = 'New body';
     expect.assertions(3);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newArticle.id}`)
       .set('Authorization', loginUser1.token)
       .send({ comment: { body: commentBody } });
     expect(res.status).toBe(404);

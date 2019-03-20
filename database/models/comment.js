@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false
     },
+    highlightedText: {
+      type: DataTypes.STRING
+    },
     userId: {
       type: DataTypes.UUID,
       allowNull: false

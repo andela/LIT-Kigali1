@@ -148,4 +148,13 @@ router.post(
   asyncHandler(ArticleController.reportArticle)
 );
 
+router.put(
+  '/:articleSlug/comments/:commentId',
+  celebrate({ body: commentValidator.updateComment }),
+  verifyJwt(),
+  asyncHandler(CommentController.updateComment)
+);
+
+router.delete('/:articleSlug/comments/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
+
 export default router;

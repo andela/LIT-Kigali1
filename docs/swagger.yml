@@ -604,7 +604,28 @@ paths:
           description: return a delete comment
           schema:
             $ref: '#/definitions/comment'
-
+    put:
+     tags:
+      - 'Comments'
+     summary: Update a comment
+     security: 
+       - bearerAuth: []
+     operationId: updateComment
+     parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: commentId
+          in: path
+          required: true
+          type: string
+     responses:
+      '200':
+       description: return a comment
+       schema:
+        $ref: '#/definitions/comment'
   /articles/{slug}/favorite:
     post:
       tags:
@@ -1077,62 +1098,13 @@ paths:
          example: 200
         message:
          type: string
-        
-  /comments/{commentId}:
-   put:
-    tags:
-     - 'Comments'
-    summary: Update a comment
-    security: 
-      - bearerAuth: []
-    operationId: updateComment
-    parameters:
-        - name: Authorization
-          in: header
-          description: JWT Token
-          required: true
-          type: string
-        - name: commentId
-          in: path
-          required: true
-          type: string
-    responses:
-     '200':
-      description: return a comment
-      schema:
-       $ref: '#/definitions/comment'
-   delete:
-    tags:
-     - "Comments"
-    summary: delete a comment
-    security: 
-      - bearerAuth: []
-    operationId: deleteaComment
-    parameters:
-       - name: Authorization
-         in: header
-         description: JWT Token
-         required: true
-         type: string
-       - name: commentId
-         in: path
-         required: true
-         type: string
-    responses:
-     '200':
-      description: return a message
-      schema:
-       type: object
-       properties:
-        status:
-         type: number
-        message:
-         type: string
   /notifications:
    get:
     tags:
      - 'Notifications'
     summary: Get all notifications
+    security: 
+       - bearerAuth: []
     operationId: getAllNotifications
     parameters: 
        - name: Authorization
@@ -1163,6 +1135,8 @@ paths:
     tags:
      - 'Notifications'
     summary: Mark all notification as read
+    security: 
+       - bearerAuth: []
     operationId: markNotificationAsRead
     responses:
      '200':
@@ -1179,6 +1153,8 @@ paths:
     tags:
      - 'Notifications'
     summary: Get a single notification
+    security: 
+       - bearerAuth: []
     operationId: getNotification
     parameters:
        - name: Authorization
@@ -1208,6 +1184,8 @@ paths:
      - 'Notifications'
     summary: Disable notification
     operationId: disableNotification
+    security: 
+       - bearerAuth: []
     parameters:
        - name: Authorization
          in: header
@@ -1232,6 +1210,8 @@ paths:
      - 'Notifications'
     summary: Disable notification
     operationId: enableNotification
+    security: 
+       - bearerAuth: []
     parameters:
        - name: Authorization
          in: header

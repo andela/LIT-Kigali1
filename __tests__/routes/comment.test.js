@@ -291,7 +291,7 @@ describe('comments', () => {
   test('DELETE - should return Comment not found', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/${newArticle.id}`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.status).toBe(404);

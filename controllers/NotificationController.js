@@ -32,15 +32,14 @@ class NotificationController {
         .status(404)
         .json({ status: 404, message: "You don't have any unread notification" });
     }
-    if (notifications) {
-      return res.status(200).json({
-        status: 200,
-        notifications: notifications.rows,
-        notificationsCount: notifications.count,
-        pages: Math.ceil(notifications.count / limit),
-        page
-      });
-    }
+
+    return res.status(200).json({
+      status: 200,
+      notifications: notifications.rows,
+      notificationsCount: notifications.count,
+      pages: Math.ceil(notifications.count / limit),
+      page
+    });
   }
 
   /**

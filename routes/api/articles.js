@@ -11,7 +11,8 @@ import {
   ArticleController,
   CommentController,
   RatingController,
-  FavoriteCommentController
+  FavoriteCommentController,
+  CommentOnTextController
 } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
@@ -146,6 +147,12 @@ router.post(
   verifyJwt({ tokenRequired: true }),
   celebrate({ body: reportValidator }),
   asyncHandler(ArticleController.reportArticle)
+);
+
+router.post(
+  '/:articleSlug/comment-on-text',
+  verifyJwt(),
+  asyncHandler(CommentOnTextController.addComment)
 );
 
 export default router;

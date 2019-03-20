@@ -13,7 +13,7 @@ import {
 let user1;
 let testArticle;
 
-describe('highlightedTextComment', async () => {
+describe('highlightedTextComment', () => {
   beforeAll(async () => {
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
     await User.create({
@@ -26,12 +26,13 @@ describe('highlightedTextComment', async () => {
       .send({
         user: {
           username: signupUser.email,
-          password: signupUser
+          password: signupUser.password
         }
       });
     user1 = res1.body.user;
     const res2 = await request(app)
       .post(`${urlPrefix}/articles`)
+      .set('authorization', user1.token)
       .send({
         article: createArticle
       });

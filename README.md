@@ -258,7 +258,7 @@ Authentication optional, returns a Profile
 
 `POST /api/profiles/:username/follow`
 
-Authentication required, returns a Profile
+Authentication required, returns a message
 
 No additional parameters required
 
@@ -266,7 +266,7 @@ No additional parameters required
 
 `DELETE /api/profiles/:username/follow`
 
-Authentication required, returns a Profile
+Authentication required, returns a message
 
 No additional parameters required
 

@@ -22,13 +22,20 @@ tags:
     description: 'Acess to the profile resources'
   - name: 'Tags'
     description: 'Acess to the tag resources'
+  - name: 'Comments'
+    description: 'Access to the comments resources'
+  - name: 'Notifications'
+    description: 'Access to notification resources'
 schemes:
   - 'https'
   - 'http'
 consumes:
   - application/json
+  - application/xml
 produces:
   - application/json
+  - application/xml
+  - text/html
 securityDefinitions:
   bearerAuth:
     type: apiKey
@@ -982,6 +989,94 @@ paths:
        description: returns all dislikes for a given comment
        schema:
         $ref: '#/definitions/allDislikeComments'
+  /articles/{slug}/report:
+   post:
+    tags:
+     - "Articles"
+    summary: report an articles
+    security: 
+      - bearerAuth: []
+    operationId: reportArticle
+    parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: slug
+          in: path
+          required: true
+          type: string
+    responses:
+     '200':
+       description: returns a message
+       schema:
+        type: object
+        properties:
+         status:
+          type: number
+          example: 200
+         message:
+          type: string
+          example: Article Reported successfully
+          
+  /articles/:articleSlug/bookmark:
+   post:
+    tags:
+     - 'Articles'
+    summary: bookmark an article
+    security: 
+      - bearerAuth: []
+    operationId: bookmarkArticle
+    parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+    responses:
+     '200':
+      description: returns a message
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+         example: 200
+        message:
+         type: string
+   delete:
+    tags:
+     - 'Articles'
+    summary: bookmark an article
+    security: 
+      - bearerAuth: []
+    operationId: deletebookmark
+    parameters:
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
+    responses:
+     '200':
+      description: returns a message
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+         example: 200
+        message:
+         type: string
         
   /comments/{commentId}:
    put:
@@ -1033,6 +1128,225 @@ paths:
          type: number
         message:
          type: string
+  /notifications:
+   get:
+    tags:
+     - 'Notifications'
+    summary: Get all notifications
+    operationId: getAllNotifications
+    parameters: 
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+    responses:
+      '200':
+       description: return an array of notification
+       schema:
+        type: object
+        properties:
+         status:
+          type: number
+          example: 200
+         notifications:
+          type: array
+          items:
+           $ref: '#/definitions/notification'
+         notificationCounts:
+          type: number
+         pages:
+          type: number
+         page:
+          type: number
+   put:
+    tags:
+     - 'Notifications'
+    summary: Mark all notification as read
+    operationId: markNotificationAsRead
+    responses:
+     '200':
+      description: Get all notification
+      schema:
+       type: object
+       properties:
+        status:
+         type: string
+        message:
+         type: string
+  /notifications/{notificationId}:
+   get:
+    tags:
+     - 'Notifications'
+    summary: Get a single notification
+    operationId: getNotification
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+       - name: notificationId
+         in: path
+         description: notification id
+         required: true
+         type: string
+    responses:
+     '200':
+      description: returns a notification object
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+         example: 200
+        notification:
+         $ref: '#/definitions/notification'
+  /notifications/disable:
+   put:
+    tags:
+     - 'Notifications'
+    summary: Disable notification
+    operationId: disableNotification
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+    responses:
+     '200':
+      description: returns a message
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+         example: 200
+        message:
+         type: string
+         example: Notifications enabled
+  /notifications/enable:
+   put:
+    tags:
+     - 'Notifications'
+    summary: Disable notification
+    operationId: enableNotification
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+    responses:
+     '200':
+      description: returns a message
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+         example: 200
+        message:
+         type: string
+         example: Notifications enabled
+  /users/facebook:
+   get:
+    tags:
+    - 'Social'
+    summary: facebook login
+    operationId: facebookLogin
+    responses:
+     '200':
+      description: returns message
+  /users/facebook/callback:
+   get:
+    tags:
+    - 'Social'
+    summary: facebook login redirect
+    operationId: facebookLoginRedirect
+    responses:
+     '200':
+      description: redirect to facebook
+  /users/twitter:
+   get:
+    tags:
+    - 'Social'
+    summary: twitter login
+    operationId: twitterLogin
+    responses:
+     '200':
+      description: returns message
+  /users/twitter/callback:
+   get:
+    tags:
+    - 'Social'
+    summary: twitter login redirect
+    operationId: twitterLoginRedirect
+    responses:
+     '200':
+      description: redirect to facebook
+  /users/google:
+   get:
+    tags:
+    - 'Social'
+    summary: google login
+    operationId: googleLogin
+    responses:
+     '200':
+      description: returns message
+  /users/google/callback:
+   get:
+    tags:
+    - 'Social'
+    summary: google login redirect
+    operationId: googleLoginRedirect
+    responses:
+     '200':
+      description: redirect to facebook
+  /users/{facebookId}/social:
+   get:
+    tags:
+     - 'Social'
+    summary: google login
+    operationId: social
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+       - name: facebookId
+         in: path
+         description: facebook Id
+         required: true
+         type: string
+    responses:
+     '200':
+      description: returns message
+  /users/stats:
+   get:
+    tags:
+    - 'Users'
+    summary: reading statistics
+    operationId: readStats
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
+    responses:
+     '200':
+      description: returns reading statistics
+      schema:
+       type: object
+       properties:
+        status:
+         type: number
+         example: 200
+        readingStats:
+         type: number
 definitions:
   user:
     type: object
@@ -1350,3 +1664,16 @@ definitions:
      type: number
     pages:
      type: number
+  notification:
+   type: object
+   properties:
+    id:
+     type: string
+    userId: 
+     type: string
+    notification:
+     type: string
+    link:
+     type: string
+    status:
+     type: string

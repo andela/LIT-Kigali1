@@ -442,7 +442,7 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.rows).toBeDefined();
   });
-  
+
   test('Should return article was added to bookmarks', async () => {
     expect.assertions(3);
     const res = await request(app)
@@ -511,17 +511,8 @@ describe('articles', () => {
     const res = await request(app)
       .get(`${urlPrefix}/articles/feed?page=3`)
       .set('Authorization', loginUser2.token);
-      expect(res.status).toBe(200);
-      expect(res.body.rows).toBeDefined();
-  });
-
-  test('should return article', async () => {
-    expect.assertions(2);
-    const res = await request(app)
-      .get(`${urlPrefix}/articles/${testArticle.slug}`)
-      .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body.article).toBeDefined();
+    expect(res.body.rows).toBeDefined();
   });
 
   test('Feed - Should get feed', async () => {

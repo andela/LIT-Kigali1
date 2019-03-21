@@ -61,13 +61,19 @@
           </div>
           <div class="article-side-actions">
             <span>5 min</span>
-
+            <span class="article-icon hover-primary margin-top">&nbsp;4&nbsp;<i class="fa fa-star-o"></i></span>
             <button class="article-icon hover-primary margin-top">
               <i class="fa fa-thumbs-up"></i>
             </button>
             <button class="article-icon hover-primary margin-top">
               <i class="fa fa-thumbs-down article-icon"></i>
             </button>
+            <button class="article-icon hover-primary margin-top">
+              <i
+                onclick="bookmarkIcon(this)"
+                class="fa fa-bookmark article-icon"
+                title="bookmark this article"
+              ></i>
             <!-- <button class="article-icon margin-top">
               <i class="fa fa-star-o"></i>
             </button>-->
@@ -109,11 +115,50 @@
               </p>
 
               <p class="article-date">Published On: July 25, 2018</p>
+
+              <div class="row">
+                <div class="article-share">
+                  <p>Share this article</p>
+                  <button class="article-icon hover-primary">
+                    <i class="fa fa-facebook-square" title="Share via Facebook"></i>
+                  </button>
+                  <button class="article-icon hover-primary">
+                    <i class="fa fa-twitter-square" title="Share via Twitter"></i>
+                  </button>
+                  <button class="article-icon hover-primary">
+                    <i class="fa fa-linkedin-square" title="Share via LinkedIn"></i>
+                  </button>
+                  <button class="article-icon hover-primary">
+                    <i class="fa fa-envelope" title="Share via Mail "></i>
+                  </button>
+                </div>
+                <div class="rating-wrapper">
+                    <p>Rate this article</p>
+                    <div class="rate">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                    </div>
+                </div>
+            </div>
             </div>
           </div>
         </div>
       </div>
     </section>
     <a class="go-top-btn" href="#"><i class="fa fa-angle-up"></i></a>
+
+    <script>
+      function bookmarkIcon(x) {
+        x.classList.toggle('fa-bookmark-o');
+      }
+    </script>
   </body>
 </html>

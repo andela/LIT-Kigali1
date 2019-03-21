@@ -22,7 +22,8 @@ class CommentOnTextController {
 
     const article = await Article.findOne({
       where: {
-        slug: articleSlug
+        slug: articleSlug,
+        status: 'published'
       }
     });
     if (!article) {

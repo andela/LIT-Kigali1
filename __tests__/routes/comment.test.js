@@ -178,6 +178,16 @@ describe('comments', () => {
     done();
   });
 
+  test('Comment history - This comment was not edited', async done => {
+    const res = await request(app)
+      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBeDefined();
+    done();
+  });
+
   /* Update a comment test cases */
 
   test('UPDATE - should return Bad Request', async done => {
@@ -234,6 +244,53 @@ describe('comments', () => {
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBe('Comment not found');
+    done();
+  });
+
+  test('UPDATE - should return updated comment', async done => {
+    const commentBody = 'New body';
+    expect.assertions(4);
+    const res = await request(app)
+      .put(`${urlPrefix}/comments/${newComment.id}`)
+      .set('Authorization', loginUser1.token)
+      .send({ comment: { body: commentBody } });
+    newComment = res.body.comment;
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.comment.id).toBeDefined();
+    expect(res.body.comment.body).toBe(commentBody);
+    done();
+  });
+
+  test('Comment history - should return old version', async done => {
+    const res = await request(app)
+      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.editedComment.id).toBeDefined();
+    expect(res.body.editedComment).toBeDefined();
+    done();
+  });
+
+  test('Comment history - should fail to return old version- wrong token', async done => {
+    const res = await request(app)
+      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.status).toBe(401);
+    expect(res.body.message).toBeDefined();
+    done();
+  });
+
+  test('Comment history - should fail to return old version', async done => {
+    const res = await request(app)
+      .get(`${urlPrefix}/comments/0ded7537-c7c2-4d4c-84d8-e941c84e965f/edited`)
+      .set('Authorization', loginUser1.token);
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe(404);
+    expect(res.body.message).toBeDefined();
     done();
   });
 

@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    version: {
+      type: DataTypes.STRING,
+      defaultValue: 'original',
+      allowNull: false
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
@@ -31,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     Comment.belongsTo(models.User, { foreignKey: 'userId', as: 'author' });
     Comment.belongsTo(models.Article, { foreignKey: 'articleId' });
     Comment.hasMany(models.Comment, { foreignKey: 'parentId', as: 'replies' });
-    Comment.hasMany(models.FavoriteComment, { foreignKey: 'id', as: 'likes' })
+    Comment.hasMany(models.FavoriteComment, { foreignKey: 'id', as: 'likes' });
   };
   return Comment;
 };

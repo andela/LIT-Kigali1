@@ -11,14 +11,12 @@ export default async (followee, follower) => {
   const followerObject = await User.findByPk(follower);
   const followeeObject = await User.findOne({ where: { id: followee, notification: 'enabled' } });
 
-  if (followeeObject) {
-    notificationObject.push({
-      userId: followeeObject.id,
-      notification: `${followerObject.username} started following you`,
-      link: `${FRONTEND_URL}/users/userId`
-    });
+  notificationObject.push({
+    userId: followeeObject.id,
+    notification: `${followerObject.username} started following you`,
+    link: `${FRONTEND_URL}/users/userId`
+  });
 
-    await inAppNotification(notificationObject);
-    await newFollowerEmail(followeeObject.email, followerObject.username);
-  }
+  await inAppNotification(notificationObject);
+  await newFollowerEmail(followeeObject.email, followerObject.username);
 };

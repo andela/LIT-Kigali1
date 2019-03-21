@@ -615,9 +615,8 @@ class ArticleController {
    */
   static async getFeed(req, res){
     const { currentUser } = req;
-    const { page = 1 } = req.query;
-    const limit = 10;
-    const offset = limit * (page - 1);
+    let limit = 10;
+    let randomArticles = {rows:[]};
 
     const following = await Follow.findAll({ where: { follower: currentUser.id }, attributes: ['followee'] });
     const filteredFollowing = await following.map(a => a.followee);
@@ -636,7 +635,7 @@ class ArticleController {
       }      
     }
 
-    let articles = await Article.findAndCountAll({ 
+    const articles = await Article.findAndCountAll({ 
       where: 
       {
         [Op.or]: 
@@ -658,25 +657,37 @@ class ArticleController {
           attributes: ['username', 'firstName', 'lastName', 'image']
         }
       ],
-      offset,
       limit
     });
-
-    let pages = Math.ceil(articles.count / limit);
-    if (page > pages) {
-       articles = await Article.findAndCountAll({
-        offset, 
+    if (articles.count < limit) {
+      limit -=articles.count;
+      randomArticles = await Article.findAndCountAll({ 
+        include: [
+          {
+            model: User,
+            as: 'author',
+            attributes: ['username', 'firstName', 'lastName', 'image']
+          }
+        ],
         limit
       });
-       pages = Math.ceil(articles.count / limit);
+    }
+    
+    const sortedArticles = [...new Set([...articles.rows, ...randomArticles.rows])];
+    const uniqueSortedArticles = []
+    const uniqueKeys = []
+    
+    for (let i = 0; i< sortedArticles.length; i += 1) {
+      if (uniqueKeys.indexOf(sortedArticles[i].id) === -1) {
+        uniqueSortedArticles.push(sortedArticles[i])
+        uniqueKeys.push(sortedArticles[i].id)
+      }
     }
 
-    return res.status(200).json({ 
+    return res.status(200).json({
       status: 200,
-      articles: articles.rows,
-      articleCount: articles.count,
-      page,
-      pages
+      articles: uniqueSortedArticles,
+      articleCount: uniqueSortedArticles.length
     });
   }
 }

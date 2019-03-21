@@ -16,6 +16,11 @@ let comment;
 
 describe('highlightedTextComment', () => {
   beforeAll(async () => {
+    await User.destroy({
+      where: {
+        email: signupUser.email
+      }
+    })
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
     await User.create({
       ...signupUser,

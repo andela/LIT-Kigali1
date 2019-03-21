@@ -10,6 +10,11 @@ let articleSlug;
 let testUserId;
 describe('5 star Rating', () => {
   beforeAll(async () => {
+    await User.destroy({
+      where: {
+        email: signupUser.email
+      }
+    });
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
     const signUpUser = {...signupUser, email: 'newTest@email.com'};
     await User.create({

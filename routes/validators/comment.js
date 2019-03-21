@@ -52,8 +52,8 @@ const updateHighlightedTextComment = {
         .min(3)
         .max(255),
       highlightedText: Joi.string(),
-      startPoint: Joi.number(),
-      endPoint: Joi.number()
+      startPoint: Joi.number().min(0),
+      endPoint: Joi.number().min(0)
     })
     .required()
 };

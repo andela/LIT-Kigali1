@@ -2,7 +2,7 @@ import request from 'supertest';
 import bcrypt from 'bcrypt';
 import app from '../../app';
 import { urlPrefix } from '../mocks/variables.json';
-import { User, Article } from '../../database/models';
+import { User, Article, Comment } from '../../database/models';
 import {
   signupUser,
   createArticle,
@@ -12,6 +12,7 @@ import {
 
 let user1;
 let testArticle;
+let comment;
 
 describe('highlightedTextComment', () => {
   beforeAll(async () => {
@@ -133,5 +134,108 @@ describe('highlightedTextComment', () => {
       });
     expect(res.status).toBe(400);
     expect(res.body.errors).toBeDefined();
+  });
+  test('should update comment on highlighted text', async () => {
+    comment = await Comment.create({
+      userId: user1.id,
+      articleId: testArticle.id,
+      body: 'wow nice one',
+      highlightedText: 'culpa',
+      startPoint: 5,
+      endPoint: 10
+    });
+    const res = await request(app)
+      .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
+      .set('authorization', user1.token)
+      .send({
+        comment: {
+          body: 'hello world',
+          highlightedText: 'pa',
+          startPoint: 8,
+          endPoint: 10
+        }
+      });
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.comment.highlightedText).toBe('pa');
+    expect(res.body.comment.startPoint).toBe(8);
+    expect(res.body.comment.endPoint).toBe(10);
+    expect(res.body.comment.body).toBe('hello world');
+  });
+
+  test('should update comment on highlighted text', async () => {
+    const res = await request(app)
+      .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
+      .set('authorization', user1.token)
+      .send({
+        comment: {
+          body: 'hello africa',
+        }
+      });
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.comment.body).toBe('hello africa');
+  });
+
+  test('should not update comment on highlighted text without authorization', async () => {
+    const res = await request(app)
+      .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
+      .send({
+        comment: {
+          body: 'hello world',
+          highlightedText: 'pa',
+          startPoint: 8,
+          endPoint: 10
+        }
+      });
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe('No auth token');
+  });
+
+  test('should not update comment on highlighted text without authorization', async () => {
+    const res = await request(app)
+      .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
+      .set('authorization', user1.token)
+      .send({
+        comment: {
+          body: 'hello world',
+          highlightedText: 'pa',
+          endPoint: 10
+        }
+      });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe('Please provide both startPoint and endPoint');
+  });
+
+  test('should not update comment on highlighted text without authorization', async () => {
+    const res = await request(app)
+      .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
+      .set('authorization', user1.token)
+      .send({
+        comment: {
+          body: 'hello world',
+          highlightedText: 'pa',
+          startPoint: 7,
+          endPoint: 9
+        }
+      });
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe('The text you highlighted is not in the article');
+  });
+
+  test('should not update comment on highlighted text without authorization', async () => {
+    const res = await request(app)
+      .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${user1.id}`)
+      .set('authorization', user1.token)
+      .send({
+        comment: {
+          body: 'hello world',
+          highlightedText: 'pa',
+          startPoint: 7,
+          endPoint: 9
+        }
+      });
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe('Comment not found');
   });
 });

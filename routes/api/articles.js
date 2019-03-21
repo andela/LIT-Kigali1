@@ -156,4 +156,11 @@ router.post(
   asyncHandler(CommentOnTextController.addComment)
 );
 
+router.put(
+  '/:articleSlug/comment-on-text/:commentId',
+  celebrate({ body: commentValidator.updateHighlightedTextComment }),
+  verifyJwt(),
+  asyncHandler(CommentOnTextController.updateComment)
+);
+
 export default router;

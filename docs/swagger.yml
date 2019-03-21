@@ -1121,6 +1121,12 @@ paths:
     security: 
        - bearerAuth: []
     operationId: markNotificationAsRead
+    parameters:
+       - name: Authorization
+         in: header
+         description: JWT Token
+         required: true
+         type: string
     responses:
      '200':
       description: Get all notification

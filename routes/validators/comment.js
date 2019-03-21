@@ -36,7 +36,22 @@ const highlightedTextComment = {
         .trim()
         .min(3)
         .max(255),
-      highlightedText: Joi.string().trim().required(),
+      highlightedText: Joi.string().required(),
+      startPoint: Joi.number().required(),
+      endPoint: Joi.number().required()
+    })
+    .required()
+};
+
+const updateHighlightedTextComment = {
+  comment: Joi.object()
+    .keys({
+      parentId: Joi.string().trim(),
+      body: Joi.string()
+        .trim()
+        .min(3)
+        .max(255),
+      highlightedText: Joi.string(),
       startPoint: Joi.number(),
       endPoint: Joi.number()
     })
@@ -47,5 +62,6 @@ export default {
   createComment,
   updateComment,
   getArticleCommentsQuery,
-  highlightedTextComment
+  highlightedTextComment,
+  updateHighlightedTextComment
 };

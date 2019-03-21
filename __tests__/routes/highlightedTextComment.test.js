@@ -7,7 +7,7 @@ import {
   signupUser,
   createArticle,
   createComment,
-  highlightedText
+  partialArticle
 } from '../mocks/db.json';
 
 let user1;
@@ -56,14 +56,16 @@ describe('highlightedTextComment', () => {
       .send({
         comment: {
           ...createComment,
-          highlightedText,
+          ...partialArticle
         }
       });
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
     expect(res.body.comment.id).toBeDefined();
     expect(res.body.comment.body).toBe(createComment.body);
-    expect(res.body.comment.highlightedText).toBe(highlightedText);
+    expect(res.body.comment.highlightedText).toBe(partialArticle.highlightedText);
+    expect(res.body.comment.startPoint).toBeDefined();
+    expect(res.body.comment.endPoint).toBeDefined();
   });
   test('should not comment a highlighted text if not login', async () => {
     const res = await request(app)
@@ -71,7 +73,7 @@ describe('highlightedTextComment', () => {
       .send({
         comment: {
           ...createComment,
-          highlightedText,
+          ...partialArticle,
         }
       });
     expect(res.status).toBe(401);
@@ -85,7 +87,7 @@ describe('highlightedTextComment', () => {
       .send({
         comment: {
           ...createComment,
-          highlightedText,
+          ...partialArticle,
         }
       });
     expect(res.status).toBe(404);
@@ -99,7 +101,9 @@ describe('highlightedTextComment', () => {
       .send({
         comment: {
           ...createComment,
-          highlightedText: fakeText
+          highlightedText: fakeText,
+          startPoint: 5,
+          endPoint: 14
         }
       });
     expect(res.status).toBe(404);

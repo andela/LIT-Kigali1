@@ -17,6 +17,12 @@ module.exports = {
       highlightedText: {
         type: Sequelize.STRING
       },
+      startPoint: {
+        type: Sequelize.INTEGER
+      },
+      endPoint: {
+        type: Sequelize.INTEGER
+      },
       userId: {
         type: Sequelize.UUID,
         allowNull: false

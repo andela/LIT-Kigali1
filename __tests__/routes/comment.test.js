@@ -182,6 +182,7 @@ describe('comments', () => {
     const res = await request(app)
       .get(`${urlPrefix}/comments/${newComment.id}/edited`)
       .set('Authorization', loginUser1.token);
+    console.log(res.body);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBeDefined();
@@ -193,7 +194,7 @@ describe('comments', () => {
   test('UPDATE - should return Bad Request', async done => {
     expect.assertions(2);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .put(`${urlPrefix}/comments/${newComment.id}`)
       .send();
     expect(res.status).toBe(400);
     expect(res.body.errors).toBeDefined();
@@ -203,7 +204,7 @@ describe('comments', () => {
   test('UPDATE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .put(`${urlPrefix}/comments/${newComment.id}`)
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
@@ -214,7 +215,7 @@ describe('comments', () => {
   test('UPDATE - should return Unauthorized access', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .put(`${urlPrefix}/comments/${newComment.id}`)
       .set('Authorization', loginUser2.token)
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(401);
@@ -226,7 +227,7 @@ describe('comments', () => {
   test('UPDATE - should return internal error', async done => {
     expect.assertions(2);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/fake-comment-id`)
+      .put(`${urlPrefix}/comments/fake-comment-id`)
       .set('Authorization', loginUser1.token)
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(500);
@@ -238,7 +239,7 @@ describe('comments', () => {
     const commentBody = 'New body';
     expect.assertions(3);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newArticle.id}`)
+      .put(`${urlPrefix}/comments/${newArticle.id}`)
       .set('Authorization', loginUser1.token)
       .send({ comment: { body: commentBody } });
     expect(res.status).toBe(404);
@@ -251,7 +252,7 @@ describe('comments', () => {
     const commentBody = 'New body';
     expect.assertions(4);
     const res = await request(app)
-      .put(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .put(`${urlPrefix}/comments/${newComment.id}`)
       .set('Authorization', loginUser1.token)
       .send({ comment: { body: commentBody } });
     newComment = res.body.comment;
@@ -314,7 +315,7 @@ describe('comments', () => {
   test('DELETE - should return No auth token', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .delete(`${urlPrefix}/comments/${newComment.id}`)
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(401);
     expect(res.body.comment).toBeUndefined();
@@ -325,7 +326,7 @@ describe('comments', () => {
   test('DELETE - should return Unauthorized access', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .delete(`${urlPrefix}/comments/${newComment.id}`)
       .set('Authorization', loginUser2.token)
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(401);
@@ -337,7 +338,7 @@ describe('comments', () => {
   test('DELETE - should return internal error', async done => {
     expect.assertions(2);
     const res = await request(app)
-      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/fake-comment-id`)
+      .delete(`${urlPrefix}/comments/fake-comment-id`)
       .set('Authorization', loginUser1.token)
       .send({ comment: { ...createComment } });
     expect(res.status).toBe(500);
@@ -348,7 +349,7 @@ describe('comments', () => {
   test('DELETE - should return Comment not found', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/${newArticle.id}`)
+      .delete(`${urlPrefix}/comments/${newArticle.id}`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.status).toBe(404);
@@ -360,7 +361,7 @@ describe('comments', () => {
   test('DELETE - should return Comment deleted successfully', async done => {
     expect.assertions(3);
     const res = await request(app)
-      .delete(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}`)
+      .delete(`${urlPrefix}/comments/${newComment.id}`)
       .set('Authorization', loginUser1.token)
       .send();
     expect(res.status).toBe(200);

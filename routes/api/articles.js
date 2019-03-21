@@ -156,5 +156,6 @@ router.put(
 );
 
 router.delete('/:articleSlug/comments/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
+router.get('/:articleSlug/comments/:commentId/edited', verifyJwt(), asyncHandler(CommentController.ViewCommentEdit));
 
 export default router;

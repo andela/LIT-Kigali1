@@ -180,9 +180,8 @@ describe('comments', () => {
 
   test('Comment history - This comment was not edited', async done => {
     const res = await request(app)
-      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .get(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}/edited`)
       .set('Authorization', loginUser1.token);
-    console.log(res.body);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);
     expect(res.body.message).toBeDefined();
@@ -265,7 +264,7 @@ describe('comments', () => {
 
   test('Comment history - should return old version', async done => {
     const res = await request(app)
-      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .get(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}/edited`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
@@ -276,7 +275,7 @@ describe('comments', () => {
 
   test('Comment history - should fail to return old version- wrong token', async done => {
     const res = await request(app)
-      .get(`${urlPrefix}/comments/${newComment.id}/edited`)
+      .get(`${urlPrefix}/articles/${newArticle.slug}/comments/${newComment.id}/edited`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(401);
     expect(res.body.status).toBe(401);
@@ -287,7 +286,7 @@ describe('comments', () => {
 
   test('Comment history - should fail to return old version', async done => {
     const res = await request(app)
-      .get(`${urlPrefix}/comments/0ded7537-c7c2-4d4c-84d8-e941c84e965f/edited`)
+      .get(`${urlPrefix}/${newArticle.slug}/comments/0ded7537-c7c2-4d4c-84d8-e941c84e965f/edited`)
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);

@@ -642,10 +642,12 @@ class ArticleController {
         [Op.or]: 
         [
           { 
-            tagList: {[Op.contained]: tags}
+            tagList: {[Op.contained]: tags},
+            status: 'published'
           },
           {
-            [Op.or]: [ { userId:  filteredFollowing } ] 
+            [Op.or]: [ { userId:  filteredFollowing } ],
+            status: 'published' 
           }
         ]
       },
@@ -669,7 +671,13 @@ class ArticleController {
        pages = Math.ceil(articles.count / limit);
     }
 
-    return res.status(200).json({ tags, filteredFollowing, ...articles, pages, page });
+    return res.status(200).json({ 
+      status: 200,
+      articles: articles.rows,
+      articleCount: articles.count,
+      page,
+      pages
+    });
   }
 }
 

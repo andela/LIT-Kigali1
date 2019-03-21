@@ -512,7 +512,7 @@ describe('articles', () => {
       .get(`${urlPrefix}/articles/feed?page=3`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body.rows).toBeDefined();
+    expect(res.body.articles).toBeDefined();
   });
 
   test('Feed - Should get feed', async () => {
@@ -521,7 +521,7 @@ describe('articles', () => {
       .get(`${urlPrefix}/articles/feed`)
       .set('Authorization', loginUser2.token);
     expect(res.status).toBe(200);
-    expect(res.body.rows).toBeDefined();
+    expect(res.body.articles).toBeDefined();
   });
 
 });

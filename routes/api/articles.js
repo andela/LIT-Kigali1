@@ -151,6 +151,7 @@ router.post(
 
 router.post(
   '/:articleSlug/comment-on-text',
+  celebrate({ body: commentValidator.highlightedTextComment }),
   verifyJwt(),
   asyncHandler(CommentOnTextController.addComment)
 );

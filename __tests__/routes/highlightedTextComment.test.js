@@ -61,7 +61,7 @@ describe('highlightedTextComment', () => {
       });
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
-    expect(res.body.comment.id).toBe();
+    expect(res.body.comment.id).toBeDefined();
     expect(res.body.comment.body).toBe(createComment.body);
     expect(res.body.comment.highlightedText).toBe(highlightedText);
   });

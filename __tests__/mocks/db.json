@@ -33,6 +33,11 @@
     "status": "published",
     "tagList": ["test", "article"]
   },
+  "partialArticle": {
+    "highlightedText": "ut commodo ipsum ipsum. Labore velit laborum cupidatat",
+    "startPoint": 41,
+    "endPoint":  95
+  },
   "createArticleTwo": {
     "title": "Test article",
     "body": "Quis culpa ad exercitation sunt pariatur ut commodo ipsum ipsum. Labore velit laborum cupidatat laborum excepteur. Lorem eu do cupidatat amet eiusmod veniam.",
@@ -129,6 +134,5 @@
     "description": "exercitation",
     "status": "published",
     "tagList": ["share"]
-  },
-  "highlightedText": "ut commodo ipsum ipsum. Labore velit laborum cupidatat"
+  }
 }

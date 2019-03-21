@@ -14,8 +14,7 @@ class CommentOnTextController {
    */
   static async addComment(req, res) {
     const { articleSlug } = req.params;
-    const { highlightedText } = req.body.comment;
-    const { body } = req.body.comment;
+    const { highlightedText, body, endPoint, startPoint } = req.body.comment;
     const { currentUser } = req;
 
     const article = await Article.findOne({
@@ -29,8 +28,8 @@ class CommentOnTextController {
         message: 'Article not found'
       });
     }
-    const findText = article.body.indexOf(highlightedText);
-    if (findText === -1) {
+    const findText = article.body.slice(startPoint, endPoint);
+    if (findText !== highlightedText ) {
       return res.status(404).send({
         status: 404,
         message: 'The text you highlighted is not in the article'
@@ -41,6 +40,8 @@ class CommentOnTextController {
       articleId: article.id,
       userId: currentUser.id,
       highlightedText,
+      startPoint,
+      endPoint
     },
     {
       include: [{ model: User, as: 'author' }],

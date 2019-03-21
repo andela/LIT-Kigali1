@@ -616,7 +616,7 @@ class ArticleController {
   static async getFeed(req, res){
     const { currentUser } = req;
     const { page = 1 } = req.query;
-    const limit = 20;
+    const limit = 10;
     const offset = limit * (page - 1);
 
     const following = await Follow.findAll({ where: { follower: currentUser.id }, attributes: ['followee'] });

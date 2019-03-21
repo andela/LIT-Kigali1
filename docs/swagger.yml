@@ -581,7 +581,7 @@ paths:
           schema:
             $ref: '#/definitions/multipleComments'
 
-  /articles/{slug}/comments/{id}:
+  /articles/{articleSlug}/comments/{commentId}:
     delete:
       tags:
         - 'Articles'
@@ -590,11 +590,16 @@ paths:
         - bearerAuth: []
       operationId: deleteComment
       parameters:
-        - name: slug
+        - name: Authorization
+          in: header
+          description: JWT Token
+          required: true
+          type: string
+        - name: articleSlug
           in: path
           required: true
           type: string
-        - name: id
+        - name: commentId
           in: path
           required: true
           type: string
@@ -607,6 +612,7 @@ paths:
     put:
      tags:
       - 'Comments'
+      - 'Articles'
      summary: Update a comment
      security: 
        - bearerAuth: []
@@ -617,10 +623,15 @@ paths:
           description: JWT Token
           required: true
           type: string
+        - name: articleSlug
+          in: path
+          required: true
+          type: string
         - name: commentId
           in: path
           required: true
           type: string
+          format: uuid
      responses:
       '200':
        description: return a comment
@@ -781,15 +792,8 @@ paths:
      tags:
       - 'Articles'
      summary: Share article via twitter
-     security: 
-      - bearerAuth: []
      operationId: shareViaTwitter
      parameters:
-        - name: Authorization
-          in: header
-          description: JWT Token
-          required: true
-          type: string
         - name: slug
           in: path
           required: true
@@ -810,15 +814,8 @@ paths:
      tags:
       - 'Articles'
      summary: Share article via facebook
-     security: 
-      - bearerAuth: []
      operationId: shareViaFacebook
      parameters:
-        - name: Authorization
-          in: header
-          description: JWT Token
-          required: true
-          type: string
         - name: slug
           in: path
           required: true
@@ -839,15 +836,8 @@ paths:
      tags:
       - 'Articles'
      summary: Share article via linkedin
-     security: 
-      - bearerAuth: []
      operationId: shareViaLinkedin
      parameters:
-        - name: Authorization
-          in: header
-          description: JWT Token
-          required: true
-          type: string
         - name: slug
           in: path
           required: true
@@ -868,15 +858,8 @@ paths:
      tags:
       - 'Articles'
      summary: Share article via email
-     security: 
-      - bearerAuth: []
      operationId: shareViaEmail
      parameters:
-        - name: Authorization
-          in: header
-          description: JWT Token
-          required: true
-          type: string
         - name: slug
           in: path
           required: true
@@ -1041,7 +1024,7 @@ paths:
           type: string
           example: Article Reported successfully
           
-  /articles/:articleSlug/bookmark:
+  /articles/{articleSlug}/bookmark:
    post:
     tags:
      - 'Articles'

@@ -31,10 +31,16 @@
 }
 
 .profile-avatar-wrapper > p {
+<<<<<<< HEAD:ui/scss/pages/_profile.scss
 <<<<<<< HEAD:ui/scss/_profile.scss
   font-family: Roboto-Regular;
   font-weight: bolder;
   font-style: normal;
+=======
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+>>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
 =======
   font-family: Roboto;
   font-style: normal;
@@ -108,8 +114,12 @@
 }
 
 .bio-text {
+<<<<<<< HEAD:ui/scss/pages/_profile.scss
 <<<<<<< HEAD:ui/scss/_profile.scss
   font-family: Roboto-Light;
+=======
+  font-family: Roboto;
+>>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
 =======
   font-family: Roboto;
 >>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
@@ -170,8 +180,11 @@
   color: #c4c4c4;
   padding: 0 0.3em;
 }
+<<<<<<< HEAD:ui/scss/pages/_profile.scss
 <<<<<<< HEAD:ui/scss/_profile.scss
 
+=======
+>>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
 =======
 >>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
 .profile-form .single-input input[type='date'] {

@@ -1089,27 +1089,27 @@ a.button {
   }
 }
 
-.main-content.triangle-bg::before {
-  z-index: -1;
-  content: ' ';
-  position: absolute;
-  top: -100px;
-  width: 0;
-  height: 0;
-  right: 0;
-  border-bottom: 100% solid #e8eaf6;
-  border-left: 100vw solid transparent;
-  padding-bottom: 100px;
+.rate {
+  float: left;
+  height: 46px;
+  padding: 7px 10px;
+}
+.rate input:checked + label:hover,
+.rate input:checked + label:hover ~ label,
+.rate input:checked ~ label:hover,
+.rate input:checked ~ label:hover ~ label,
+.rate label:hover ~ input:checked ~ label {
+  color: #c59b08;
 }
 
-.box-container {
-  border-radius: 1rem;
-  min-height: 300px;
-  width: 100%;
-  min-height: 80vh;
-  box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-  background-color: #fff;
-  display: flex;
+.rate:not(:checked) input {
+  position: absolute;
+  top: -9999px;
+}
+
+.rate:not(:checked) label {
+  float: right;
+  width: 1em;
   overflow: hidden;
 }
 .box-container .side-bar {
@@ -1277,33 +1277,21 @@ a.button {
 .article-card__content-title {
   margin: 0;
   cursor: pointer;
+  font-size: 21px;
+  color: #ccc;
 }
 
-.article-card__content-text {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1rem;
-  padding-bottom: 2px;
-  margin: 5px 0;
-  font-family: Roboto-Light;
+.rate:not(:checked) label:before {
+  content: '★ ';
 }
 
-.article-card__content-meta {
-  display: flex;
-  height: 20px;
-  font-size: 0.8rem;
-  color: rgba(0, 0, 0, 0.6);
+.rate:not(:checked) input:checked ~ label {
+  color: #ffc700;
 }
 
-.article-card__content-meta span {
-  margin-right: 20px;
-}
-
-@media screen and (max-width: 768px) {
-  .article-card {
-    max-height: 100px;
-  }
+.rate:not(:checked) label:hover,
+.rate:not(:checked) label:hover ~ label {
+  color: #deb217;
 }
 
 /* Pages */

@@ -24,7 +24,8 @@
               <li><a href="./articles-all.html">Articles</a></li>
               <li><a href="./articles-user-all.html">My Articles</a></li>
               <li class="separator"></li>
-              <li><a href="#">Settings</a></li>
+              <li><a href="../pages/profile-edit.html">Settings</a></li>
+              <li><a href="../pages/admin-dashboard.html">Dashboard</a></li>
               <li><a href="#">Sign out</a></li>
             </ul>
           </div>
@@ -36,7 +37,8 @@
             <li><a href="./articles-all.html">Articles</a></li>
             <li><a href="./articles-user-all.html">My Articles</a></li>
             <li class="separator"></li>
-            <li><a href="#">Settings</a></li>
+            <li><a href="../pages/profile-edit.html">Settings</a></li>
+            <li><a href="../pages/admin-dashboard.html">Dashboard</a></li>
             <li><a href="#">Sign out</a></li>
           </ul>
         </button>
@@ -48,12 +50,18 @@
           <div class="side-bar">
             <div class="user-info">
               <img src="../images/avatar.png" alt="User avatar" />
-              <span>First Name Last Name</span>
+              <span>Franck</span>
             </div>
             <ul class="side-menu">
-              <li><i class="fa fa-home"></i> Home</li>
-              <li class="active"><i class="fa fa-users"></i> Users</li>
-              <li><i class="fa fa-file"></i> Reports</li>
+              <li>
+                <a href="../pages/admin-dashboard.html"><i class="fa fa-home"></i> Home</a>
+              </li>
+              <li class="active">
+                <a href="../pages/admin-view-users.html"><i class="fa fa-users"></i> Users</a>
+              </li>
+              <li>
+                <a href="../pages/admin-view-reports.html"><i class="fa fa-file"></i> Reports</a>
+              </li>
             </ul>
           </div>
           <div class="box-content">
@@ -85,7 +93,7 @@
               </div>
               <div class="filter">
                 <div class="filter__title">Order by:</div>
-                <div class="filter__icon">Newest</div>
+                <div class="filter__icon">Newest <i class="fa fa-angle-down"></i></div>
               </div>
             </div>
             <table>
@@ -103,9 +111,9 @@
               <tbody>
                 <tr>
                   <td>1</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>10</td>
+                  <td>Rose</td>
+                  <td>Maina</td>
+                  <td>50</td>
                   <td>Registered At</td>
                   <td class="align-center">
                     <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
@@ -116,8 +124,8 @@
                 </tr>
                 <tr>
                   <td>2</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
+                  <td>Grace</td>
+                  <td>Kimoto</td>
                   <td>50</td>
                   <td>Registered At</td>
                   <td class="align-center">
@@ -129,21 +137,21 @@
                 </tr>
                 <tr>
                   <td>3</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>50</td>
+                  <td>Daniel</td>
+                  <td>Nziranziza</td>
+                  <td>10</td>
                   <td>Registered At</td>
                   <td class="align-center">
                     <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
                   </td>
-                  <td class="align-center blocked">
-                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> blocked</a>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
                   </td>
                 </tr>
                 <tr>
                   <td>4</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
+                  <td>Caleb</td>
+                  <td>Mugisha</td>
                   <td>50</td>
                   <td>Registered At</td>
                   <td class="align-center">
@@ -155,8 +163,21 @@
                 </tr>
                 <tr>
                   <td>5</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
+                  <td>Fabrice</td>
+                  <td>Manzi</td>
+                  <td>50</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Olivier</td>
+                  <td>Esuka</td>
                   <td>50</td>
                   <td>Registered At</td>
                   <td class="align-center">
@@ -164,71 +185,6 @@
                   </td>
                   <td class="align-center blocked">
                     <a href="#modal-user-status"><i class="fa fa-pencil"></i> blocked</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>50</td>
-                  <td>Registered At</td>
-                  <td class="align-center">
-                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
-                  </td>
-                  <td class="align-center active">
-                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>50</td>
-                  <td>Registered At</td>
-                  <td class="align-center">
-                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
-                  </td>
-                  <td class="align-center active">
-                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>50</td>
-                  <td>Registered At</td>
-                  <td class="align-center">
-                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
-                  </td>
-                  <td class="align-center active">
-                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>50</td>
-                  <td>Registered At</td>
-                  <td class="align-center">
-                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
-                  </td>
-                  <td class="align-center active">
-                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>First Name</td>
-                  <td>Last Name</td>
-                  <td>50</td>
-                  <td>Registered At</td>
-                  <td class="align-center">
-                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
-                  </td>
-                  <td class="align-center active">
-                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
                   </td>
                 </tr>
               </tbody>
@@ -253,7 +209,7 @@
       <div class="modal__wrap">
         <div class="modal__title">
           <img src="../images/avatar.png" class="user-avatar" alt="user avatar" />
-          First Name Last Name
+          Olivier Esuka
         </div>
         <div class="modal__content content-center">
           <span class="custom-dropdown">
@@ -279,7 +235,7 @@
       <div class="modal__wrap">
         <div class="modal__title">
           <img src="../images/avatar.png" class="user-avatar" alt="user avatar" />
-          First Name Last Name
+          Olivier Esuka
         </div>
         <div class="modal__content content-center">
           <span class="custom-dropdown">

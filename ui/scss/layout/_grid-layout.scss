@@ -195,34 +195,34 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
-}
-.pagination span {
-  margin: 0 15px;
-  cursor: pointer;
-}
-.pagination .pages {
-  margin: 0 20px;
-  text-decoration: none;
-  list-style: none;
-  padding: 0;
-}
-.pagination .pages .page {
-  display: inline-block;
-  cursor: pointer;
-  text-align: center;
-  padding: 5px;
-  height: 30px;
-  width: 30px;
-  margin: 0 5px;
-}
-
-.pagination .current {
-  border: 2px solid $primary;
-  border-radius: 50px;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  -ms-border-radius: 50px;
-  -o-border-radius: 50px;
+  span {
+    margin: 0 15px;
+    cursor: pointer;
+  }
+  .pages {
+    margin: 0 20px;
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    text-align: center;
+    .page {
+      display: inline-block;
+      cursor: pointer;
+      text-align: center;
+      padding: 5px;
+      height: 30px;
+      width: 30px;
+      margin: 0 5px;
+    }
+  }
+  .current {
+    border: 2px solid $primary;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+  }
 }
 /* 
   ##Device = Laptops, Desktops

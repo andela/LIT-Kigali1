@@ -64,3 +64,19 @@
 .star-2 {
   font-size: 1.5rem;
 }
+.tagged {
+  cursor: pointer;
+  display: block;
+  float: left;
+  border-radius: 5px;
+  color: grey;
+  font-size: 10px;
+  background: #e8eaf6;
+  padding: 4px 7px;
+  // padding-right: 25px;
+  margin: 4px;
+}
+.tagged:hover {
+  color: #e8eaf6;
+  background: grey;
+}

@@ -449,6 +449,78 @@ a.button {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
+.checkbox-onoff {
+  margin-left: 0.5rem;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  position: relative;
+  cursor: pointer;
+  width: 55px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  .checkbox-onoff label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: #cd3c3c;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
+    -webkit-transition: background 0.3s, text-indent 0.3s;
+    -moz-transition: background 0.3s, text-indent 0.3s;
+    -o-transition: background 0.3s, text-indent 0.3s;
+    transition: background 0.3s, text-indent 0.3s;
+    text-indent: 27px;
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4) inset;
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4) inset;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4) inset; }
+    .checkbox-onoff label:after {
+      content: 'NO';
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      font-size: 12px;
+      color: #591717;
+      text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.35);
+      z-index: 1; }
+    .checkbox-onoff label:before {
+      content: '';
+      width: 15px;
+      height: 24px;
+      border-radius: 3px;
+      background: #fff;
+      position: absolute;
+      z-index: 2;
+      top: 3px;
+      left: 3px;
+      display: block;
+      -webkit-transition: left 0.3s;
+      -moz-transition: left 0.3s;
+      -o-transition: left 0.3s;
+      transition: left 0.3s;
+      -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+      -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4); }
+  .checkbox-onoff input:checked + label {
+    background: #378b2c;
+    text-indent: 8px; }
+    .checkbox-onoff input:checked + label:after {
+      content: 'YES';
+      color: #091707; }
+    .checkbox-onoff input:checked + label:before {
+      left: 37px; }
+
 .align-center {
   text-align: center;
 }
@@ -1183,15 +1255,16 @@ a.button {
       color: rgba(0, 0, 0, 0.3); }
       .side-bar .side-menu li i {
         margin-right: 0.5rem; }
-      .side-bar .side-menu li:hover {
-        cursor: pointer; }
+      .side-bar .side-menu li a {
+        color: inherit; }
       .side-bar .side-menu li.active, .side-bar .side-menu li:hover {
         border-left: 3px solid #3f51b5;
+        cursor: pointer;
         color: #3f51b5; }
 
 .box-content {
   background-color: rgba(232, 234, 246, 0.3);
-  padding: 0.5rem 2rem;
+  padding: 2rem;
   border-left: 5px solid rgba(0, 0, 0, 0.1);
   overflow: scroll;
   flex: 1; }
@@ -1236,17 +1309,16 @@ a.button {
     overflow: scroll; }
     .box-content table thead {
       background-color: #e8eaf6; }
-      .box-content table thead tr {
-        box-shadow: 1px 1px 3px #3f51b5; }
-        .box-content table thead tr th {
-          padding: 0.5rem; }
+      .box-content table thead tr th {
+        padding: 1rem 0.5rem; }
     .box-content table tbody tr {
       margin-top: 0.3rem;
       border-spacing: 5em;
-      background-color: #fff;
-      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); }
+      background-color: #fff; }
+      .box-content table tbody tr:nth-child(even) {
+        background-color: rgba(223, 223, 223, 0.3); }
       .box-content table tbody tr:hover {
-        background-color: rgba(211, 211, 211, 0.3);
+        background-color: rgba(232, 234, 246, 0.8);
         cursor: pointer; }
       .box-content table tbody tr td:first-child {
         text-align: center; }
@@ -1256,6 +1328,8 @@ a.button {
           color: green; }
         .box-content table tbody tr td.blocked {
           color: #e74c3c; }
+        .box-content table tbody tr td a {
+          color: inherit; }
 
 @media screen and (max-width: 768px) {
   .box-content .stats .stat__title {
@@ -2489,5 +2563,12 @@ textarea::placeholder {
 
 #modal-user-type:target,
 #modal-user-status:target {
+<<<<<<< HEAD
   display: flex;
 }
+=======
+  display: flex; }
+
+#modal-report-resolve:target {
+  display: flex; }
+>>>>>>> feat(mockup): add admin's report mockup

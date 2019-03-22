@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <title>Authors Haven</title>
+  </head>
+  <body>
+    <nav class="top-navbar container">
+      <div class="col-3-mob">
+        <a href="../index.html">
+          <img src="../images/logo-white.png" alt="brand-logo" class="brand-logo" />
+        </a>
+      </div>
+      <div class="col-9-mob content-right color-white">
+        <button class="toggle-menu is-tablet">
+          <div class="hamburger"></div>
+          <div class="hamburger-nav">
+            <ul>
+              <li><a href="./articles-create.html">New article</a></li>
+              <li><a href="./articles-all.html">Articles</a></li>
+              <li><a href="./articles-user-all.html">My Articles</a></li>
+              <li class="separator"></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Sign out</a></li>
+            </ul>
+          </div>
+        </button>
+        <button class="nav-button navbar-dropdown is-desktop color-white">
+          <img src="../images/avatar.png" class="top-navbar__avatar" alt="User logo" />
+          <ul class="dropdown">
+            <li><a href="./articles-create.html">New article</a></li>
+            <li><a href="./articles-all.html">Articles</a></li>
+            <li><a href="./articles-user-all.html">My Articles</a></li>
+            <li class="separator"></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Sign out</a></li>
+          </ul>
+        </button>
+      </div>
+    </nav>
+    <section class="main-content triangle-bg">
+      <div class="container">
+        <div class="box-container content-margin">
+          <div class="side-bar">
+            <div class="user-info">
+              <img src="../images/avatar.png" alt="User avatar" />
+              <span>First Name Last Name</span>
+            </div>
+            <ul class="side-menu">
+              <li><i class="fa fa-home"></i> Home</li>
+              <li>
+                <a href="../pages/admin-view-users.html"><i class="fa fa-users"></i> Users</a>
+              </li>
+              <li class="active">
+                <a href="../pages/admin-view-reports.html"><i class="fa fa-file"></i> Reports</a>
+              </li>
+            </ul>
+          </div>
+          <div class="box-content">
+            <div class="stats">
+              <div class="stat">
+                <span class="stat__title">Total reports</span>
+                <span class="stat__counter">10</span>
+              </div>
+              <div class="stat">
+                <span class="stat__title">Resolved</span>
+                <span class="stat__counter">8</span>
+              </div>
+              <div class="stat">
+                <span class="stat__title">Unresolved</span>
+                <span class="stat__counter">2</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 padding-less">
+                <div class="input search">
+                  <input type="text" placeholder="Filter reports ..." />
+                </div>
+              </div>
+            </div>
+            <div class="admin-filters">
+              <div class="filter">
+                <div class="filter__title">Order by:</div>
+                <div class="filter__icon">Newest</div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th width="70">#</th>
+                  <th>Article</th>
+                  <th>Reason</th>
+                  <th>Description</th>
+                  <th>Reported by</th>
+                  <th>Resolved by</th>
+                  <th class="align-center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>New article 1</td>
+                  <td>Spam</td>
+                  <td>-</td>
+                  <td>User 1</td>
+                  <td>Admin 2</td>
+                  <td class="align-center color-green">
+                    <a href="#modal-report-resolve"><i class="fa fa-check"></i></a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>New article 1</td>
+                  <td>Harrassment</td>
+                  <td>-</td>
+                  <td>User 1</td>
+                  <td>Admin 2</td>
+                  <td class="align-center color-red">
+                    <a href="#modal-report-resolve"><i class="fa fa-times"></i></a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>New article 1</td>
+                  <td>Spam</td>
+                  <td>-</td>
+                  <td>User 1</td>
+                  <td>Admin 2</td>
+                  <td class="align-center color-green">
+                    <a href="#modal-report-resolve"><i class="fa fa-check"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span>First</span>
+              <span><i class="fa fa-angle-left"></i></span>
+              <ul class="pages">
+                <li class="page current">1</li>
+                <li class="page">2</li>
+                <li class="page">3</li>
+              </ul>
+              <span><i class="fa fa-angle-right"></i></span>
+              <span>Last</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <a class="go-top-btn" href="#"><i class="fa fa-angle-up"></i></a>
+    <div id="modal-report-resolve" class="modal">
+      <div class="modal__wrap">
+        <div class="modal__title">
+          Article name, reported by username
+        </div>
+        <div class="modal__content content-center items-center">
+          Resolved:
+          <div class="checkbox-onoff">
+            <input type="checkbox" value="1" id="checkboxID" /><label for="checkboxID"></label>
+          </div>
+        </div>
+        <div class="modal__actions">
+          <a href="#" class="button primary">
+            Submit
+          </a>
+          <a href="#" class="button primary">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1260,6 +1260,7 @@ a.button {
       font-size: 1.2rem; }
       .box-content .admin-filters .filter__title {
         margin-right: 3rem;
+        white-space: nowrap;
         color: rgba(0, 0, 0, 0.8); }
       .box-content .admin-filters .filter__icon {
         color: #3f51b5;
@@ -1286,6 +1287,7 @@ a.button {
       .box-content table tbody tr td:first-child {
         text-align: center; }
       .box-content table tbody tr td {
+        text-align: center;
         padding: 1rem; }
         .box-content table tbody tr td.active {
           color: green; }
@@ -1300,7 +1302,9 @@ a.button {
   .box-content .stats .stat__counter {
     font-size: 1rem; }
   .box-content .admin-filters .filter {
-    font-size: 1rem; } }
+    width: 100%;
+    font-size: 1rem;
+    justify-content: space-between; } }
 
 @media screen and (max-width: 375px) {
   .box-content .stats .stat {

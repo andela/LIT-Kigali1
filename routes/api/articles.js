@@ -102,13 +102,13 @@ router.get(
 
 router.get(
   '/:slug/share/facebook',
-  verifyJwt(),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleFacebook)
 );
 
 router.get(
   '/:slug/share/linkedin',
-  verifyJwt(),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 

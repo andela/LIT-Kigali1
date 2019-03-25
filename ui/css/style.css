@@ -1775,3 +1775,19 @@ textarea::placeholder {
     position: absolute;
     top: 230px;
     right: 5%; } }
+
+.top-navbar__notification li {
+  min-width: 350px;
+  vertical-align: middle; }
+  .top-navbar__notification li a {
+    padding: 0px 5px; }
+
+.top-navbar__notification .notification__avatar {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  float: left;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%; }

@@ -31,6 +31,9 @@
   z-index: 999999;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  &.dark {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
   &.active {
     display: flex;
   }
@@ -45,6 +48,7 @@
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
+    overflow: hidden;
     .modal__title {
       font-size: 1.3rem;
       text-align: center;

@@ -648,7 +648,8 @@ class ArticleController {
             [Op.or]: [ { userId:  filteredFollowing } ],
             status: 'published' 
           }
-        ]
+        ],
+        [Op.not]: [{userId : currentUser.id}]
       },
       include: [
         {
@@ -662,6 +663,9 @@ class ArticleController {
     if (articles.count < limit) {
       limit -=articles.count;
       randomArticles = await Article.findAndCountAll({ 
+        where: {
+          [Op.not]: [{userId : currentUser.id}]
+        },
         include: [
           {
             model: User,

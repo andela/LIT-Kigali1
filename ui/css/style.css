@@ -1778,9 +1778,17 @@ textarea::placeholder {
 
 .top-navbar__notification li {
   min-width: 350px;
-  vertical-align: middle; }
+  border-bottom: solid;
+  border-color: #C4C4C4;
+  border-width: 1px;
+  text-align: left; }
   .top-navbar__notification li a {
-    padding: 0px 5px; }
+    padding: 0px 4px; }
+    .top-navbar__notification li a span {
+      display: inline-block;
+      width: 80%; }
+  .top-navbar__notification li #notification-header:hover {
+    background-color: #fff; }
 
 .top-navbar__notification .notification__avatar {
   height: 35px;
@@ -1791,3 +1799,35 @@ textarea::placeholder {
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%; }
+
+.top-navbar__notification .notification__time {
+  color: #C4C4C4;
+  padding-left: 5px; }
+
+.top-navbar__notification .notification-unread {
+  background-color: #dde1f8; }
+  .top-navbar__notification .notification-unread .notification__time {
+    color: #acacac; }
+
+.top-navbar__notification .notification-footer {
+  text-align: center; }
+
+.dropdown .notification-header:hover {
+  background-color: #fff; }
+
+.dropdown .notification-header {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0px;
+  text-align: center; }
+
+.badge {
+  background-color: red;
+  padding: 5px;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+  position: absolute;
+  top: 0; }

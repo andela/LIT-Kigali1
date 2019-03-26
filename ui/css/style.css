@@ -1325,6 +1325,39 @@ a.button {
   .article-actions {
     left: 10vw; } }
 
+#tags {
+  float: left;
+  border: 1px solid #ccc;
+  font-family: Arial;
+  margin-left: 13vw; }
+
+#tags span {
+  cursor: pointer;
+  display: block;
+  float: left;
+  border-radius: 5px;
+  color: grey;
+  background: #e8eaf6;
+  padding: 5px;
+  padding-right: 25px;
+  margin: 4px; }
+
+#tags span:hover {
+  opacity: 0.7; }
+
+#tags span:after {
+  position: absolute;
+  content: '×';
+  padding: 2px 5px;
+  margin-left: 3px;
+  font-size: 11px; }
+
+#tags input {
+  background: #fff;
+  border: 0;
+  margin: 4px;
+  width: auto; }
+
 .article-view-title {
   font-size: 2rem;
   text-align: center;
@@ -1414,6 +1447,21 @@ a.button {
   padding-right: 20px; }
   .article-share button {
     background-color: transparent; }
+
+.tagged {
+  cursor: pointer;
+  display: block;
+  float: left;
+  border-radius: 5px;
+  color: grey;
+  font-size: 10px;
+  background: #e8eaf6;
+  padding: 4px 7px;
+  margin: 4px; }
+
+.tagged:hover {
+  color: #e8eaf6;
+  background: grey; }
 
 @media screen and (max-width: 768px) {
   .article-side-actions {
@@ -2036,14 +2084,13 @@ textarea::placeholder {
     top: 230px;
     right: 5%; } }
 
-<<<<<<< HEAD
 #modal-user-type:target,
 #modal-user-status:target {
   display: flex; }
 
 #modal-report-resolve:target {
   display: flex; }
-=======
+
 .profiles-container {
   width: 100%; }
 
@@ -2089,11 +2136,7 @@ textarea::placeholder {
 .user-name {
   float: left;
   width: 70%; }
-<<<<<<< HEAD
->>>>>>> feat(profiles-list): add a page for user to view user profiles
-=======
 
 @media screen and (max-width: 768px) {
   .profile-biography {
     text-align: left; } }
->>>>>>> feat(profile list): implement feedback

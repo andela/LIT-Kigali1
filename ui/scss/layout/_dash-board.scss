@@ -1,0 +1,214 @@
+@import '../base/variables';
+
+.main-content {
+  &.triangle-bg {
+    &::before {
+      z-index: -1;
+      content: ' ';
+      position: absolute;
+      top: -100px;
+      width: 0;
+      height: 0;
+      right: 0;
+      border-bottom: 100% solid $primary-light;
+      border-left: 100vw solid transparent;
+      padding-bottom: 100px;
+    }
+  }
+}
+
+.box-container {
+  border-radius: 1rem;
+  min-height: 300px;
+  width: 100%;
+  min-height: 80vh;
+  box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  background-color: #fff;
+  display: flex;
+  overflow: hidden;
+}
+
+.side-bar {
+  width: 30vw;
+  min-width: 100px;
+  max-width: 250px;
+  .user-info {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0.5rem 1rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    img {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 50%;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    span {
+      color: $primary;
+      font-size: 1rem;
+      min-width: 100px;
+      max-width: 100%;
+    }
+  }
+  .side-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin: 0;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      border-left: 3px solid transparent;
+      color: $gray;
+      i {
+        margin-right: 0.5rem;
+      }
+      a {
+        color: inherit;
+      }
+      &.active,
+      &:hover {
+        border-left: 3px solid $primary;
+        cursor: pointer;
+        color: $primary;
+      }
+    }
+  }
+}
+.box-content {
+  background-color: rgba($color: $primary-light, $alpha: 0.3);
+  padding: 2rem;
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
+  overflow: scroll;
+  flex: 1;
+  .stats {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    .stat {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      flex: 1;
+      &:not(:first-child) {
+        border-left: 2px solid rgba($color: $primary, $alpha: 0.3);
+      }
+      &__title {
+        font-size: 1.2rem;
+        color: $gray;
+      }
+      &__counter {
+        font-size: 1.3rem;
+        color: $primary;
+        font-family: Roboto-Medium;
+      }
+    }
+  }
+
+  .admin-filters {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+    .filter {
+      display: flex;
+      font-size: 1.2rem;
+      &__title {
+        margin-right: 3rem;
+        white-space: nowrap;
+        color: rgba($color: #000000, $alpha: 0.8);
+      }
+      &__icon {
+        color: $primary;
+        cursor: pointer;
+      }
+    }
+  }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    margin-bottom: 1.5rem;
+    overflow: scroll;
+    thead {
+      background-color: $primary-light;
+      tr {
+        th {
+          padding: 1rem 0.5rem;
+        }
+      }
+    }
+    tbody {
+      tr {
+        margin-top: 0.3rem;
+        border-spacing: 5em;
+        background-color: #fff;
+        &:nth-child(even) {
+          background-color: rgba($color: #dfdfdf, $alpha: 0.3);
+        }
+        // box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        &:hover {
+          background-color: rgba($color: $primary-light, $alpha: 0.8);
+          cursor: pointer;
+        }
+        td:first-child {
+          text-align: center;
+        }
+        td {
+          text-align: center;
+          padding: 1rem;
+          &.active {
+            color: green;
+          }
+          &.blocked {
+            color: $red;
+          }
+          a {
+            color: inherit;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $tablet-width) {
+  .box-content {
+    .stats {
+      .stat {
+        &__title {
+          font-size: 1rem;
+        }
+        &__counter {
+          font-size: 1rem;
+        }
+      }
+    }
+    .admin-filters {
+      .filter {
+        width: 100%;
+        font-size: 1rem;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $phone-width) {
+  .box-content {
+    .stats {
+      .stat {
+        width: 100%;
+        &__title {
+          font-size: 1rem;
+        }
+        &__counter {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

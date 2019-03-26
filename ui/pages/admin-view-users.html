@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <title>Authors Haven</title>
+  </head>
+  <body>
+    <nav class="top-navbar container">
+      <div class="col-3-mob">
+        <a href="../index.html">
+          <img src="../images/logo-white.png" alt="brand-logo" class="brand-logo" />
+        </a>
+      </div>
+      <div class="col-9-mob content-right color-white">
+        <button class="toggle-menu is-tablet">
+          <div class="hamburger"></div>
+          <div class="hamburger-nav">
+            <ul>
+              <li><a href="./articles-create.html">New article</a></li>
+              <li><a href="./articles-all.html">Articles</a></li>
+              <li><a href="./articles-user-all.html">My Articles</a></li>
+              <li class="separator"></li>
+              <li><a href="../pages/profile-edit.html">Settings</a></li>
+              <li><a href="../pages/admin-dashboard.html">Dashboard</a></li>
+              <li><a href="#">Sign out</a></li>
+            </ul>
+          </div>
+        </button>
+        <button class="nav-button navbar-dropdown is-desktop color-white">
+          <img src="../images/avatar.png" class="top-navbar__avatar" alt="User logo" />
+          <ul class="dropdown">
+            <li><a href="./articles-create.html">New article</a></li>
+            <li><a href="./articles-all.html">Articles</a></li>
+            <li><a href="./articles-user-all.html">My Articles</a></li>
+            <li class="separator"></li>
+            <li><a href="../pages/profile-edit.html">Settings</a></li>
+            <li><a href="../pages/admin-dashboard.html">Dashboard</a></li>
+            <li><a href="#">Sign out</a></li>
+          </ul>
+        </button>
+      </div>
+    </nav>
+    <section class="main-content triangle-bg">
+      <div class="container">
+        <div class="box-container content-margin">
+          <div class="side-bar">
+            <div class="user-info">
+              <img src="../images/avatar.png" alt="User avatar" />
+              <span>Franck</span>
+            </div>
+            <ul class="side-menu">
+              <li>
+                <a href="../pages/admin-dashboard.html"><i class="fa fa-home"></i> Home</a>
+              </li>
+              <li class="active">
+                <a href="../pages/admin-view-users.html"><i class="fa fa-users"></i> Users</a>
+              </li>
+              <li>
+                <a href="../pages/admin-view-reports.html"><i class="fa fa-file"></i> Reports</a>
+              </li>
+            </ul>
+          </div>
+          <div class="box-content">
+            <div class="stats">
+              <div class="stat">
+                <span class="stat__title">Total users</span>
+                <span class="stat__counter">10</span>
+              </div>
+              <div class="stat">
+                <span class="stat__title">Active users</span>
+                <span class="stat__counter">8</span>
+              </div>
+              <div class="stat">
+                <span class="stat__title">Blocked users</span>
+                <span class="stat__counter">2</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 padding-less">
+                <div class="input search">
+                  <input type="text" placeholder="Filter users ..." />
+                </div>
+              </div>
+            </div>
+            <div class="admin-filters">
+              <div class="filter">
+                <div class="filter__title">Status:</div>
+                <div class="filter__icon">All <i class="fa fa-angle-down"></i></div>
+              </div>
+              <div class="filter">
+                <div class="filter__title">Order by:</div>
+                <div class="filter__icon">Newest <i class="fa fa-angle-down"></i></div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th width="70">#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Articles</th>
+                  <th>Registered At</th>
+                  <th class="align-center">User type</th>
+                  <th class="align-center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Rose</td>
+                  <td>Maina</td>
+                  <td>50</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Grace</td>
+                  <td>Kimoto</td>
+                  <td>50</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Daniel</td>
+                  <td>Nziranziza</td>
+                  <td>10</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Caleb</td>
+                  <td>Mugisha</td>
+                  <td>50</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Fabrice</td>
+                  <td>Manzi</td>
+                  <td>50</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center active">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> active</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Olivier</td>
+                  <td>Esuka</td>
+                  <td>50</td>
+                  <td>Registered At</td>
+                  <td class="align-center">
+                    <a href="#modal-user-type"><i class="fa fa-pencil"></i> user</a>
+                  </td>
+                  <td class="align-center blocked">
+                    <a href="#modal-user-status"><i class="fa fa-pencil"></i> blocked</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span>First</span>
+              <span><i class="fa fa-angle-left"></i></span>
+              <ul class="pages">
+                <li class="page current">1</li>
+                <li class="page">2</li>
+                <li class="page">3</li>
+              </ul>
+              <span><i class="fa fa-angle-right"></i></span>
+              <span>Last</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <a class="go-top-btn" href="#"><i class="fa fa-angle-up"></i></a>
+    <div id="modal-user-type" class="modal">
+      <div class="modal__wrap">
+        <div class="modal__title">
+          <img src="../images/avatar.png" class="user-avatar" alt="user avatar" />
+          Olivier Esuka
+        </div>
+        <div class="modal__content content-center">
+          <span class="custom-dropdown">
+            <span class="title-3">User type: </span>
+            <select>
+              <option value="">Select</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </span>
+        </div>
+        <div class="modal__actions">
+          <a href="#" class="button primary">
+            Submit
+          </a>
+          <a href="#" class="button primary">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    <div id="modal-user-status" class="modal">
+      <div class="modal__wrap">
+        <div class="modal__title">
+          <img src="../images/avatar.png" class="user-avatar" alt="user avatar" />
+          Olivier Esuka
+        </div>
+        <div class="modal__content content-center">
+          <span class="custom-dropdown">
+            <span class="title-3">Status: </span>
+            <select>
+              <option value="">Select</option>
+              <option value="active">Active</option>
+              <option value="blocked">Blocked</option>
+            </select>
+          </span>
+        </div>
+        <div class="modal__actions">
+          <a href="#" class="button primary">
+            Submit
+          </a>
+          <a href="#" class="button primary">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

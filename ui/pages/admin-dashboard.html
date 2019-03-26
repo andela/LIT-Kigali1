@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <title>Authors Haven</title>
+  </head>
+  <body>
+    <nav class="top-navbar container">
+      <div class="col-3-mob">
+        <a href="../index.html">
+          <img src="../images/logo-white.png" alt="brand-logo" class="brand-logo" />
+        </a>
+      </div>
+      <div class="col-9-mob content-right color-white">
+        <button class="toggle-menu is-tablet">
+          <div class="hamburger"></div>
+          <div class="hamburger-nav">
+            <ul>
+              <li><a href="./articles-create.html">New article</a></li>
+              <li><a href="./articles-all.html">Articles</a></li>
+              <li><a href="./articles-user-all.html">My Articles</a></li>
+              <li class="separator"></li>
+              <li><a href="../pages/profile-edit.html">Settings</a></li>
+              <li><a href="../pages/admin-dashboard.html">Dashboard</a></li>
+              <li><a href="#">Sign out</a></li>
+            </ul>
+          </div>
+        </button>
+        <button class="nav-button navbar-dropdown is-desktop color-white">
+          <img src="../images/avatar.png" class="top-navbar__avatar" alt="User logo" />
+          <ul class="dropdown">
+            <li><a href="./articles-create.html">New article</a></li>
+            <li><a href="./articles-all.html">Articles</a></li>
+            <li><a href="./articles-user-all.html">My Articles</a></li>
+            <li class="separator"></li>
+            <li><a href="../pages/profile-edit.html">Settings</a></li>
+            <li><a href="../pages/admin-dashboard.html">Dashboard</a></li>
+            <li><a href="#">Sign out</a></li>
+          </ul>
+        </button>
+      </div>
+    </nav>
+    <section class="main-content triangle-bg">
+      <div class="container">
+        <div class="box-container content-margin">
+          <div class="side-bar">
+            <div class="user-info">
+              <img src="../images/avatar.png" alt="User avatar" />
+              <span>Franck</span>
+            </div>
+            <ul class="side-menu">
+              <li class="active">
+                <a href="../pages/admin-dashboard.html"><i class="fa fa-home"></i> Home</a>
+              </li>
+              <li>
+                <a href="../pages/admin-view-users.html"><i class="fa fa-users"></i> Users</a>
+              </li>
+              <li>
+                <a href="../pages/admin-view-reports.html"><i class="fa fa-file"></i> Reports</a>
+              </li>
+            </ul>
+          </div>
+          <div class="box-content">
+            <div class="row" style="background-color: #fff; border-radius: 15px;">
+              <div class="col-4">
+                <div class="is-column">
+                  <div class="title-1">1,400</div>
+                  <div class="title-3 color-gray">Published articles</div>
+                  <br />
+                  <div class="title-1">170</div>
+                  <div class="title-3 color-gray">Draft articles</div>
+                  <br />
+                  <button class="button primary">Articles Summary</button>
+                </div>
+              </div>
+              <div class="col-8">
+                <img src="../images/stats-graph.png" alt="" style="width: 100%" />
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+              <div class="col-3" style="background-color: #fff; border-radius: 15px;">
+                <div class="is-column">
+                  <div class="title-1">840</div>
+                  <div class="title-3 color-gray">Active users</div>
+                  <br />
+                  <div class="title-1">190</div>
+                  <div class="title-3 color-gray">Blocked users</div>
+                  <br />
+                  <button class="button primary">Users' summary</button>
+                </div>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-3" style="background-color: #fff; border-radius: 15px;">
+                <img src="../images/stats-users.png" alt="" style="width: 100%" />
+              </div>
+              <div class="col-1"></div>
+              <div class="col-4" style="background-color: #fff; border-radius: 15px;">
+                <img src="../images/stats-graph.png" alt="" style="width: 100%; height: 100%;" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <a class="go-top-btn" href="#"><i class="fa fa-angle-up"></i></a>
+    <div id="modal-report-resolve" class="modal">
+      <div class="modal__wrap">
+        <div class="modal__title">
+          Article name, reported by username
+        </div>
+        <div class="modal__content content-center items-center">
+          Resolved:
+          <div class="checkbox-onoff">
+            <input type="checkbox" value="1" id="checkboxID" /><label for="checkboxID"></label>
+          </div>
+        </div>
+        <div class="modal__actions">
+          <a href="#" class="button primary">
+            Submit
+          </a>
+          <a href="#" class="button primary">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

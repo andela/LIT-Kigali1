@@ -98,7 +98,7 @@ class ArticleController {
       await Reader.create({ articleId: article.id });
     }
     const views = await Reader.count({ where: { articleId: article.id } });
-
+  
     return res.status(200).json({
       article: {
         ...article.get(),
@@ -251,13 +251,6 @@ class ArticleController {
         message: 'Article deleted successfully'
       });
     }
-
-    await article.update({ status: 'deleted' });
-
-    return res.status(200).json({
-      status: 200,
-      message: 'Article deleted successfully'
-    });
   }
 
   /**
@@ -539,7 +532,7 @@ class ArticleController {
     const bookmark = await Bookmark.findOne({ where: { userId: id, articleId: article.id } });
 
     if (!bookmark) {
-      res.status(404).json({ status: 404, message: 'The bookmark does not exist' });
+      return res.status(404).json({ status: 404, message: 'The bookmark does not exist' });
     }
 
     await Bookmark.destroy({ where: { userId: id, articleId: article.id } });
@@ -611,6 +604,95 @@ class ArticleController {
     const pages = Math.ceil(reports.count / limit);
 
     return res.status(200).json({ status: 201, ...reports, pages });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async getFeed(req, res){
+    const { currentUser } = req;
+    let limit = 10;
+    let randomArticles = {rows:[]};
+
+    const following = await Follow.findAll({ where: { follower: currentUser.id }, attributes: ['followee'] });
+    const filteredFollowing = await following.map(a => a.followee);
+
+    const reads = await Reader.findAll({ where: { userId: currentUser.id }, attributes: ['articleId'], include: [{
+      model: Article,
+      as: 'article',
+      attributes: ['title', 'tagList'],
+    }] });
+    
+    const filteredReads = await reads.filter( r => r.article.tagList);
+    const tags = [];
+    if (filteredReads) {
+      for(let i = 0; i < filteredReads.length; i +=1){
+        tags.push(...filteredReads[i].article.tagList);
+      }      
+    }
+
+    const articles = await Article.findAndCountAll({ 
+      where: 
+      {
+        [Op.or]: 
+        [
+          { 
+            tagList: {[Op.contained]: tags},
+            status: 'published'
+          },
+          {
+            [Op.or]: [ { userId:  filteredFollowing } ],
+            status: 'published' 
+          }
+        ],
+        [Op.not]: [{userId : currentUser.id}]
+      },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ],
+      limit
+    });
+    if (articles.count < limit) {
+      limit -=articles.count;
+      randomArticles = await Article.findAndCountAll({ 
+        where: {
+          [Op.not]: [{userId : currentUser.id}]
+        },
+        include: [
+          {
+            model: User,
+            as: 'author',
+            attributes: ['username', 'firstName', 'lastName', 'image']
+          }
+        ],
+        limit
+      });
+    }
+    
+    const sortedArticles = [...new Set([...articles.rows, ...randomArticles.rows])];
+    const uniqueSortedArticles = []
+    const uniqueKeys = []
+    
+    for (let i = 0; i< sortedArticles.length; i += 1) {
+      if (uniqueKeys.indexOf(sortedArticles[i].id) === -1) {
+        uniqueSortedArticles.push(sortedArticles[i])
+        uniqueKeys.push(sortedArticles[i].id)
+      }
+    }
+
+    return res.status(200).json({
+      status: 200,
+      articles: uniqueSortedArticles,
+      articleCount: uniqueSortedArticles.length
+    });
   }
 }
 

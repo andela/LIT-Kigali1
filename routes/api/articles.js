@@ -40,10 +40,9 @@ router.get(
   asyncHandler(ArticleController.getArticleReports)
 );
 
-router.get(
-  '/report',
-  verifyJwt({ tokenRequired: true }),
-  asyncHandler(ArticleController.getArticleReports)
+router.get('/feed',
+verifyJwt({ tokenRequired: true }),
+asyncHandler(ArticleController.getFeed)
 );
 
 router.get(
@@ -51,6 +50,7 @@ router.get(
   verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.getArticle)
 );
+
 router.put(
   '/:slug',
   celebrate({ body: articleValidator.createArticle }),
@@ -157,5 +157,10 @@ router.put(
 
 router.delete('/:articleSlug/comments/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
 router.get('/:articleSlug/comments/:commentId/edited', verifyJwt(), asyncHandler(CommentController.ViewCommentEdit));
+
+router.get('/feed',
+verifyJwt({ tokenRequired: true }),
+asyncHandler(ArticleController.getFeed)
+);
 
 export default router;

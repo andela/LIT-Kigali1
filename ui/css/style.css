@@ -2072,6 +2072,8 @@ textarea::placeholder {
 
 .profile-biography {
   height: 70%;
+  width: 90%;
+  text-align: justify;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 2.8vh; }
@@ -2087,4 +2089,11 @@ textarea::placeholder {
 .user-name {
   float: left;
   width: 70%; }
+<<<<<<< HEAD
 >>>>>>> feat(profiles-list): add a page for user to view user profiles
+=======
+
+@media screen and (max-width: 768px) {
+  .profile-biography {
+    text-align: left; } }
+>>>>>>> feat(profile list): implement feedback

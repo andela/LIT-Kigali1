@@ -28,6 +28,8 @@
 }
 .profile-biography {
   height: 70%;
+  width: 90%;
+  text-align: justify;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 2.8vh;
@@ -43,4 +45,9 @@
 .user-name {
   float: left;
   width: 70%;
+}
+@media screen and (max-width: 768px) {
+  .profile-biography {
+    text-align: left;
+  }
 }

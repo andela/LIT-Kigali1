@@ -44,6 +44,9 @@
         text-align: center;
     }
 }
+.top-navbar__notification {
+    margin-right:-10px;
+}
 .dropdown {
     .notification-header:hover {
         background-color: #fff;
@@ -59,6 +62,7 @@
     background-color: red;
     padding: 5px;
     border-radius: 25px;
+    font-size: 8px;
     -webkit-border-radius: 25px;
     -moz-border-radius: 25px;
     -ms-border-radius: 25px;

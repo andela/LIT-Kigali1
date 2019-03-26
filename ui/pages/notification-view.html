@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <title>Authors Haven</title>
+</head>
+<body>
+    <nav class="top-navbar container">
+        <div class="col-9-mob">
+          <a href="../index.html">
+            <img src="../images/logo-white.png" alt="brand-logo" class="brand-logo" />
+          </a>
+        </div>
+        <div class="col-3-mob content-right color-white">
+          <button class="toggle-menu is-tablet">
+            <div class="hamburger"></div>
+            <div class="hamburger-nav">
+              <ul>
+                <li><a href="./articles-create.html">New article</a></li>
+                <li><a href="./articles-all.html">Articles</a></li>
+                <li><a href="./articles-user-all.html">My Articles</a></li>
+                <li class="separator"></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Sign out</a></li>
+              </ul>
+            </div>
+          </button>
+          <button class="nav-button navbar-dropdown is-desktop color-white">
+            <i class="fa fa-bell fa-3x" aria-hidden="true"></i>
+            <ul class="dropdown top-navbar__notification">
+              <li class="notification-header">
+                <a href="#">Notifications</a> 
+                <a href="#">Mark All as Read</a>
+                <a href="#">Clear</a>
+                <a href="#">Disable</a>
+              </li>
+              <li class="notification-unread">
+                <a href="#"><img src="../images/avatar.png" class="notification__avatar">
+                  <span>Grace Kimotho posted a new article</span> 
+                  <span class="notification__time">2 days ago</span>
+                </a>
+              </li>
+              <li class="notification-unread">
+                  <a href="#"><img src="../images/avatar.png" class="notification__avatar">
+                    <span>Rose Maina posted a new article</span> 
+                    <span class="notification__time">2 days ago</span>
+                  </a>
+                </li>
+              <li>
+                <a href="#"><img src="../images/avatar.png" class="notification__avatar">
+                  <span>Manzi Fabrice reacted to your article</span>
+                  <span class="notification__time">1hr ago</span>
+                </a>
+              </li>
+              <li class="notification-unread">
+                <a href="#"><img src="../images/avatar.png" class="notification__avatar">
+                  <span>Caleb commented on your new article </span>
+                  <span class="notification__time">55 min ago</span>
+                </a>
+              </li>
+              <li>
+                <a href="#"><img src="../images/avatar.png" class="notification__avatar">
+                  <span>Chris gave 3 stars your new article</span> 
+                  <span class="notification__time">1 day ago</span>
+                </a>
+              </li>
+              <li>
+                  <a href="#"><img src="../images/avatar.png" class="notification__avatar">
+                    <span>Alpha Agilo posted a new article</span> 
+                    <span class="notification__time">2 days ago</span>
+                  </a>
+                </li>
+              <li class="notification-footer">
+                  <a href="#">
+                    See All
+                  </a>
+                </li>
+            </ul>
+          </button>
+          <button class="nav-button navbar-dropdown is-desktop color-white">
+            <img src="../images/avatar.png" class="top-navbar__avatar" alt="User logo" />
+            <ul class="dropdown">
+              <li><a href="./articles-create.html">New article</a></li>
+              <li><a href="./articles-all.html">Articles</a></li>
+              <li><a href="./articles-user-all.html">My Articles</a></li>
+              <li class="separator"></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Sign out</a></li>
+            </ul>
+          </button>
+        </div>
+      </nav>
+      <section class="main-content content-margin">
+        <div class="container">
+            <div class="all-notification-header">
+              <div class="all-notification__title">
+                Your Notifications
+              </div>
+              <div class="all-notification__links">
+                  <a href="#">Mark All as Read</a>
+                  <a href="#">Clear All</a>
+                  <a href="#">Disable Notification</a>
+              </div>
+            </div>
+            <div class="all-notification">
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+                <div class="all-notification__view">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope" aria-hidden="true"><span class="popup envelope-read">Mark as read</span></i>
+                </div>
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+                <div class="all-notification__view">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope" aria-hidden="true"><span class="popup envelope-read">Mark as read</span></i>
+                </div>
+                <div class="all-notification__view">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope" aria-hidden="true"><span class="popup envelope-read">Mark as read</span></i>
+                </div>
+                <div class="all-notification__view">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope" aria-hidden="true"><span class="popup envelope-read">Mark as read</span></i>
+                </div>
+                <div class="all-notification__view">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope" aria-hidden="true"><span class="popup envelope-read">Mark as read</span></i>
+                </div>
+                <div class="all-notification__view">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope" aria-hidden="true"><span class="popup envelope-read">Mark as read</span></i>
+                </div>
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+                <div class="all-notification__view notification-unread">
+                    <a href="./articles-view.html">
+                     <img src="../images/avatar.png" class="all-notification__avatar">
+                     <span>Grace Kimotho posted a new article</span>
+                    </a>
+                    <span class="notification__time">2 days ago</span>
+                    <i class="fa fa-trash" aria-hidden="true"><span class="popup delete">Delete</span></i>
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"><span class="popup envelope-unread">Mark as Unread</span></i>
+                </div>
+            </div>
+        </div>
+      </section>
+</body>
+</html>

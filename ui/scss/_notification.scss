@@ -1,11 +1,15 @@
-.top-navbar__notification {
-    li {
+@import 'variables';
+.top-navbar__notification, .all-notification {
+    .all-notification__view,li {
         min-width: 350px;
         a {
             padding: 0px 4px;
             span {
                 display: inline-block;
                 width: 80%;
+                @media screen and (max-width: 1200px) {
+                    width: 70%;
+                }
             }
         }
         border-bottom: solid;
@@ -61,4 +65,92 @@
     -o-border-radius: 25px;
     position: absolute;
     top: 0;
+}
+.all-notification {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    .all-notification__avatar {
+        height: 50px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        float: left;
+        padding: 5px;
+    }
+    .all-notification__view:hover {
+        background-color: $primary-light;
+    }
+    .all-notification__view {
+        i {
+            color: $primary;
+            padding-left: 10px; 
+        }
+        i:hover {
+            color: $primary-dark;
+            .popup {
+                display: inline-block;
+                position: absolute;
+                margin-top: 15px;
+                background-color: $primary-dark;
+                color: #fff;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            .delete {
+                margin-left: -30px;
+            }
+            .envelope-read {
+                margin-left: -48px;
+            }
+            .envelope-unread {
+                margin-left: -58px;
+            }
+        }
+    }
+    span {
+        padding-top: 10px;
+    }
+    .popup {
+        display: none;
+    }
+}
+.all-notification-header {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    .all-notification__links {
+        a {
+            padding: 5px;
+            color: $primary;
+        }
+        a:hover {
+            color: $primary-dark;
+        }
+        float: right;
+    }
+    .all-notification__title {
+        float: left;
+    }
+}
+@media screen and (max-width: 768px) {
+    .all-notification__view {
+        a {
+          display: inline-block;
+          margin-bottom: -20px;
+          width: 100%;
+          span {
+              width: 30%;
+          }
+        }
+        .notification__time {
+            margin-left: 50px;
+            font-size: 12px;
+        }
+        i {
+            padding-bottom: 5px;
+        }
+    }
 }

@@ -39,8 +39,10 @@
   height: 90%;
   margin-left: auto;
 }
-.follow-button button {
-  min-width: 0px;
+.follow-button {
+    button {
+    min-width: 0px;
+  }
 }
 .user-name {
   float: left;

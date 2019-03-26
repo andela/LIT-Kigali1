@@ -2,6 +2,13 @@
     float: left;
     height: 46px;
     padding: 7px 10px;
+input:checked + label:hover,
+input:checked + label:hover ~ label,
+input:checked ~ label:hover,
+input:checked ~ label:hover ~ label,
+label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
 }
 .rate:not(:checked) {
     input {
@@ -24,8 +31,7 @@
     color: #ffc700;    
   }
   label:hover,
-  .rate:not(:checked) > label:hover ~ label {
+  label:hover ~ label {
       color: #deb217;  
   }
 }
-

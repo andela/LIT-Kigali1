@@ -2,13 +2,13 @@
 
 .profile-view {
   width: 80%;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   box-sizing: border-box;
   backdrop-filter: blur(4px);
   border-radius: 5px;
   padding: 0 auto;
   margin: 0 auto;
-} 
+}
 
 .profile-cover {
   height: 193px;
@@ -19,7 +19,7 @@
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  }
+}
 
 .profile-avatar-wrapper {
   position: absolute;
@@ -31,22 +31,22 @@
 }
 
 .profile-avatar-wrapper > p {
-  font-family: Roboto;
-font-style: normal;
-font-weight: bold;
-line-height: normal;
-font-size: 20px;
-margin-bottom: -10px;
+  font-family: Roboto-Regular;
+  font-weight: bolder;
+  font-style: normal;
+  line-height: normal;
+  font-size: 20px;
+  margin-bottom: -10px;
 }
 .profile-avatar {
   width: 100px;
   display: inline-block;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   border-radius: 50%;
   box-sizing: border-box;
   margin-bottom: -15px;
 }
-.profile-avatar.edit{
+.profile-avatar.edit {
   margin-bottom: 19px;
 }
 .profile-avatar-wrapper > label {
@@ -72,13 +72,14 @@ margin-bottom: -10px;
 .profile-meta__text {
   color: $primary;
   margin-bottom: 5px;
+  font-size: 0.9rem;
 }
 
 .profile-meta__button {
   margin-right: 10px;
 }
 
-.profile-bio{
+.profile-bio {
   position: relative;
   width: 95%;
   height: 128px;
@@ -86,18 +87,22 @@ margin-bottom: -10px;
   margin: 0 auto;
 }
 
-.profile-bio > div {
-  display: flex;
-  flex-direction: column;
+.profile-bio {
+  div {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-.bio-header{
+.bio-header {
   color: $primary;
   margin-bottom: 5px;
+  font-family: Roboto-Regular;
+  font-size: bolder;
 }
 
-.bio-text{
-  font-family: Roboto;
+.bio-text {
+  font-family: Roboto-Light;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
@@ -105,7 +110,6 @@ margin-bottom: -10px;
   text-align: justify;
   color: #696969;
   padding-top: 15px;
-
 }
 
 .article-card.profile {
@@ -122,7 +126,7 @@ margin-bottom: -10px;
   display: flex;
   flex-direction: column;
   width: 70%;
-  border: 0px solid #C4C4C4;
+  border: 0px solid #c4c4c4;
   box-sizing: border-box;
   backdrop-filter: blur(4px);
   bottom: 20px;
@@ -130,16 +134,16 @@ margin-bottom: -10px;
   margin: 0 auto;
   margin-top: 100px;
 }
-.profile-form .small-input{
+.profile-form .small-input {
   display: flex;
   flex-direction: row;
   margin: 0 auto;
   width: 100%;
 }
-.profile-form .single-input{
+.profile-form .single-input {
   width: 90%;
   height: auto;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   margin: 0 auto;
   border-radius: 3px;
   margin: 5px 20px;
@@ -147,42 +151,42 @@ margin-bottom: -10px;
 .profile-form .large-input {
   width: 94%;
   height: 193px;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   margin-top: 40px;
   margin: 20px;
   border-radius: 5px;
 }
-[type="date"]{
-color: #C4C4C4; padding: 0 0.3em;
+[type='date'] {
+  color: #c4c4c4;
+  padding: 0 0.3em;
 }
-.profile-form .single-input input[type="date"]{
+
+.profile-form .single-input input[type='date'] {
   width: 100%;
-  border: 0px solid #C4C4C4;
+  border: 0px solid #c4c4c4;
   font-size: 16px;
   height: 30px;
   position: relative;
   margin: 0 auto;
   border-radius: 3px;
 }
-
 
 .profile-form .single-input select {
   width: 100%;
-  border: 0px solid #C4C4C4;
+  border: 0px solid #c4c4c4;
   font-size: 16px;
   height: 30px;
   position: relative;
   margin: 0 auto;
   border-radius: 3px;
-  color: #C4C4C4;
-
+  color: #c4c4c4;
 }
 textarea::placeholder {
   color: rgba($color: #000000, $alpha: 0.3);
 }
 
 @media screen and (max-width: 960px) {
-  .profile-view{
+  .profile-view {
     width: 100%;
   }
   .profile-avatar-wrapper {
@@ -196,27 +200,26 @@ textarea::placeholder {
   .profile-meta {
     padding-left: 100px;
   }
-  .bio-text{
+  .bio-text {
     bottom: -60px;
   }
-  .profile-form .small-input{
+  .profile-form .small-input {
     flex-direction: column;
   }
-  .profile-form .large-input{
+  .profile-form .large-input {
     width: 90%;
   }
-  .profile-form{
+  .profile-form {
     width: 100%;
   }
   .article-card.profile {
     height: auto;
   }
 }
-@media screen and (max-width: 768px) { 
+@media screen and (max-width: 768px) {
   .profile-meta__button {
     position: absolute;
     top: 230px;
     right: 5%;
   }
 }
-

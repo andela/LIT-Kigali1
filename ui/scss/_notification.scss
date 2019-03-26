@@ -80,35 +80,36 @@
         float: left;
         padding: 5px;
     }
-    .all-notification__view:hover {
-        background-color: $primary-light;
-    }
     .all-notification__view {
+        &:hover {
+            background-color: $primary-light;
+        }
         i {
             color: $primary;
             padding-left: 10px; 
-        }
-        i:hover {
-            color: $primary-dark;
-            .popup {
-                display: inline-block;
-                position: absolute;
-                margin-top: 15px;
-                background-color: $primary-dark;
-                color: #fff;
-                border-radius: 5px;
-                padding: 5px;
+            &:hover{
+               
+                    color: $primary-dark;
+                    .popup {
+                        display: inline-block;
+                        position: absolute;
+                        margin-top: 15px;
+                        background-color: $primary-dark;
+                        color: #fff;
+                        border-radius: 5px;
+                        padding: 5px;
+                    }
+                    .delete {
+                        margin-left: -30px;
+                    }
+                    .envelope-read {
+                        margin-left: -48px;
+                    }
+                    .envelope-unread {
+                        margin-left: -58px;
+                    }
+                }
             }
-            .delete {
-                margin-left: -30px;
-            }
-            .envelope-read {
-                margin-left: -48px;
-            }
-            .envelope-unread {
-                margin-left: -58px;
-            }
-        }
     }
     span {
         padding-top: 10px;

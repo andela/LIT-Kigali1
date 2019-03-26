@@ -1079,14 +1079,8 @@ a.button {
 
 .hamburger-nav li.separator {
   height: 1px;
-<<<<<<< HEAD
-  background-color: rgba(0, 0, 0, 0.2);
-  padding: 0;
-}
-=======
   background-color: #b3b3b3;
   padding: 0; }
->>>>>>> feat(mockup): add dashboard link to the main menu
 
 .hamburger-nav li:hover {
   background-color: #e8eaf6;

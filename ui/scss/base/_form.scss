@@ -76,6 +76,13 @@ input::placeholder {
   color: #fff;
 }
 
+.text-area {
+  border-radius: 0.5rem;
+  border: 1px solid $input-border-color;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
 .button {
   padding: 10px 20px;
   min-width: 100px;
@@ -154,17 +161,19 @@ a.button {
 
 .custom-dropdown {
   position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  margin: 10px;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  width: 100%;
+  position: relative;
   select {
     background-color: $primary-light;
     color: rgba($color: #000000, $alpha: 0.6);
     font-size: inherit;
     padding: 0.5em;
-    padding-right: 2.5em;
+    width: 100%;
     border: 0;
-    margin: 0;
+    margin-left: 0.5rem;
     border-radius: 3px;
     text-indent: 0.01px;
     text-overflow: '';

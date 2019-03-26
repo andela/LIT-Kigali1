@@ -26,3 +26,9 @@
 .underlined {
   text-decoration: underline;
 }
+
+.hover-primary {
+  &:hover {
+    color: $primary;
+  }
+}

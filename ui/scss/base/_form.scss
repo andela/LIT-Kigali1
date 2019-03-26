@@ -33,6 +33,12 @@ input::placeholder {
   font-size: 1.2rem;
   margin-bottom: 10px;
   background-color: transparent;
+  &.search {
+    &:hover,
+    &:focus {
+      border-bottom: 1px solid $primary;
+    }
+  }
 }
 .input input[type='text'],
 .input input[type='password'],
@@ -143,5 +149,55 @@ a.button {
   }
   button {
     width: 100%;
+  }
+}
+
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px;
+  select {
+    background-color: $primary-light;
+    color: rgba($color: #000000, $alpha: 0.6);
+    font-size: inherit;
+    padding: 0.5em;
+    padding-right: 2.5em;
+    border: 0;
+    margin: 0;
+    border-radius: 3px;
+    text-indent: 0.01px;
+    text-overflow: '';
+    -webkit-appearance: button; /* hide default arrow in chrome OSX */
+    &:disabled {
+      color: rgba(0, 0, 0, 0.3);
+      &::after {
+        color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+  }
+  &::after {
+    content: '\25BC';
+    height: 1em;
+    font-size: 0.625em;
+    line-height: 1;
+    right: 1.2em;
+    top: 50%;
+    margin-top: -0.5em;
+    color: rgba(0, 0, 0, 0.4);
+  }
+  &::before {
+    width: 2em;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 0 3px 3px 0;
+    background-color: rgba(0, 0, 0, 0.15);
   }
 }

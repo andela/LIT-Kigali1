@@ -1,4 +1,4 @@
-@import 'variables';
+@import '../base/variables';
 
 .profile-view {
   width: 80%;
@@ -31,9 +31,15 @@
 }
 
 .profile-avatar-wrapper > p {
+<<<<<<< HEAD:ui/scss/_profile.scss
   font-family: Roboto-Regular;
   font-weight: bolder;
   font-style: normal;
+=======
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+>>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
   line-height: normal;
   font-size: 20px;
   margin-bottom: -10px;
@@ -102,7 +108,11 @@
 }
 
 .bio-text {
+<<<<<<< HEAD:ui/scss/_profile.scss
   font-family: Roboto-Light;
+=======
+  font-family: Roboto;
+>>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
   font-style: normal;
   font-weight: 300;
   line-height: normal;
@@ -160,7 +170,10 @@
   color: #c4c4c4;
   padding: 0 0.3em;
 }
+<<<<<<< HEAD:ui/scss/_profile.scss
 
+=======
+>>>>>>> feat(mockup): add admin dashboard mockup to view list of users:ui/scss/pages/_profile.scss
 .profile-form .single-input input[type='date'] {
   width: 100%;
   border: 0px solid #c4c4c4;

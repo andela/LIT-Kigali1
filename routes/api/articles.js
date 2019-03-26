@@ -102,13 +102,13 @@ router.get(
 
 router.get(
   '/:slug/share/facebook',
-  verifyJwt(),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleFacebook)
 );
 
 router.get(
   '/:slug/share/linkedin',
-  verifyJwt(),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(ArticleController.shareArticleLinkedin)
 );
 
@@ -147,5 +147,15 @@ router.post(
   celebrate({ body: reportValidator }),
   asyncHandler(ArticleController.reportArticle)
 );
+
+router.put(
+  '/:articleSlug/comments/:commentId',
+  celebrate({ body: commentValidator.updateComment }),
+  verifyJwt(),
+  asyncHandler(CommentController.updateComment)
+);
+
+router.delete('/:articleSlug/comments/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
+router.get('/:articleSlug/comments/:commentId/edited', verifyJwt(), asyncHandler(CommentController.ViewCommentEdit));
 
 export default router;

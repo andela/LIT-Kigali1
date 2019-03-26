@@ -9,6 +9,7 @@ import RatingController from './RatingController';
 import FavoriteCommentController from './FavoriteCommentController';
 import GrantRoleController from './GrantRoleController';
 import NotificationController from './NotificationController';
+import CommentOnTextController from './CommentOnTextController';
 
 export {
   AuthController,
@@ -21,5 +22,6 @@ export {
   RatingController,
   FavoriteCommentController,
   GrantRoleController,
-  NotificationController
+  NotificationController,
+  CommentOnTextController
 };

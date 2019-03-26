@@ -11,7 +11,8 @@ import {
   ArticleController,
   CommentController,
   RatingController,
-  FavoriteCommentController
+  FavoriteCommentController,
+  CommentOnTextController
 } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import storage from '../../config/cloudinary';
@@ -160,7 +161,20 @@ router.get('/:articleSlug/comments/:commentId/edited', verifyJwt(), asyncHandler
 
 router.get('/feed',
 verifyJwt({ tokenRequired: true }),
-asyncHandler(ArticleController.getFeed)
+asyncHandler(ArticleController.getFeed));
+
+router.post(
+  '/:articleSlug/comment-on-text',
+  celebrate({ body: commentValidator.highlightedTextComment }),
+  verifyJwt(),
+  asyncHandler(CommentOnTextController.addComment)
+);
+
+router.put(
+  '/:articleSlug/comment-on-text/:commentId',
+  celebrate({ body: commentValidator.updateHighlightedTextComment }),
+  verifyJwt(),
+  asyncHandler(CommentOnTextController.updateComment)
 );
 
 export default router;

@@ -10,6 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false
     },
+    highlightedText: {
+      type: DataTypes.STRING
+    },
+    startPoint: {
+      type: DataTypes.INTEGER
+    },
+    endPoint: {
+      type: DataTypes.INTEGER
+    },
     userId: {
       type: DataTypes.UUID,
       allowNull: false

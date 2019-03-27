@@ -2180,6 +2180,9 @@ textarea::placeholder {
 .top-navbar__notification .notification-footer, .all-notification .notification-footer {
   text-align: center; }
 
+.top-navbar__notification {
+  margin-right: -10px; }
+
 .dropdown .notification-header:hover {
   background-color: #fff; }
 
@@ -2193,6 +2196,7 @@ textarea::placeholder {
   background-color: red;
   padding: 5px;
   border-radius: 25px;
+  font-size: 8px;
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   -ms-border-radius: 25px;
@@ -2218,22 +2222,22 @@ textarea::placeholder {
   .all-notification .all-notification__view i {
     color: #3f51b5;
     padding-left: 10px; }
-  .all-notification .all-notification__view i:hover {
-    color: #1a237e; }
-    .all-notification .all-notification__view i:hover .popup {
-      display: inline-block;
-      position: absolute;
-      margin-top: 15px;
-      background-color: #1a237e;
-      color: #fff;
-      border-radius: 5px;
-      padding: 5px; }
-    .all-notification .all-notification__view i:hover .delete {
-      margin-left: -30px; }
-    .all-notification .all-notification__view i:hover .envelope-read {
-      margin-left: -48px; }
-    .all-notification .all-notification__view i:hover .envelope-unread {
-      margin-left: -58px; }
+    .all-notification .all-notification__view i:hover {
+      color: #1a237e; }
+      .all-notification .all-notification__view i:hover .popup {
+        display: inline-block;
+        position: absolute;
+        margin-top: 15px;
+        background-color: #1a237e;
+        color: #fff;
+        border-radius: 5px;
+        padding: 5px; }
+      .all-notification .all-notification__view i:hover .delete {
+        margin-left: -30px; }
+      .all-notification .all-notification__view i:hover .envelope-read {
+        margin-left: -48px; }
+      .all-notification .all-notification__view i:hover .envelope-unread {
+        margin-left: -58px; }
   .all-notification span {
     padding-top: 10px; }
   .all-notification .popup {

@@ -1325,6 +1325,39 @@ a.button {
   .article-actions {
     left: 10vw; } }
 
+#tags {
+  float: left;
+  border: 1px solid #ccc;
+  font-family: Arial;
+  margin-left: 13vw; }
+
+#tags span {
+  cursor: pointer;
+  display: block;
+  float: left;
+  border-radius: 5px;
+  color: grey;
+  background: #e8eaf6;
+  padding: 5px;
+  padding-right: 25px;
+  margin: 4px; }
+
+#tags span:hover {
+  opacity: 0.7; }
+
+#tags span:after {
+  position: absolute;
+  content: '×';
+  padding: 2px 5px;
+  margin-left: 3px;
+  font-size: 11px; }
+
+#tags input {
+  background: #fff;
+  border: 0;
+  margin: 4px;
+  width: auto; }
+
 .article-view-title {
   font-size: 2rem;
   text-align: center;
@@ -1414,6 +1447,21 @@ a.button {
   padding-right: 20px; }
   .article-share button {
     background-color: transparent; }
+
+.tagged {
+  cursor: pointer;
+  display: block;
+  float: left;
+  border-radius: 5px;
+  color: grey;
+  font-size: 10px;
+  background: #e8eaf6;
+  padding: 4px 7px;
+  margin: 4px; }
+
+.tagged:hover {
+  color: #e8eaf6;
+  background: grey; }
 
 @media screen and (max-width: 768px) {
   .article-side-actions {
@@ -2042,3 +2090,53 @@ textarea::placeholder {
 
 #modal-report-resolve:target {
   display: flex; }
+
+.profiles-container {
+  width: 100%; }
+
+.profile-card {
+  width: 100%;
+  display: flex;
+  height: 20vh; }
+
+.profile-image {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px; }
+
+.profile-details {
+  width: 80%; }
+
+.profile-name {
+  height: 30%;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  font-size: 20px; }
+
+.profile-biography {
+  height: 70%;
+  width: 90%;
+  text-align: justify;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 2.8vh; }
+
+.follow-button {
+  width: 30%;
+  height: 90%;
+  margin-left: auto; }
+
+.follow-button button {
+  min-width: 0px; }
+
+.user-name {
+  float: left;
+  width: 70%; }
+
+@media screen and (max-width: 768px) {
+  .profile-biography {
+    text-align: left; } }

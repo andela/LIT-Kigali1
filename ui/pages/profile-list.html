@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Profiles List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel= "stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" />
+</head>
+<body>
+    <nav class="top-navbar container">
+      <div class="col-3-mob">
+        <a href="../index.html">
+          <img src="../images/logo-white.png" alt="brand-logo" class="brand-logo" />
+        </a>
+      </div>
+      <div class="col-9-mob content-right color-white">
+        <button class="toggle-menu is-tablet">
+          <div class="hamburger"></div>
+          <div class="hamburger-nav">
+            <ul>
+              <li><a href="./articles-create.html">New article</a></li>
+              <li><a href="./articles-all.html">Articles</a></li>
+              <li><a href="./articles-user-all.html">My Articles</a></li>
+              <li class="separator"></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Sign out</a></li>
+            </ul>
+          </div>
+        </button>
+        <button class="nav-button navbar-dropdown is-desktop color-white">
+          <img src="../images/avatar.png" class="top-navbar__avatar" alt="User logo" />
+          <ul class="dropdown">
+            <li><a href="./articles-create.html">New article</a></li>
+            <li><a href="./articles-all.html">Articles</a></li>
+            <li><a href="./articles-user-all.html">My Articles</a></li>
+            <li class="separator"></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Sign out</a></li>
+          </ul>
+        </button>
+      </div>
+    </nav>
+    <section class="main-content">
+      <div class="container">
+        <div class="row content-margin">
+          <div class="col-1"></div>
+          <div class="col-10 mt-10">
+            <form action="">
+              <div class="input">
+                <input type="text" placeholder="Search for ..." />
+              </div>
+
+              <div class="articles-filter">
+                <input type="checkbox" id="articles" class="filter-by" />
+                <label for="articles">Articles</label>
+
+                <input type="checkbox" id="author" class="filter-by" />
+                <label for="author">Author</label>
+
+                <input type="checkbox" id="tag" class="filter-by" />
+                <label for="tag">Tag</label>
+
+                <input type="checkbox" id="favorited" class="filter-by" />
+                <label for="favorited">Favorited</label>
+              </div>
+            </form>
+
+            <h3>AUTHORS</h3>
+
+            <div class="profile-card is-row mb-10">
+                <div class="profile-image">
+                    <img src="../images/avatar.png" class="profile-avatar" alt="Profile" />
+                </div>
+                <div class="profile-details">
+                  <div class="profile-name is-row items-center">
+                      <div class="user-name"><p>Jane Doe</p></div>
+                      <div class="follow-button content-right"><button class="button secondary">Follow</button></div>
+                  </div>
+                  <div class="profile-biography">
+                      Mauris vel pretium dolor, et hendrerit leo. Donec condimentum eget nisl et lobortis.
+                      Etiam id imperdiet urna. Sed eget neque facilisis, feugiat ligula dictum, tempus
+                      lectus. Donec nec magna nibh. Nullam molestie nisi nisl, aliquet congue purus tempor
+                      ut. Praesent ut quam vel mauris accumsan tincidunt. In et mi non libero ultricies
+                  </div>
+                </div>
+              </div>
+    
+              <div class="profile-card is-row mb-10">
+                  <div class="profile-image">
+                      <img src="../images/avatar.png" class="profile-avatar" alt="Profile" />
+                  </div>
+                  <div class="profile-details">
+                    <div class="profile-name is-row items-center">
+                        <div class="user-name"><p>Jane Doe</p></div>
+                      <div class="follow-button content-right"><button class="button secondary">Follow</button></div>
+                    </div>
+                    <div class="profile-biography">
+                        Mauris vel pretium dolor, et hendrerit leo. Donec condimentum eget nisl et lobortis.
+                        Etiam id imperdiet urna. Sed eget neque facilisis, feugiat ligula dictum, tempus
+                        lectus. Donec nec magna nibh. Nullam molestie nisi nisl, aliquet congue purus tempor
+                        ut. Praesent ut quam vel mauris accumsan tincidunt. In et mi non libero ultricies
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="profile-card is-row mb-10">
+                    <div class="profile-image">
+                        <img src="../images/avatar.png" class="profile-avatar" alt="Profile" />
+                    </div>
+                    <div class="profile-details">
+                      <div class="profile-name is-row items-center">
+                          <div class="user-name"><p>Jane Doe</p></div>
+                      <div class="follow-button content-right"><button class="button secondary">Follow</button></div>
+                      </div>
+                      <div class="profile-biography">
+                          Mauris vel pretium dolor, et hendrerit leo. Donec condimentum eget nisl et lobortis.
+                          Etiam id imperdiet urna. Sed eget neque facilisis, feugiat ligula dictum, tempus
+                          lectus. Donec nec magna nibh. Nullam molestie nisi nisl, aliquet congue purus tempor
+                          ut. Praesent ut quam vel mauris accumsan tincidunt. In et mi non libero ultricies
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="profile-card is-row mb-10">
+                      <div class="profile-image">
+                          <img src="../images/avatar.png" class="profile-avatar" alt="Profile" />
+                      </div>
+                      <div class="profile-details">
+                        <div class="profile-name is-row items-center">
+                            <div class="user-name"><p>Jane Doe</p></div>
+                            <div class="follow-button content-right"><button class="button secondary">Follow</button></div>
+                        </div>
+                        <div class="profile-biography">
+                            Mauris vel pretium dolor, et hendrerit leo. Donec condimentum eget nisl et lobortis.
+                            Etiam id imperdiet urna. Sed eget neque facilisis, feugiat ligula dictum, tempus
+                            lectus. Donec nec magna nibh. Nullam molestie nisi nisl, aliquet congue purus tempor
+                            ut. Praesent ut quam vel mauris accumsan tincidunt. In et mi non libero ultricies
+                        </div>
+                      </div>
+                    </div>
+
+            <div class="pagination">
+              <span>First</span>
+              <span><i class="fa fa-angle-left"></i></span>
+              <ul class="pages">
+                <li class="page current">1</li>
+                <li class="page">2</li>
+                <li class="page">3</li>
+                <li class="page">4</li>
+                <li class="page">5</li>
+              </ul>
+              <span><i class="fa fa-angle-right"></i></span>
+              <span>Last</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <a class="go-top-btn" href="#"><i class="fa fa-angle-up"></i></a>
+  </body>
+</html>

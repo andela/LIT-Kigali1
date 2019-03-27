@@ -2140,3 +2140,132 @@ textarea::placeholder {
 @media screen and (max-width: 768px) {
   .profile-biography {
     text-align: left; } }
+
+.top-navbar__notification .all-notification__view, .top-navbar__notification li, .all-notification .all-notification__view, .all-notification li {
+  min-width: 350px;
+  border-bottom: solid;
+  border-color: #C4C4C4;
+  border-width: 1px;
+  text-align: left; }
+  .top-navbar__notification .all-notification__view a, .top-navbar__notification li a, .all-notification .all-notification__view a, .all-notification li a {
+    padding: 0px 4px; }
+    .top-navbar__notification .all-notification__view a span, .top-navbar__notification li a span, .all-notification .all-notification__view a span, .all-notification li a span {
+      display: inline-block;
+      width: 80%; }
+      @media screen and (max-width: 1200px) {
+        .top-navbar__notification .all-notification__view a span, .top-navbar__notification li a span, .all-notification .all-notification__view a span, .all-notification li a span {
+          width: 70%; } }
+  .top-navbar__notification .all-notification__view #notification-header:hover, .top-navbar__notification li #notification-header:hover, .all-notification .all-notification__view #notification-header:hover, .all-notification li #notification-header:hover {
+    background-color: #fff; }
+
+.top-navbar__notification .notification__avatar, .all-notification .notification__avatar {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  float: left;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%; }
+
+.top-navbar__notification .notification__time, .all-notification .notification__time {
+  color: #C4C4C4;
+  padding-left: 5px; }
+
+.top-navbar__notification .notification-unread, .all-notification .notification-unread {
+  background-color: #dde1f8; }
+  .top-navbar__notification .notification-unread .notification__time, .all-notification .notification-unread .notification__time {
+    color: #acacac; }
+
+.top-navbar__notification .notification-footer, .all-notification .notification-footer {
+  text-align: center; }
+
+.top-navbar__notification {
+  margin-right: -10px; }
+
+.dropdown .notification-header:hover {
+  background-color: #fff; }
+
+.dropdown .notification-header {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0px;
+  text-align: center; }
+
+.badge {
+  background-color: red;
+  padding: 5px;
+  border-radius: 25px;
+  font-size: 8px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+  position: absolute;
+  top: 0; }
+
+.all-notification {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px; }
+  .all-notification .all-notification__avatar {
+    height: 50px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    float: left;
+    padding: 5px; }
+  .all-notification .all-notification__view:hover {
+    background-color: #e8eaf6; }
+  .all-notification .all-notification__view i {
+    color: #3f51b5;
+    padding-left: 10px; }
+    .all-notification .all-notification__view i:hover {
+      color: #1a237e; }
+      .all-notification .all-notification__view i:hover .popup {
+        display: inline-block;
+        position: absolute;
+        margin-top: 15px;
+        background-color: #1a237e;
+        color: #fff;
+        border-radius: 5px;
+        padding: 5px; }
+      .all-notification .all-notification__view i:hover .delete {
+        margin-left: -30px; }
+      .all-notification .all-notification__view i:hover .envelope-read {
+        margin-left: -48px; }
+      .all-notification .all-notification__view i:hover .envelope-unread {
+        margin-left: -58px; }
+  .all-notification span {
+    padding-top: 10px; }
+  .all-notification .popup {
+    display: none; }
+
+.all-notification-header {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px; }
+  .all-notification-header .all-notification__links {
+    float: right; }
+    .all-notification-header .all-notification__links a {
+      padding: 5px;
+      color: #3f51b5; }
+    .all-notification-header .all-notification__links a:hover {
+      color: #1a237e; }
+  .all-notification-header .all-notification__title {
+    float: left; }
+
+@media screen and (max-width: 768px) {
+  .all-notification__view a {
+    display: inline-block;
+    margin-bottom: -20px;
+    width: 100%; }
+    .all-notification__view a span {
+      width: 30%; }
+  .all-notification__view .notification__time {
+    margin-left: 50px;
+    font-size: 12px; }
+  .all-notification__view i {
+    padding-bottom: 5px; } }

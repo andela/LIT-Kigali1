@@ -23,6 +23,7 @@ const email = 'test_login@gmail.com';
 const username = 'test_login';
 const password = '123456';
 const fakeSlug = 'fake-slug';
+jest.setTimeout(30000);
 
 describe('articles', () => {
   beforeAll(async done => {
@@ -79,6 +80,17 @@ describe('articles', () => {
   });
 
   afterAll(async () => {
+    await User.destroy({
+      where: {
+        [Op.or]: [
+          { email: signupUser.email },
+          { email },
+          { username: 'test_login' },
+          { username: 'test_login1' },
+          { username: 'admin_test' }
+        ]
+      }
+    }).then(() => true);
     await User.destroy({
       where: {
         [Op.or]: [
@@ -165,12 +177,11 @@ describe('articles', () => {
     expect(res.body.articlesCount).toBeDefined();
   });
 
-  test('Fetch Articles - should return articles by favorited tag test', async () => {
-    expect.assertions(4);
+  test('Fetch Articles - should return articles by favorited', async () => {
+    expect.assertions(3);
     const res = await request(app).get(`${urlPrefix}/articles?favorited=${loginUser1.username}`);
     expect(res.status).toBe(200);
     expect(res.body.articles).toBeDefined();
-    expect(res.body.articles[0].tagList).toContain('test');
     expect(res.body.articlesCount).toBeDefined();
   });
 
@@ -269,7 +280,7 @@ describe('articles', () => {
   test('like an article', async () => {
     expect.assertions(3);
     const article = await Article.findOne({ where: { slug: newArticle.slug } });
-    article.update({ status: 'published' });
+    await article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${newArticle.slug}/like`)
       .set('Authorization', loginUser2.token);
@@ -523,5 +534,4 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.articles).toBeDefined();
   });
-
 });

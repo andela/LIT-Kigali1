@@ -4,20 +4,21 @@ import { celebrate } from 'celebrate';
 import { FollowController, ProfileController } from '../../controllers';
 import { verifyJwt } from '../../middlewares';
 import { profilesValidator } from '../validators';
+import asyncHandler from '../../helpers/asyncHandler';
 
 dotenv.config();
 const router = express.Router();
-router.post('/:username/follow', verifyJwt(), FollowController.follow);
+router.post('/:username/follow', verifyJwt(), asyncHandler(FollowController.follow));
 
-router.delete('/:username/follow', verifyJwt(), FollowController.unfollow);
+router.delete('/:username/follow', verifyJwt(), asyncHandler(FollowController.unfollow));
 
 router.get(
   '/',
   celebrate({ query: profilesValidator.getProfiles }),
   verifyJwt({ tokenRequired: false }),
-  ProfileController.getProfiles
+  asyncHandler(ProfileController.getProfiles)
 );
 
-router.get('/:username', ProfileController.getProfile);
+router.get('/:username', asyncHandler(ProfileController.getProfile));
 
 export default router;

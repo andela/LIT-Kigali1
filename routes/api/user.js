@@ -14,4 +14,11 @@ router.put(
   asyncHandler(ProfileController.createProfile)
 );
 
+router.get(
+  '/',
+  verifyJwt(),
+  celebrate({ body: profileValidator }),
+  asyncHandler(ProfileController.getCurrentUser)
+);
+
 export default router;

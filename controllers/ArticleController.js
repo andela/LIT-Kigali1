@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import opn from 'opn';
-import { Op } from 'sequelize';
+import sequelize, { Op } from 'sequelize';
 import { User, Article, Favorite, Follow, Tag, Report, Bookmark, Reader } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
 import newArticleNotification from '../helpers/notification/newArticleNotification';
@@ -88,7 +88,9 @@ class ArticleController {
       const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
       following = followingCount !== 0;
       if (currentUser.username !== article.author.username) {
-        const reader = await Reader.findOne({where: { articleId: article.id, userId: currentUser.id }});
+        const reader = await Reader.findOne({
+          where: { articleId: article.id, userId: currentUser.id }
+        });
         if (!reader) {
           await Reader.create({ articleId: article.id, userId: currentUser.id });
         }
@@ -98,7 +100,7 @@ class ArticleController {
       await Reader.create({ articleId: article.id });
     }
     const views = await Reader.count({ where: { articleId: article.id } });
-  
+
     return res.status(200).json({
       article: {
         ...article.get(),
@@ -174,9 +176,17 @@ class ArticleController {
       offset: offsetQuery = 0,
       page: queryPage
     } = req.query;
+    const group = ['Article.id'];
     const where = { status: { [Op.not]: ['deleted', 'unpublished'] } };
     const include = [
-      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] }
+      { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] },
+      { model: Reader, as: 'views', attributes: [] },
+      {
+        model: Favorite,
+        as: 'favorites',
+        attributes: [],
+        include: [{ model: User, as: 'authorFavorites', attributes: [] }]
+      }
     ];
     const offset = queryPage ? queryPage - 1 : offsetQuery;
     const page = queryPage || offset + 1;
@@ -185,41 +195,39 @@ class ArticleController {
     }
     if (author) {
       include[0].where = { [Op.and]: [{ username: author }] };
+      group.push('author.id');
     }
     if (favorited) {
-      include[0].where = include[0].where
-        ? include[0].where[Op.and].push({ username: favorited })
-        : { [Op.and]: [{ username: favorited }] };
+      include[2].include[0].where = { [Op.and]: [{ username: favorited }] };
     }
     const articles = await Article.findAndCountAll({
-      attributes: { exclude: ['id'] },
+      attributes: [
+        'id',
+        'cover',
+        'title',
+        'slug',
+        'body',
+        'userId',
+        'description',
+        'readingTime',
+        'createdAt',
+        'updatedAt',
+        'tagList',
+        [sequelize.fn('COUNT', 'views.id'), 'viewsCount'],
+        [sequelize.fn('COUNT', 'favorites.id'), 'rating']
+      ],
+      group,
       include,
       where,
       offset: offset * limit,
       limit
     });
-    const ratedArticles = async articleArray =>
-      Promise.all(
-        articleArray.map(async art => ({
-          userId: art.userId,
-          slug: art.slug,
-          title: art.title,
-          description: art.description,
-          body: art.body,
-          tagList: art.tagList,
-          status: art.status,
-          cover: art.cover,
-          createdAt: art.createdAt,
-          updatedAt: art.updatedAt,
-          author: art.author,
-          rating: await calculateRating(null, art.slug)
-        }))
-      );
+
     return res.status(200).json({
       status: 200,
-      articles: await ratedArticles(articles.rows),
-      articlesCount: articles.count,
-      pages: Math.ceil(articles.count / limit),
+      articles: articles.rows,
+      articlesCount: articles.count.length,
+      pages: Math.ceil(articles.count.length / limit),
       page
     });
   }
@@ -613,43 +621,49 @@ class ArticleController {
    * @param {*} next
    * @returns {Object} Returns the response
    */
-  static async getFeed(req, res){
+  static async getFeed(req, res) {
     const { currentUser } = req;
     let limit = 10;
-    let randomArticles = {rows:[]};
+    let randomArticles = { rows: [] };
 
-    const following = await Follow.findAll({ where: { follower: currentUser.id }, attributes: ['followee'] });
+    const following = await Follow.findAll({
+      where: { follower: currentUser.id },
+      attributes: ['followee']
+    });
     const filteredFollowing = await following.map(a => a.followee);
 
-    const reads = await Reader.findAll({ where: { userId: currentUser.id }, attributes: ['articleId'], include: [{
-      model: Article,
-      as: 'article',
-      attributes: ['title', 'tagList'],
-    }] });
-    
-    const filteredReads = await reads.filter( r => r.article.tagList);
+    const reads = await Reader.findAll({
+      where: { userId: currentUser.id },
+      attributes: ['articleId'],
+      include: [
+        {
+          model: Article,
+          as: 'views',
+          attributes: ['title', 'tagList']
+        }
+      ]
+    });
+    const filteredReads = await reads.filter(r => r.views.tagList || []);
     const tags = [];
     if (filteredReads) {
-      for(let i = 0; i < filteredReads.length; i +=1){
-        tags.push(...filteredReads[i].article.tagList);
-      }      
+      for (let i = 0; i < filteredReads.length; i += 1) {
+        tags.push(...filteredReads[i].views.tagList);
+      }
     }
 
-    const articles = await Article.findAndCountAll({ 
-      where: 
-      {
-        [Op.or]: 
-        [
-          { 
-            tagList: {[Op.contained]: tags},
+    const articles = await Article.findAndCountAll({
+      where: {
+        [Op.or]: [
+          {
+            tagList: { [Op.contained]: tags },
             status: 'published'
           },
           {
-            [Op.or]: [ { userId:  filteredFollowing } ],
-            status: 'published' 
+            [Op.or]: [{ userId: filteredFollowing }],
+            status: 'published'
           }
         ],
-        [Op.not]: [{userId : currentUser.id}]
+        [Op.not]: [{ userId: currentUser.id }]
       },
       include: [
         {
@@ -661,10 +675,10 @@ class ArticleController {
       limit
     });
     if (articles.count < limit) {
-      limit -=articles.count;
-      randomArticles = await Article.findAndCountAll({ 
+      limit -= articles.count;
+      randomArticles = await Article.findAndCountAll({
         where: {
-          [Op.not]: [{userId : currentUser.id}]
+          [Op.not]: [{ userId: currentUser.id }]
         },
         include: [
           {
@@ -676,15 +690,15 @@ class ArticleController {
         limit
       });
     }
-    
+
     const sortedArticles = [...new Set([...articles.rows, ...randomArticles.rows])];
-    const uniqueSortedArticles = []
-    const uniqueKeys = []
-    
-    for (let i = 0; i< sortedArticles.length; i += 1) {
+    const uniqueSortedArticles = [];
+    const uniqueKeys = [];
+
+    for (let i = 0; i < sortedArticles.length; i += 1) {
       if (uniqueKeys.indexOf(sortedArticles[i].id) === -1) {
-        uniqueSortedArticles.push(sortedArticles[i])
-        uniqueKeys.push(sortedArticles[i].id)
+        uniqueSortedArticles.push(sortedArticles[i]);
+        uniqueKeys.push(sortedArticles[i].id);
       }
     }
 

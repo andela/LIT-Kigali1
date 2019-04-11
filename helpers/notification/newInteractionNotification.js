@@ -12,6 +12,7 @@ export default async (articleId, author, title, slug) => {
     include: [
       {
         model: User,
+        as: 'author',
         where: { notification: 'enabled' },
         attributes: ['id', 'email']
       }
@@ -29,8 +30,9 @@ export default async (articleId, author, title, slug) => {
       }
     ]
   });
-  const emailsFavorites = favorited.map(f => f.get().User.get().email);
-  const idFavorites = favorited.map(f => f.get().User.get().id);
+
+  const emailsFavorites = favorited.map(f => f.get().author.get().email);
+  const idFavorites = favorited.map(f => f.get().author.get().id);
 
   const emailsComments = commented.map(c => c.get().author.get().email);
   const idComments = commented.map(c => c.get().author.get().id);

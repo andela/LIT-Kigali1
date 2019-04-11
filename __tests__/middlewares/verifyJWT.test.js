@@ -2,6 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 import { verifyJwt } from '../../middlewares';
 import app from '../../app';
 import { User, Token } from '../../database/models';
@@ -12,7 +13,6 @@ const { JWT_SECRET } = process.env;
 const appTest = express();
 const router = express.Router();
 
-
 router.get('/testJwtWithUser', verifyJwt({ access: ['user'] }));
 router.get('/testJwtwithSuperAdmin', verifyJwt({ access: ['super-admin'] }));
 router.get('/testJwtwithAdmin', verifyJwt({ access: ['admin'] }));
@@ -21,8 +21,12 @@ router.get('/testWithConfirmEmail', verifyJwt({ confirmEmail: true }));
 appTest.use(router);
 let admin;
 let user2;
+jest.setTimeout(30000);
 describe('verifyJWT', () => {
   beforeAll(async () => {
+    await User.destroy({
+      where: { [Op.or]: [{ username: signupUser.username }, { username: signupUser2.username }] }
+    }).then(() => true);
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
     const encryptedPassword2 = bcrypt.hashSync(signupUser2.password, 10);
     await User.create({
@@ -57,11 +61,8 @@ describe('verifyJWT', () => {
   });
   afterAll(async () => {
     await User.destroy({
-      where: { id: admin.id }
-    });
-    await User.destroy({
-      where: { id: user2.id }
-    });
+      where: { [Op.or]: [{ username: signupUser.username }, { username: signupUser2.username }] }
+    }).then(() => true);
   });
 
   test('it should fail without user token for user only router', async () => {

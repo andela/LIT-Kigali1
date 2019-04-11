@@ -284,13 +284,6 @@ describe('Profile', () => {
     done();
   });
 
-  test('should return page is required', async done => {
-    expect.assertions(2);
-    const res = await request(app).get(`${urlPrefix}/profiles`);
-    expect(res.body.message).toBe('Bad Request');
-    expect(res.body.errors[0].message).toBe('"page" is required');
-    done();
-  });
   test('Should return page does not exist', async done => {
     expect.assertions(3);
     const res = await request(app).get(`${urlPrefix}/profiles?page=1000`);

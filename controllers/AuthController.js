@@ -94,16 +94,20 @@ class AuthController {
       body: { user }
     } = req;
 
-    const reset = await User.findOne({
-      where: { email: user.email, confirmed: 'confirmed' },
-      attributes: ['id', 'email']
+    const foundUser = await User.findOne({
+      where: { email: user.email },
+      attributes: ['id', 'email', 'confirmed']
     });
-    if (!reset) {
+
+    if (!foundUser) {
       return res
         .status(404)
         .json({ status: 404, message: 'No user found with that email address' });
     }
-    const { id, email } = reset.get();
+    if (foundUser.confirmed !== 'confirmed') {
+      return res.status(401).json({ status: 401, message: 'Please confirm your email' });
+    }
+    const { id, email } = foundUser.get();
     const createReset = await ResetPassword.create({ userId: id });
     const { resetCode } = createReset.get();
     await resetPasswordEmail(id, email, resetCode);
@@ -123,44 +127,45 @@ class AuthController {
   static async resetPassword(req, res) {
     const { resetCode, userId } = req.params;
     const { body } = req;
-    try {
-      const reset = await ResetPassword.findOne({ where: { resetCode, userId } });
-
-      if (body.newPassword !== body.confirmNewpassword) {
-        res.status(400).json({ status: 400, message: "Passwords don't match" });
-      }
-      if (!reset) {
-        res.status(404).json({ status: 404, message: 'invalid token' });
-      }
-
-      if (body.newPassword === body.confirmNewpassword) {
-        const expirationTime = reset.createdAt.setMinutes(reset.createdAt.getMinutes() + 30);
-        const presentTime = new Date();
-
-        if (expirationTime < presentTime) {
-          res
-            .status(401)
-            .json({ status: 401, message: 'Expired token, Please request a new Token' });
-        }
-
-        if (expirationTime > presentTime) {
-          const user = await User.findOne({
-            where: { id: userId },
-            attributes: ['id', 'email']
-          });
-
-          const password = await bcrypt.hash(body.newPassword, 10);
-          await user.update({ password });
-          await newPasswordEmail(user.email);
-          res.status(200).json({
-            status: 200,
-            message: 'Your password has been reset successfully!'
-          });
-        }
-      }
-    } catch (error) {
-      return res.status(520);
+    if (body.newPassword !== body.confirmNewpassword) {
+      return res.status(400).json({ status: 400, message: "Passwords don't match" });
     }
+
+    const reset = await ResetPassword.findOne({ where: { resetCode, userId } });
+
+    if (!reset) {
+      return res.status(404).json({ status: 404, message: 'invalid token' });
+    }
+
+    if (!reset.status || reset.status === 'used') {
+      return res
+        .status(403)
+        .json({ status: 403, message: 'The reset token has already been used' });
+    }
+
+    const expirationTime = reset.createdAt.setMinutes(reset.createdAt.getMinutes() + 30);
+    const presentTime = new Date();
+
+    if (expirationTime < presentTime) {
+      return res
+        .status(403)
+        .json({ status: 403, message: 'Expired token, Please request a new Token' });
+    }
+
+    const user = await User.findOne({
+      where: { id: userId },
+      attributes: ['id', 'email']
+    });
+
+    await reset.update({ status: 'used' });
+
+    const password = await bcrypt.hash(body.newPassword, 10);
+    await user.update({ password });
+    await newPasswordEmail(user.email);
+    return res.status(200).json({
+      status: 200,
+      message: 'Your password has been reset successfully!'
+    });
   }
 
   /**
@@ -177,6 +182,17 @@ class AuthController {
       { where: { token: currentUser.token } }
     );
     return res.json({ status: 200, message: 'Signed out successfully' });
+  }
+
+  /**
+   * @author Olivier
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async socialLogin(req, res) {
+    return res.json({ status: 200, user: req.user });
   }
 }
 

@@ -1,46 +1,18 @@
 import request from 'supertest';
 import nock from 'nock';
 import dotenv from 'dotenv';
-import { facebookUser, googleUser, twitterUser } from '../mocks/db.json';
+import { facebookUser, googleUser } from '../mocks/db.json';
 import { urlPrefix } from '../mocks/variables.json';
 import app from '../../app';
+import mockRequest from '../../__mocks__/mockRequest';
+import mockResponse from '../../__mocks__/mockResponse';
+import socialLogin from '../../__mocks__/socialLogin';
 
 dotenv.config();
+
 jest.setTimeout(30000);
 
 describe('SOCIAL AUTHENTICATION', () => {
-  describe('User login through Twitter', () => {
-    beforeAll(async () => {
-      await nock('https://www.twitter.com/')
-        .filteringPath(() => '/')
-        .get(`${urlPrefix}/users/twitter`)
-        .reply(302, undefined, { Location: `${urlPrefix}/users/${twitterUser.user.id}/social` });
-    });
-
-    test('It should call twitter route', async () => {
-      expect.assertions(3);
-      const res = await request(app).get(`${urlPrefix}/users/twitter`);
-      expect(res.status).toBe(302);
-      expect(res.redirect).toBe(true);
-      expect(res.redirects).toEqual([]);
-    });
-
-    test('It should call twitter callback route', async () => {
-      expect.assertions(3);
-      const res = await request(app).get(`${urlPrefix}/users/twitter/callback`);
-      expect(res.status).toBe(302);
-      expect(res.redirect).toBe(true);
-      expect(res.redirects).toEqual([]);
-    });
-
-    test('Data return from callback', async () => {
-      expect.assertions(2);
-      const res = await request(app).get(`${urlPrefix}/users/${twitterUser.user.id}/social`);
-      expect(res.status).toBe(404);
-      expect(res.body.message).toBe('Not found');
-    });
-  });
-
   describe('User login through Google', () => {
     beforeAll(async () => {
       nock('https://www.google.com/')
@@ -64,17 +36,10 @@ describe('SOCIAL AUTHENTICATION', () => {
       expect(res.redirect).toBe(true);
       expect(res.redirects).toEqual([]);
     });
-
-    test('Data return from callback', async () => {
-      expect.assertions(2);
-      const res = await request(app).get(`${urlPrefix}/users/${googleUser.id}/social`);
-      expect(res.status).toBe(404);
-      expect(res.body.message).toBe('Not found');
-    });
   });
 
   describe('User login through Facebook', () => {
-    beforeAll(async () => {
+    beforeAll(() => {
       nock('https://www.facebook.com/')
         .filteringPath(() => '/')
         .get('/')
@@ -89,7 +54,7 @@ describe('SOCIAL AUTHENTICATION', () => {
       expect(res.redirects).toEqual([]);
     });
 
-    test('It should call twitter callback route', async () => {
+    test('It should call facebook callback route', async () => {
       expect.assertions(3);
       const res = await request(app).get(`${urlPrefix}/users/facebook/callback`);
       expect(res.status).toBe(302);
@@ -97,11 +62,31 @@ describe('SOCIAL AUTHENTICATION', () => {
       expect(res.redirects).toEqual([]);
     });
 
-    test('Data return from callback', async () => {
-      expect.assertions(2);
-      const res = await request(app).get(`${urlPrefix}/users/${facebookUser.id}/social`);
-      expect(res.status).toBe(404);
-      expect(res.body.message).toBe('Not found');
+    test('test socialLogin controller', async () => {
+      const req = mockRequest({ username: 'hugo' });
+      const res = mockResponse();
+      await socialLogin(req, res);
+      expect(res.status).toHaveBeenCalledWith(200);
+      // expect(res.json).toHaveBeenCalledWith({ username: 'hugo' });
     });
+    // test('It should call twitter callback route', () => {
+    //   // expect.assertions(2);
+    //   nock(`${SERVER_URL}`)
+    //     .log(console.log)
+    //     .filteringPath(() => '/api/v1/users/facebook/callback')
+    //     .get('/api/v1/users/facebook/callback')
+    //     .reply(200, { status: 200, user: profile });
+
+    //   // const res = await request(app).get(`${urlPrefix}/users/facebook/callback`);
+    //   // expect(res.status).toBe(200);
+    //   // expect(res.body.status).toBe(200);
+    //   console.log(SERVER_URL, nock.pendingMocks());
+    //   return request(app)
+    //     .get(`${urlPrefix}/users/facebook/callback`)
+    //     .then(res => {
+    //       expect(res.status).toBe(200);
+    //       expect(res.body.status).toBe(200);
+    //     });
+    // });
   });
 });

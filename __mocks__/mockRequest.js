@@ -1,8 +1,6 @@
-const mockRequest = ({ user, body }) => {
-  return {
-    user,
-    body
-  };
-};
+const mockRequest = ({ user, body }) => ({
+  user,
+  body
+});
 
 export default mockRequest;

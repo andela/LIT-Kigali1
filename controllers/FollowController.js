@@ -25,7 +25,9 @@ class FollowController {
     await Follow.findOrCreate({ where: { followee: followee.id, follower: currentUser.id } });
     await newFollowerNotification(followee.id, currentUser.id);
 
-    return res.status(201).json({ status: 201, message: `You followed ${followee.firstName}` });
+    return res
+      .status(201)
+      .json({ status: 201, followed: true, message: `You followed ${followee.firstName}` });
   }
 
   /**
@@ -59,7 +61,11 @@ class FollowController {
 
     return res
       .status(200)
-      .json({ status: 200, message: `You unfollowed ${follow.userFollowee.firstName}` });
+      .json({
+        status: 200,
+        followed: false,
+        message: `You unfollowed ${follow.userFollowee.firstName}`
+      });
   }
 }
 

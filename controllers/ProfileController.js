@@ -131,7 +131,7 @@ class ProfileController {
     const { currentUser } = req;
     const profile = await User.findOne({
       where: { username, userType: 'user' },
-      attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
+      attributes: ['id', 'username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
       group: ['User.id', 'articles.id', 'userFollower.id'],
       include: [
         {
@@ -172,12 +172,20 @@ class ProfileController {
     if (!profile) {
       return res.status(404).json({ status: 404, message: 'User not found' });
     }
+    const followers = await Follow.count({ where: { followee: profile.id } });
+    const followees = await Follow.count({ where: { follower: profile.id } });
+    const followedCount = await Follow.count({
+      where: { followee: profile.id, follower: currentUser ? currentUser.id : null }
+    });
     return res.status(200).json({
       status: 200,
       user: {
         ...profile.get(),
+        followers,
+        followees,
         userFollower: undefined,
-        followed: profile.userFollower && profile.userFollower.length > 0
+        id: undefined,
+        followed: followedCount > 0
       }
     });
   }

@@ -19,6 +19,10 @@ router.get(
   asyncHandler(ProfileController.getProfiles)
 );
 
-router.get('/:username', asyncHandler(ProfileController.getProfile));
+router.get(
+  '/:username',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ProfileController.getProfile)
+);
 
 export default router;

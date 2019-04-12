@@ -25,9 +25,14 @@ class FollowController {
     await Follow.findOrCreate({ where: { followee: followee.id, follower: currentUser.id } });
     await newFollowerNotification(followee.id, currentUser.id);
 
-    return res
-      .status(201)
-      .json({ status: 201, followed: true, message: `You followed ${followee.firstName}` });
+    const followers = await Follow.count({ where: { followee: followee.id } });
+    const followees = await Follow.count({ where: { follower: followee.id } });
+
+    return res.status(201).json({
+      status: 201,
+      user: { followers, followees, followed: true },
+      message: `You followed ${followee.firstName}`
+    });
   }
 
   /**
@@ -59,13 +64,14 @@ class FollowController {
 
     await Follow.destroy({ where: { followee: followee.id, follower: currentUser.id } });
 
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        followed: false,
-        message: `You unfollowed ${follow.userFollowee.firstName}`
-      });
+    const followers = await Follow.count({ where: { followee: followee.id } });
+    const followees = await Follow.count({ where: { follower: followee.id } });
+
+    return res.status(200).json({
+      status: 200,
+      user: { followers, followees, followed: false },
+      message: `You unfollowed ${follow.userFollowee.firstName}`
+    });
   }
 }
 

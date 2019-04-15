@@ -26,13 +26,16 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      tagList: {type: Sequelize.ARRAY(Sequelize.STRING)},
+      tagList: { type: Sequelize.ARRAY(Sequelize.STRING) },
       status: {
         type: Sequelize.STRING,
         defaultValue: 'unpublished'
       },
-      cover: {type: Sequelize.STRING},
-      readingTime: {type: Sequelize.STRING},
+      cover: { type: Sequelize.STRING },
+      readingTime: { type: Sequelize.STRING },
+      publishedAt: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       cover: { type: DataTypes.STRING },
       readingTime: { type: DataTypes.STRING },
+      publishedAt: {
+        type: DataTypes.DATE
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

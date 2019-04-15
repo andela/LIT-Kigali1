@@ -102,6 +102,7 @@ class ArticleController {
     const views = await Reader.count({ where: { articleId: article.id } });
 
     return res.status(200).json({
+      status: 200,
       article: {
         ...article.get(),
         rating: await calculateRating(article.get().id),

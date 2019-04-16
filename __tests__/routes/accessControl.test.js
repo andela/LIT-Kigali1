@@ -1,5 +1,6 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
+import { Op } from 'sequelize';
 import app from '../../app';
 import { User } from '../../database/models';
 import { urlPrefix } from '../mocks/variables.json';
@@ -13,8 +14,15 @@ let admin;
 describe('RBAC', () => {
   beforeAll(async () => {
     await User.destroy({
-      where: {}
-    });
+      where: {
+        [Op.or]: [
+          { email: signupUser.email },
+          { email: signupUser2.email },
+          { username: 'superAdmin' },
+          { username: 'admin' }
+        ]
+      }
+    }).then(() => true);
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
       username: 'superAdmin',
@@ -79,13 +87,20 @@ describe('RBAC', () => {
   });
 
   afterAll(async () => {
-    await User.destroy({ where: { id: superAdmin.id } });
-    await User.destroy({ where: { id: user1.id } });
-    await User.destroy({ where: { id: user2.id } });
-    await User.destroy({ where: { id: admin.id } });
+    await User.destroy({
+      where: {
+        [Op.or]: [
+          { email: signupUser.email },
+          { email: signupUser2.email },
+          { username: 'superAdmin' },
+          { username: 'admin' }
+        ]
+      }
+    }).then(() => true);
   });
 
   test('should not grant access if user not admin', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
       .set('authorization', user1.token)
@@ -97,6 +112,7 @@ describe('RBAC', () => {
   });
 
   test('should not grant access with invalid input', async () => {
+    expect.assertions(2);
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
       .set('authorization', superAdmin.token)
@@ -107,6 +123,7 @@ describe('RBAC', () => {
   });
 
   test('should grant access', async () => {
+    expect.assertions(4);
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
       .set('authorization', superAdmin.token)
@@ -119,6 +136,8 @@ describe('RBAC', () => {
   });
 
   test('should inform a user in case role is already granted', async () => {
+    expect.assertions(3);
+    await User.update({ userType: 'admin' }, { where: { username: user1.username } });
     const res = await request(app)
       .put(`${urlPrefix}/users/${user1.username}/grant`)
       .set('authorization', superAdmin.token)
@@ -130,6 +149,7 @@ describe('RBAC', () => {
   });
 
   test('should inform a user in case role is already granted', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/users/${user2.username}/grant`)
       .set('authorization', superAdmin.token)
@@ -141,6 +161,7 @@ describe('RBAC', () => {
   });
 
   test('should not grant access if user does not exist', async () => {
+    expect.assertions(3);
     const fakeName = 'rtvdr';
     const res = await request(app)
       .put(`${urlPrefix}/users/${fakeName}/grant`)
@@ -153,6 +174,7 @@ describe('RBAC', () => {
   });
 
   test('should not grant super-admin when you are an admin', async () => {
+    expect.assertions(3);
     const res = await request(app)
       .put(`${urlPrefix}/users/${user2.username}/grant`)
       .set('authorization', admin.token)

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import passport from 'passport';
+import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
@@ -17,7 +18,7 @@ const {
   FACEBOOK_APP_ID,
   FACEBOOK_APP_SECRET,
   GOOGLE_CONSUMER_KEY,
-  GOOGLE_CONSUMER_SECRET,
+  GOOGLE_CONSUMER_SECRET
 } = process.env;
 
 passport.use(
@@ -25,7 +26,7 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: 'username',
-      passwordField: 'password',
+      passwordField: 'password'
     },
     async (username, password, done) => {
       let user;
@@ -42,8 +43,8 @@ passport.use(
       } catch (error) {
         done(error);
       }
-    },
-  ),
+    }
+  )
 );
 passport.use(
   'jwt',
@@ -51,7 +52,7 @@ passport.use(
     {
       jwtFromRequest: ExtractJwt.fromHeader('authorization'),
       secretOrKey: JWT_SECRET,
-      passReqToCallback: true,
+      passReqToCallback: true
     },
     async (req, jwtPayload, done) => {
       const { authorization } = req.headers;
@@ -62,7 +63,7 @@ passport.use(
         }
         const user = await User.findOne({
           where: { id: jwtPayload.id },
-          attributes: { exclude: ['password'] },
+          attributes: { exclude: ['password'] }
         });
         if (!user) {
           return done(null, false, { message: 'user does not exist' });
@@ -71,8 +72,8 @@ passport.use(
       } catch (error) {
         return done(error);
       }
-    },
-  ),
+    }
+  )
 );
 
 passport.serializeUser((user, callback) => {
@@ -84,13 +85,18 @@ passport.deserializeUser(async (user, callback) => {
   callback(null, foundUser);
 });
 
+const generateToken = async user => {
+  const token = jwt.sign({ id: user.id, userType: user.userType }, JWT_SECRET);
+  await Token.create({ userId: user.id, token });
+  return token;
+};
 passport.use(
   new TwitterStrategy(
     {
       consumerKey: TWITTER_CONSUMER_KEY,
       consumerSecret: TWITTER_CONSUMER_SECRET,
       callbackURL: `http://${SERVER_URL}/api/v1/users/twitter/callback`,
-      session: false,
+      session: false
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -103,16 +109,20 @@ passport.use(
             firstName: data.screen_name,
             password: data.id,
             socialId: data.id,
+            socialEmail: data.email || null,
             authType: 'twitter',
             image: data.profile_image_url || null,
-          },
+            confirmationCode: null,
+            confirmed: 'confirmed'
+          }
         });
-        return done(null, user[0].get());
+        const token = await generateToken(user[0].get());
+        return done(null, { ...user[0].get(), token });
       } catch (err) {
         return done(err, null);
       }
-    },
-  ),
+    }
+  )
 );
 
 passport.use(
@@ -120,7 +130,7 @@ passport.use(
     {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
-      callbackURL: `http://${SERVER_URL}/api/v1/users/facebook/callback`,
+      callbackURL: `http://${SERVER_URL}/api/v1/users/facebook/callback`
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -133,16 +143,20 @@ passport.use(
             firstName: data.name,
             password: data.id,
             socialId: data.id,
+            socialEmail: data.email || null,
             authType: 'facebook',
             image: data.profileUrl || null,
-          },
+            confirmationCode: null,
+            confirmed: 'confirmed'
+          }
         });
-        return done(null, user[0].get());
+        const token = await generateToken(user[0].get());
+        return done(null, { ...user[0].get(), token });
       } catch (error) {
         return done(error);
       }
-    },
-  ),
+    }
+  )
 );
 
 passport.use(
@@ -150,7 +164,7 @@ passport.use(
     {
       clientID: GOOGLE_CONSUMER_KEY,
       clientSecret: GOOGLE_CONSUMER_SECRET,
-      callbackURL: `http://${SERVER_URL}/api/v1/users/google/callback`,
+      callbackURL: `http://${SERVER_URL}/api/v1/users/google/callback`
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -163,16 +177,20 @@ passport.use(
             firstName: data.displayName,
             password: profile.id,
             socialId: profile.id,
+            socialEmail: data.email || null,
             authType: 'Gmail',
             image: data.image.url || null,
-          },
+            confirmationCode: null,
+            confirmed: 'confirmed'
+          }
         });
-        return done(null, user[0].get());
+        const token = await generateToken(user[0].get());
+        return done(null, { ...user[0].get(), token });
       } catch (err) {
         return done(err, null);
       }
-    },
-  ),
+    }
+  )
 );
 
 export default passport;

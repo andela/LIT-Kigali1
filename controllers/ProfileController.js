@@ -1,6 +1,6 @@
 import uuid from 'uuid';
-import { Op } from 'sequelize';
-import { User, Article, Follow } from '../database/models';
+import sequelize, { Op } from 'sequelize';
+import { User, Article, Follow, Reader, Favorite } from '../database/models';
 import { sendEmailConfirmationLink } from './MailController';
 
 /**
@@ -101,7 +101,7 @@ class ProfileController {
       offset
     });
 
-    const pages = Math.ceil(users.count / limit);
+    const pages = Math.ceil(users.count / limit) || 1;
     users = users.rows;
     users = users.map(data => {
       const user = { ...data.get() };
@@ -128,15 +128,84 @@ class ProfileController {
    */
   static async getProfile(req, res) {
     const { username } = req.params;
+    const { currentUser } = req;
     const profile = await User.findOne({
       where: { username, userType: 'user' },
-      attributes: ['username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
-      include: { model: Article, attributes: ['title', 'description'] }
+      attributes: ['id', 'username', 'firstName', 'lastName', 'image', 'bio', 'email', 'gender'],
+      group: ['User.id', 'articles.id', 'userFollower.id'],
+      include: [
+        {
+          model: Article,
+          attributes: [
+            'id',
+            'slug',
+            'cover',
+            'title',
+            'body',
+            'description',
+            'readingTime',
+            'createdAt',
+            'updatedAt',
+            [sequelize.fn('COUNT', 'views.id'), 'viewCount'],
+            [sequelize.fn('COUNT', 'favorites.id'), 'rating']
+          ],
+          as: 'articles',
+          include: [
+            { model: Reader, as: 'views', attributes: [] },
+            {
+              model: Favorite,
+              as: 'favorites',
+              attributes: []
+            }
+          ],
+          group: ['articles.id']
+        },
+        {
+          model: Follow,
+          as: 'userFollower',
+          where: { follower: currentUser ? currentUser.id : null },
+          required: false,
+          attributes: ['followee']
+        }
+      ]
     });
     if (!profile) {
       return res.status(404).json({ status: 404, message: 'User not found' });
     }
-    return res.status(200).json({ status: 200, user: profile });
+    const followers = await Follow.count({ where: { followee: profile.id } });
+    const followees = await Follow.count({ where: { follower: profile.id } });
+    const followedCount = await Follow.count({
+      where: { followee: profile.id, follower: currentUser ? currentUser.id : null }
+    });
+    return res.status(200).json({
+      status: 200,
+      user: {
+        ...profile.get(),
+        followers,
+        followees,
+        userFollower: undefined,
+        id: undefined,
+        followed: followedCount > 0
+      }
+    });
+  }
+
+  /**
+   *@author Olivier
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} User object
+   */
+  static async getCurrentUser(req, res) {
+    const { currentUser } = req;
+
+    return res.status(200).json({
+      status: 200,
+      user: {
+        ...currentUser,
+        password: undefined
+      }
+    });
   }
 }
 

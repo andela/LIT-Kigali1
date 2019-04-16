@@ -13,7 +13,12 @@ let newArticle;
 let newComment;
 jest.setTimeout(50000);
 describe('comments', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
+    await User.destroy({
+      where: {
+        [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]
+      }
+    }).then(() => true);
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
     const encryptedPassword2 = bcrypt.hashSync(signupUser2.password, 10);
     await User.create({
@@ -40,6 +45,7 @@ describe('comments', () => {
       userId: loginUser1.id
     });
     newArticle = res3.get();
+    done();
   });
 
   afterAll(async () => {
@@ -48,7 +54,9 @@ describe('comments', () => {
         [Op.or]: [{ email: signupUser.email }, { email: signupUser2.email }]
       }
     }).then(() => true);
-    await Article.destroy({ where: { id: newArticle.id } });
+    await Article.destroy({
+      where: [{ id: newArticle.id }, { tagList: { [Op.contains]: ['test'] } }]
+    });
     await Comment.destroy({
       where: {
         [Op.or]: [{ userId: loginUser1.id }, { userId: loginUser2.id }]
@@ -286,7 +294,11 @@ describe('comments', () => {
 
   test('Comment history - should fail to return old version', async done => {
     const res = await request(app)
-      .get(`${urlPrefix}/articles/${newArticle.slug}/comments/0ded7537-c7c2-4d4c-84d8-e941c84e965f/edited`)
+      .get(
+        `${urlPrefix}/articles/${
+          newArticle.slug
+        }/comments/0ded7537-c7c2-4d4c-84d8-e941c84e965f/edited`
+      )
       .set('Authorization', loginUser1.token);
     expect(res.status).toBe(404);
     expect(res.body.status).toBe(404);

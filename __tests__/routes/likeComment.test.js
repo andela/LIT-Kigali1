@@ -9,6 +9,7 @@ import { createArticle, signupUser, createComment } from '../mocks/db.json';
 let testToken, testComment, testArticle;
 describe('likeComment', () => {
   beforeAll(async () => {
+    await User.destroy({ where: { email: signupUser.email } });
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
     await User.create({
       ...signupUser,

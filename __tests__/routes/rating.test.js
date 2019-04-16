@@ -16,7 +16,7 @@ describe('5 star Rating', () => {
       }
     });
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
-    const signUpUser = {...signupUser, email: 'newTest@email.com'};
+    const signUpUser = { ...signupUser, email: 'newTest@email.com' };
     await User.create({
       ...signUpUser,
       confirmed: 'confirmed',
@@ -56,12 +56,11 @@ describe('5 star Rating', () => {
   test('should rate an article', async () => {
     expect.assertions(4);
     const article = await Article.findOne({ where: { slug: articleSlug } });
-    article.update({ status: 'published' });
+    await article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('Authorization', testUser.token)
       .send({ rate: 3 });
-
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('article has been rated successfully');
     expect(res.body.rate.rating).toBe(3);
@@ -70,7 +69,7 @@ describe('5 star Rating', () => {
   test('should overide an existing article rating', async () => {
     expect.assertions(4);
     const article = await Article.findOne({ where: { slug: articleSlug } });
-    article.update({ status: 'published' });
+    await article.update({ status: 'published' });
     const res = await request(app)
       .post(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('Authorization', testUser.token)
@@ -114,7 +113,7 @@ describe('5 star Rating', () => {
   test('should not delete rate form unexisting article', async () => {
     expect.assertions(2);
     const article = await Article.findOne({ where: { slug: articleSlug } });
-    article.update({ status: 'unpublished' });
+    await article.update({ status: 'unpublished' });
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('authorization', testUser.token);
@@ -125,7 +124,7 @@ describe('5 star Rating', () => {
   test('should delete rate from article', async () => {
     expect.assertions(2);
     const article = await Article.findOne({ where: { slug: articleSlug } });
-    article.update({ status: 'published' });
+    await article.update({ status: 'published' });
     const res = await request(app)
       .delete(`${urlPrefix}/articles/${articleSlug}/rating`)
       .set('authorization', testUser.token);
@@ -153,7 +152,7 @@ describe('5 star Rating', () => {
   test('should not get rating for unpublished article', async () => {
     expect.assertions(3);
     const article = await Article.findOne({ where: { slug: articleSlug } });
-    article.update({ status: 'unpublished' });
+    await article.update({ status: 'unpublished' });
     const res = await request(app).get(`${urlPrefix}/articles/${articleSlug}/rating`);
 
     expect(res.status).toBe(404);
@@ -163,9 +162,9 @@ describe('5 star Rating', () => {
   test('should get rating for a given article', async () => {
     expect.assertions(6);
     const article = await Article.findOne({ where: { slug: articleSlug } });
-    article.update({ status: 'published' });
+    await article.update({ status: 'published' });
     const rate = await Favorite.findOne({ where: { articleId: article.get().id } });
-    rate.update({ rating: 4 });
+    await rate.update({ rating: 4 });
     const res = await request(app).get(`${urlPrefix}/articles/${articleSlug}/rating`);
 
     expect(res.status).toBe(200);

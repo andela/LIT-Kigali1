@@ -26,7 +26,7 @@ class RatingController {
     const articleId = article.id;
     const rating = await Favorite.findOne({ where: { articleId, userId: currentUser.id } });
     if (rating) {
-      rating.update({ rating: rate, updatedAt: new Date() });
+      await rating.update({ rating: rate, updatedAt: new Date() });
       const averageRate = await calculateRating(articleId);
       return res.status(200).send({
         status: 200,
@@ -42,7 +42,7 @@ class RatingController {
         rating: rate,
         articleId
       },
-      { include: [{ model: User }, { model: Article }] }
+      { include: [{ model: User, as: 'author' }, { model: Article, as: 'favorites' }] }
     );
     return res.status(201).send({
       status: 201,
@@ -76,7 +76,7 @@ class RatingController {
     if (!rating) {
       return res.status(404).send({ errors: { body: ['rating not found'] } });
     }
-    rating.update({ rating: null, updatedAt: new Date() });
+    await rating.update({ rating: null, updatedAt: new Date() });
     return res.status(200).send({
       status: 200,
       message: 'Rating removed successfully'

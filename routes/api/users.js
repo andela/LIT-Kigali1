@@ -2,7 +2,6 @@ import express from 'express';
 import { celebrate } from 'celebrate';
 import passport from 'passport';
 import dotenv from 'dotenv';
-import { User } from '../../database/models';
 import { authValidator, roleValidator } from '../validators';
 import {
   AuthController,
@@ -15,7 +14,6 @@ import { asyncHandler } from '../../helpers';
 
 dotenv.config();
 const router = express.Router();
-const { SERVER_URL } = process.env;
 
 router.post('/login', celebrate({ body: authValidator.login }), AuthController.login);
 
@@ -43,9 +41,7 @@ router.get('/facebook', passport.authenticate('facebook'));
 router.get(
   '/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/' }),
-  (req, res) => {
-    res.status(302).redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  }
+  AuthController.socialLogin
 );
 
 /* TWITTER ROUTER */
@@ -54,9 +50,7 @@ router.get('/twitter', passport.authenticate('twitter'));
 router.get(
   '/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  }
+  AuthController.socialLogin
 );
 
 /* GOOGLE ROUTER */
@@ -65,20 +59,8 @@ router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect(`http://${SERVER_URL}/api/v1/users/${req.user.username}/social/`);
-  }
+  AuthController.socialLogin
 );
-
-router.get('/:username/social/', async (req, res) => {
-  const { username } = req.params;
-  const user = await User.findOne({ where: { username } });
-  if (!user) return res.status(404).json({ status: 404, message: 'Not found' });
-  res.render('index', {
-    user: user.get(),
-    title: 'User profile'
-  });
-});
 
 router.post('/:username/follow', verifyJwt(), asyncHandler(FollowController.follow));
 

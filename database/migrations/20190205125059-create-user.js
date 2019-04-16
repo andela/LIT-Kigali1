@@ -6,8 +6,8 @@ module.exports = {
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
-      firstName: {type: Sequelize.STRING},
-      lastName: {type: Sequelize.STRING},
+      firstName: { type: Sequelize.STRING },
+      lastName: { type: Sequelize.STRING },
       username: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -22,11 +22,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      bio: {type: Sequelize.TEXT},
-      gender: {type: Sequelize.STRING},
-      birthDate: {type: Sequelize.DATE},
-      image: {type: Sequelize.STRING},
-      cover: {type: Sequelize.STRING},
+      bio: { type: Sequelize.TEXT },
+      gender: { type: Sequelize.STRING },
+      birthDate: { type: Sequelize.DATE },
+      image: { type: Sequelize.STRING },
+      cover: { type: Sequelize.STRING },
       status: {
         type: Sequelize.STRING,
         defaultValue: 'active'
@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: 'user'
       },
-      confirmationCode: {type: Sequelize.STRING},
+      confirmationCode: { type: Sequelize.STRING },
       confirmed: {
         type: Sequelize.STRING,
         defaultValue: 'pending'
@@ -43,6 +43,9 @@ module.exports = {
       notification: {
         type: Sequelize.STRING,
         defaultValue: 'enabled'
+      },
+      socialEmail: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

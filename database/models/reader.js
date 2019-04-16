@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Reader.associate = function(models) {
     Reader.belongsTo(models.User, { as: 'reader', foreignKey: 'userId' });
-    Reader.belongsTo(models.Article, { as: 'article', foreignKey: 'articleId' });
+    Reader.belongsTo(models.Article, { as: 'views', foreignKey: 'articleId' });
   };
   return Reader;
 };

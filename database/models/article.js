@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       cover: { type: DataTypes.STRING },
       readingTime: { type: DataTypes.STRING },
+      publishedAt: {
+        type: DataTypes.DATE
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
@@ -50,7 +53,9 @@ module.exports = (sequelize, DataTypes) => {
   );
   Article.associate = function(models) {
     Article.belongsTo(models.User, { as: 'author', foreignKey: 'userId' });
-    Article.hasMany(models.Favorite, { foreignKey: 'articleId' });
+    Article.belongsTo(models.User, { as: 'articles', foreignKey: 'userId' });
+    Article.belongsTo(models.User, { foreignKey: 'userId' });
+    Article.hasMany(models.Favorite, { as: 'favorites', foreignKey: 'articleId' });
     Article.hasMany(models.Comment, { foreignKey: 'articleId' });
     Article.hasMany(models.Report, { foreignKey: 'articleId' }, { onDelete: 'cascade' });
     Article.hasMany(models.Reader, { as: 'views', foreignKey: 'articleId' });

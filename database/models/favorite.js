@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       rating: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,
@@ -28,8 +29,9 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Favorite.associate = function(models) {
-    Favorite.belongsTo(models.User, { foreignKey: 'userId' });
-    Favorite.belongsTo(models.Article, { foreignKey: 'articleId' });
+    Favorite.belongsTo(models.User, { as: 'author', foreignKey: 'userId' });
+    Favorite.belongsTo(models.User, { as: 'authorFavorites', foreignKey: 'userId' });
+    Favorite.belongsTo(models.Article, { as: 'favorites', foreignKey: 'articleId' });
   };
   return Favorite;
 };

@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    firstName: {type: DataTypes.STRING},
-    lastName: {type: DataTypes.STRING},
+    firstName: { type: DataTypes.STRING },
+    lastName: { type: DataTypes.STRING },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    bio: {type: DataTypes.TEXT},
-    gender: {type: DataTypes.STRING},
-    birthDate: {type: DataTypes.DATE},
-    image: {type: DataTypes.STRING},
-    cover: {type: DataTypes.STRING},
+    bio: { type: DataTypes.TEXT },
+    gender: { type: DataTypes.STRING },
+    birthDate: { type: DataTypes.DATE },
+    image: { type: DataTypes.STRING },
+    cover: { type: DataTypes.STRING },
     status: {
       type: DataTypes.STRING,
       defaultValue: 'active'
@@ -46,6 +46,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'enabled'
     },
+    socialEmail: {
+      type: DataTypes.STRING
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
@@ -58,10 +61,12 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasMany(models.ResetPassword, { foreignKey: 'userId' });
     User.hasMany(models.Token, { foreignKey: 'userId' });
-    User.hasMany(models.Article, { foreignKey: 'userId' });
+    User.hasMany(models.Article, { foreignKey: 'userId', as: 'author' });
+    User.hasMany(models.Article, { foreignKey: 'userId', as: 'articles' });
     User.hasMany(models.Follow, { foreignKey: 'follower', as: 'userFollower' });
     User.hasMany(models.Report, { foreignKey: 'userId' });
-    User.hasMany(models.Reader, { foreignKey: 'userId' });
+    User.hasMany(models.Reader, { foreignKey: 'userId', as: 'views' });
+    User.hasMany(models.Favorite, { foreignKey: 'userId', as: 'authorFavorites' });
   };
   return User;
 };

@@ -102,12 +102,12 @@ passport.use(
       try {
         const data = profile._json;
         const user = await User.findOrCreate({
-          where: { username: profile.id },
+          where: { username: data.screen_name },
           defaults: {
-            username: data.id,
+            username: data.screen_name,
             email: `${data.username}@twitter.com`,
             firstName: data.screen_name,
-            password: data.id,
+            password: data.screen_name,
             socialId: data.id,
             socialEmail: data.email || null,
             authType: 'twitter',
@@ -170,12 +170,12 @@ passport.use(
       try {
         const data = profile._json;
         const user = await User.findOrCreate({
-          where: { socialId: profile.id },
+          where: { username: data.name.givenName },
           defaults: {
-            username: data.id,
+            username: data.name.givenName,
             email: data.id,
-            firstName: data.displayName,
-            password: profile.id,
+            firstName: data.name.givenName,
+            password: data.name.givenName,
             socialId: profile.id,
             socialEmail: data.email || null,
             authType: 'Gmail',

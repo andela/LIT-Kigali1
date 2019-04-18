@@ -31,7 +31,7 @@ class UserController {
     await user.update({ confirmed: 'confirmed', confirmationCode: null });
 
     await sendEmailVerified(user.get());
-    return res.json({ message: `${user.email} has been confirmed` });
+    return res.status(200).json({ status: 200, message: `${user.email} has been confirmed` });
   }
 
   /**

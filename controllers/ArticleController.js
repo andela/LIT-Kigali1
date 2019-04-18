@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import opn from 'opn';
+import open from 'open';
 import sequelize, { Op } from 'sequelize';
 import { User, Article, Favorite, Follow, Tag, Report, Bookmark, Reader } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
@@ -413,7 +413,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    opn(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
+    open(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
     return res.status(200).json({ status: 200, message: 'Sharing article via Twitter' });
   }
 
@@ -438,7 +438,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    opn(
+    open(
       `https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`
     );
     return res.status(200).json({ status: 200, message: 'Sharing article via Facebook' });
@@ -465,7 +465,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    opn(
+    open(
       `https://www.linkedin.com/sharing/share-offsite/?url=${
         process.env.FRONTEND_URL
       }/articles/${slug}`
@@ -494,7 +494,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
+    open(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
     return res.status(200).json({ status: 200, message: 'Sharing article via Email' });
   }
 

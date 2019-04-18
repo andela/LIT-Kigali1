@@ -61,11 +61,11 @@ class ProfileController {
       await sendEmailConfirmationLink({ ...profile.get() });
       message = 'Your email has changed. Please check your email for confirmation';
     } else {
-      message = 'The information was updated successful';
+      message = 'The information was updated successfully';
     }
     const { confirmationCode, ...userData } = profile.get();
     return res.status(200).send({
-      statu: 200,
+      status: 200,
       message,
       user: userData
     });

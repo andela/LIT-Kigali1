@@ -198,12 +198,15 @@ class ProfileController {
    */
   static async getCurrentUser(req, res) {
     const { currentUser } = req;
-
+    const articles = await Article.findAll({
+      where: { userId: currentUser.id, status: { [Op.not]: 'deleted' } }
+    });
     return res.status(200).json({
       status: 200,
       user: {
         ...currentUser,
-        password: undefined
+        password: undefined,
+        articles
       }
     });
   }

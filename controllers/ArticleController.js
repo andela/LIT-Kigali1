@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import open from 'open';
+import opn from 'opn';
 import sequelize, { Op } from 'sequelize';
 import { User, Article, Favorite, Follow, Tag, Report, Bookmark, Reader } from '../database/models';
 import { slugString, getReadingTime, calculateRating } from '../helpers';
@@ -100,12 +100,15 @@ class ArticleController {
       await Reader.create({ articleId: article.id });
     }
     const views = await Reader.count({ where: { articleId: article.id } });
-
+    const rated = await Favorite.findOne({
+      where: { articleId: article.id, userId: currentUser ? currentUser.id : null }
+    });
     return res.status(200).json({
       status: 200,
       article: {
         ...article.get(),
         rating: await calculateRating(article.get().id),
+        rated: rated ? rated.rating : 0,
         author: { ...article.get().author.get(), following },
         favorited,
         favoritesCount,
@@ -413,7 +416,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    open(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
+    opn(`https://twitter.com/intent/tweet?text=${process.env.FRONTEND_URL}/articles/${slug}`);
     return res.status(200).json({ status: 200, message: 'Sharing article via Twitter' });
   }
 
@@ -438,7 +441,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    open(
+    opn(
       `https://www.facebook.com/sharer/sharer.php?&u=https://lit-kigali1-staging.herokuapp.com/api/v1/article/${slug}`
     );
     return res.status(200).json({ status: 200, message: 'Sharing article via Facebook' });
@@ -465,7 +468,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    open(
+    opn(
       `https://www.linkedin.com/sharing/share-offsite/?url=${
         process.env.FRONTEND_URL
       }/articles/${slug}`
@@ -494,7 +497,7 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    open(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
+    opn(`mailto:?subject=${article.title}&body=${process.env.FRONTEND_URL}/article/${slug}`);
     return res.status(200).json({ status: 200, message: 'Sharing article via Email' });
   }
 

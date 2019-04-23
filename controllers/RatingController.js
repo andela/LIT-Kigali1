@@ -28,6 +28,7 @@ class RatingController {
     if (rating) {
       await rating.update({ rating: rate, updatedAt: new Date() });
       const averageRate = await calculateRating(articleId);
+
       return res.status(200).send({
         status: 200,
         message: 'Rating updated successfully',
@@ -35,7 +36,6 @@ class RatingController {
         averageRate
       });
     }
-    const averageRate = await calculateRating(articleId);
     const newRate = await Favorite.create(
       {
         userId: currentUser.id,
@@ -44,6 +44,8 @@ class RatingController {
       },
       { include: [{ model: User, as: 'author' }, { model: Article, as: 'favorites' }] }
     );
+    const averageRate = await calculateRating(articleId);
+
     return res.status(201).send({
       status: 201,
       message: 'article has been rated successfully',
@@ -105,6 +107,9 @@ class RatingController {
         articleId: article.id,
         rating: { [Op.ne]: null }
       },
+      include: [
+        { model: User, as: 'author', attributes: ['username', 'firstName', 'lastName', 'image'] }
+      ],
       limit,
       offset: (queryPage - 1) * limit
     });
@@ -116,6 +121,7 @@ class RatingController {
     }
     return res.status(200).send({
       status: 200,
+      article: article.get(),
       averageRate: await calculateRating(null, article.slug),
       ratings: allRating.rows,
       page: Number(queryPage),

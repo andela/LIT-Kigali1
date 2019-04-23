@@ -18,9 +18,8 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async createArticle(req, res) {
-    const { file, currentUser } = req;
+    const { currentUser } = req;
     const { article } = req.body;
-    const cover = file ? file.url : undefined;
     const slug = slugString(article.title);
     const readingTime = getReadingTime(article.body);
     const newArticle = await Article.create(
@@ -28,7 +27,6 @@ class ArticleController {
         ...article,
         userId: currentUser.id,
         slug,
-        cover,
         readingTime
       },
       {

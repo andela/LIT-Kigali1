@@ -80,7 +80,9 @@ class ArticleController {
         message: 'Article not found'
       });
     }
-    const favoritesCount = await Favorite.count({ where: { articleId: article.get().id } });
+    const favoritesCount = await Favorite.count({
+      where: { articleId: article.get().id, state: 'like' }
+    });
     const favorited = favoritesCount !== 0;
     if (currentUser) {
       const followingCount = await Follow.count({ where: { follower: req.currentUser.id } });
@@ -708,6 +710,84 @@ class ArticleController {
       status: 200,
       articles: uniqueSortedArticles,
       articleCount: uniqueSortedArticles.length
+    });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async getLikes(req, res) {
+    const { currentUser } = req;
+    const { slug } = req.params;
+    let liked = false;
+
+    const article = await Article.findOne({ where: { slug } });
+
+    const likes = await Favorite.findAndCountAll({
+      where: { articleId: article.id, state: 'like' },
+      attributes: ['state', 'createdAt'],
+      include: {
+        model: User,
+        as: 'author',
+        attributes: ['firstName', 'lastName', 'image']
+      }
+    });
+
+    if (currentUser) {
+      const likeCount = await Favorite.count({
+        where: { articleId: article.get().id, state: 'like', userId: currentUser.id }
+      });
+
+      liked = likeCount !== 0;
+    }
+    res.status(200).json({
+      status: 200,
+      count: likes.count,
+      likes: likes.rows,
+      liked
+    });
+  }
+
+  /**
+   * @author Chris
+   * @param {Object} req
+   * @param {Object} res
+   * @param {*} next
+   * @returns {Object} Returns the response
+   */
+  static async getDislikes(req, res) {
+    const { currentUser } = req;
+    const { slug } = req.params;
+    let disliked = false;
+
+    const article = await Article.findOne({ where: { slug } });
+
+    const dislikes = await Favorite.findAndCountAll({
+      where: { articleId: article.id, state: 'dislike' },
+      attributes: ['state', 'createdAt'],
+      include: {
+        model: User,
+        as: 'author',
+        attributes: ['firstName', 'lastName', 'image']
+      }
+    });
+
+    if (currentUser) {
+      const dislikeCount = await Favorite.count({
+        where: { articleId: article.get().id, state: 'dislike', userId: currentUser.id }
+      });
+
+      disliked = dislikeCount !== 0;
+    }
+    res.status(200).json({
+      status: 200,
+      count: dislikes.count,
+      likes: dislikes.rows,
+      disliked
     });
   }
 }

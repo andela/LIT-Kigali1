@@ -729,7 +729,7 @@ class ArticleController {
 
     const likes = await Favorite.findAndCountAll({
       where: { articleId: article.id, state: 'like' },
-      attributes: ['state', 'createdAt'],
+      attributes: ['state', 'updatedAt'],
       include: {
         model: User,
         as: 'author',
@@ -768,7 +768,7 @@ class ArticleController {
 
     const dislikes = await Favorite.findAndCountAll({
       where: { articleId: article.id, state: 'dislike' },
-      attributes: ['state', 'createdAt'],
+      attributes: ['state', 'updatedAt'],
       include: {
         model: User,
         as: 'author',
@@ -786,7 +786,7 @@ class ArticleController {
     res.status(200).json({
       status: 200,
       count: dislikes.count,
-      likes: dislikes.rows,
+      dislikes: dislikes.rows,
       disliked
     });
   }

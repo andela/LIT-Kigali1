@@ -734,7 +734,8 @@ class ArticleController {
         model: User,
         as: 'author',
         attributes: ['firstName', 'lastName', 'image']
-      }
+      },
+      order: [['updatedAt', 'DESC']]
     });
 
     if (currentUser) {
@@ -773,7 +774,8 @@ class ArticleController {
         model: User,
         as: 'author',
         attributes: ['firstName', 'lastName', 'image']
-      }
+      },
+      order: [['updatedAt', 'DESC']]
     });
 
     if (currentUser) {

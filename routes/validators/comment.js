@@ -7,8 +7,6 @@ const createComment = {
       body: Joi.string()
         .required()
         .trim()
-        .min(3)
-        .max(255)
     })
     .required()
 };
@@ -19,8 +17,6 @@ const updateComment = {
       body: Joi.string()
         .required()
         .trim()
-        .min(3)
-        .max(255)
     })
     .required()
 };
@@ -33,9 +29,7 @@ const highlightedTextComment = {
       parentId: Joi.string().trim(),
       body: Joi.string()
         .required()
-        .trim()
-        .min(3)
-        .max(255),
+        .trim(),
       highlightedText: Joi.string().required(),
       startPoint: Joi.number().required(),
       endPoint: Joi.number().required()
@@ -48,9 +42,7 @@ const updateHighlightedTextComment = {
     .keys({
       parentId: Joi.string().trim(),
       body: Joi.string()
-        .trim()
-        .min(3)
-        .max(255),
+        .trim(),
       highlightedText: Joi.string(),
       startPoint: Joi.number().min(0),
       endPoint: Joi.number().min(0)

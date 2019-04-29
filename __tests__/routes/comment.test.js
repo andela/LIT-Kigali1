@@ -141,15 +141,6 @@ describe('comments', () => {
 
   /* View a articles' comment test cases */
 
-  test('VIEW - should return No auth token', async done => {
-    expect.assertions(3);
-    const res = await request(app).get(`${urlPrefix}/articles/${newArticle.id}/comments`);
-    expect(res.status).toBe(401);
-    expect(res.body.comment).toBeUndefined();
-    expect(res.body.message).toBe('No auth token');
-    done();
-  });
-
   test('VIEW - should return Article not found', async done => {
     expect.assertions(3);
     const res = await request(app)

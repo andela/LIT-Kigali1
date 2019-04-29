@@ -125,10 +125,9 @@ class ArticleController {
    * @returns {Object} Returns the response
    */
   static async updateArticle(req, res) {
-    const { file, currentUser } = req;
+    const { currentUser } = req;
     const { article } = req.body;
     let { slug } = req.params;
-    const cover = file ? file.url : undefined;
     const readingTime = getReadingTime(article.body);
     const dbArticle = await Article.findOne({
       where: {
@@ -150,7 +149,6 @@ class ArticleController {
       ...article,
       userId: currentUser.id,
       slug,
-      cover,
       readingTime
     });
 
@@ -173,10 +171,11 @@ class ArticleController {
    */
   static async getArticles(req, res) {
     const {
+      title,
       author,
       tag,
       favorited,
-      limit = 20,
+      limit = 4,
       offset: offsetQuery = 0,
       page: queryPage
     } = req.query;
@@ -194,11 +193,14 @@ class ArticleController {
     ];
     const offset = queryPage ? queryPage - 1 : offsetQuery;
     const page = queryPage || offset + 1;
+    if (title) {
+      where.title = { [Op.iLike]: `%${title}%` };
+    }
     if (tag) {
       where.tagList = { [Op.contains]: [tag] };
     }
     if (author) {
-      include[0].where = { [Op.and]: [{ username: author }] };
+      include[0].where = { [Op.and]: [{ username: { [Op.iLike]: `%${author}%` } }] };
       group.push('author.id');
     }
     if (favorited) {

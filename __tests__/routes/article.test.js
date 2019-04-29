@@ -289,6 +289,22 @@ describe('articles', () => {
     expect(res.body.article).toBeDefined();
   });
 
+  test('Article - should get likes', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${newArticle.slug}/likes`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.count).toBeDefined();
+  });
+
+  test('Article - should get likes', async () => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/articles/${newArticle.slug}/likes`);
+    expect(res.status).toBe(200);
+    expect(res.body.count).toBeDefined();
+  });
+
   test('dislike a liked article', async () => {
     expect.assertions(3);
     const res = await request(app)
@@ -297,6 +313,22 @@ describe('articles', () => {
     expect(res.status).toBe(200);
     expect(res.body.article).toBeDefined();
     expect(res.body.message).toBe('Disliked');
+  });
+
+  test('Article - should get dislikes', async () => {
+    expect.assertions(2);
+    const res = await request(app)
+      .get(`${urlPrefix}/articles/${newArticle.slug}/dislikes`)
+      .set('Authorization', loginUser2.token);
+    expect(res.status).toBe(200);
+    expect(res.body.count).toBeDefined();
+  });
+
+  test('Article - should get dislikes', async () => {
+    expect.assertions(2);
+    const res = await request(app).get(`${urlPrefix}/articles/${newArticle.slug}/dislikes`);
+    expect(res.status).toBe(200);
+    expect(res.body.count).toBeDefined();
   });
 
   test('Remove dislike from an article', async () => {

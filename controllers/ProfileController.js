@@ -61,11 +61,11 @@ class ProfileController {
       await sendEmailConfirmationLink({ ...profile.get() });
       message = 'Your email has changed. Please check your email for confirmation';
     } else {
-      message = 'The information was updated successful';
+      message = 'The information was updated successfully';
     }
     const { confirmationCode, ...userData } = profile.get();
     return res.status(200).send({
-      statu: 200,
+      status: 200,
       message,
       user: userData
     });
@@ -198,12 +198,15 @@ class ProfileController {
    */
   static async getCurrentUser(req, res) {
     const { currentUser } = req;
-
+    const articles = await Article.findAll({
+      where: { userId: currentUser.id, status: { [Op.not]: 'deleted' } }
+    });
     return res.status(200).json({
       status: 200,
       user: {
         ...currentUser,
-        password: undefined
+        password: undefined,
+        articles
       }
     });
   }

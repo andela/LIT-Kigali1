@@ -41,10 +41,7 @@ router.get(
   asyncHandler(ArticleController.getArticleReports)
 );
 
-router.get('/feed',
-verifyJwt({ tokenRequired: true }),
-asyncHandler(ArticleController.getFeed)
-);
+router.get('/feed', verifyJwt({ tokenRequired: true }), asyncHandler(ArticleController.getFeed));
 
 router.get(
   '/:slug',
@@ -156,12 +153,18 @@ router.put(
   asyncHandler(CommentController.updateComment)
 );
 
-router.delete('/:articleSlug/comments/:commentId', verifyJwt(), asyncHandler(CommentController.deleteComment));
-router.get('/:articleSlug/comments/:commentId/edited', verifyJwt(), asyncHandler(CommentController.ViewCommentEdit));
+router.delete(
+  '/:articleSlug/comments/:commentId',
+  verifyJwt(),
+  asyncHandler(CommentController.deleteComment)
+);
+router.get(
+  '/:articleSlug/comments/:commentId/edited',
+  verifyJwt(),
+  asyncHandler(CommentController.ViewCommentEdit)
+);
 
-router.get('/feed',
-verifyJwt({ tokenRequired: true }),
-asyncHandler(ArticleController.getFeed));
+router.get('/feed', verifyJwt({ tokenRequired: true }), asyncHandler(ArticleController.getFeed));
 
 router.post(
   '/:articleSlug/comment-on-text',
@@ -175,6 +178,18 @@ router.put(
   celebrate({ body: commentValidator.updateHighlightedTextComment }),
   verifyJwt(),
   asyncHandler(CommentOnTextController.updateComment)
+);
+
+router.get(
+  '/:slug/likes',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.getLikes)
+);
+
+router.get(
+  '/:slug/dislikes',
+  verifyJwt({ tokenRequired: false }),
+  asyncHandler(ArticleController.getDislikes)
 );
 
 export default router;

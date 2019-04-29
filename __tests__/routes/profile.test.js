@@ -73,7 +73,7 @@ describe('Profile', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.user.firstName).toBe('Peter');
-    expect(res.body.message).toBe('The information was updated successful');
+    expect(res.body.message).toBe('The information was updated successfully');
     done();
   });
 
@@ -136,7 +136,7 @@ describe('Profile', () => {
       .set('Authorization', loginUser1.token)
       .send({ user: { username: 'claudine' } });
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('The information was updated successful');
+    expect(res.body.message).toBe('The information was updated successfully');
     done();
   });
 

@@ -17,10 +17,10 @@ const createArticle = {
         .items(Joi.string().trim()),
       status: Joi.string()
         .trim()
-        .valid(['unpublished', 'published'])
+        .valid(['unpublished', 'published']),
+      cover: Joi.string(),
     })
     .required(),
-  cover: Joi.any()
 };
 
 const getArticlesQuery = {

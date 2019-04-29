@@ -8,7 +8,7 @@ const profile = {
     email: Joi.string()
       .email()
       .trim(),
-    bio: Joi.string().min(20),
+    bio: Joi.string(),
     gender: Joi.string().max(6),
     birthDate: Joi.date(),
     image: Joi.string(),

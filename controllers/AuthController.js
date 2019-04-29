@@ -7,7 +7,7 @@ import moment from 'moment';
 import { User, ResetPassword, Token } from '../database/models';
 import { sendEmailConfirmationLink, resetPasswordEmail, newPasswordEmail } from './MailController';
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, FRONTEND_URL } = process.env;
 
 /**
  * @description Authentication class
@@ -192,7 +192,7 @@ class AuthController {
    * @returns {Object} Returns the response
    */
   static async socialLogin(req, res) {
-    return res.json({ status: 200, user: req.user });
+    res.redirect(`${FRONTEND_URL}?token=${req.user.token}`);
   }
 }
 

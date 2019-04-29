@@ -78,7 +78,7 @@ router.post(
 router.get(
   '/:articleSlug/comments',
   celebrate({ query: commentValidator.getArticleCommentsQuery }),
-  verifyJwt({tokenRequired: false }),
+  verifyJwt({ tokenRequired: false }),
   asyncHandler(CommentController.getArticleComments)
 );
 router

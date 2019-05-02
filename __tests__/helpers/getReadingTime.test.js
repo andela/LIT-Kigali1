@@ -5,7 +5,7 @@ describe('getReadingTime', () => {
   test('Should return reading time', () => {
     expect.assertions(1);
     expect.stringContaining('min');
-    const readingTime = getReadingTime(createArticle.body);
+    const readingTime = getReadingTime(JSON.stringify(createArticle.body));
     expect(readingTime.length).toBeGreaterThan(0);
   });
 

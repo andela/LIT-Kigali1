@@ -15,6 +15,10 @@ let testArticle;
 let comment;
 
 describe('highlightedTextComment', () => {
+  const newArticle = {
+    ...createArticle,
+    body: JSON.stringify(createArticle.body)
+  }
   beforeAll(async () => {
     await User.destroy({
       where: {
@@ -40,7 +44,7 @@ describe('highlightedTextComment', () => {
       .post(`${urlPrefix}/articles`)
       .set('authorization', user1.token)
       .send({
-        article: createArticle
+        article: newArticle
       });
     testArticle = res2.body.article;
   });

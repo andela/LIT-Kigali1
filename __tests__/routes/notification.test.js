@@ -16,6 +16,7 @@ let newArticle2;
 let newArticle;
 
 describe('articles', () => {
+  const newDraftJsArticle = { ...createArticle, body: JSON.stringify(createArticle.body)};
   beforeAll(async done => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
@@ -91,7 +92,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     newArticle = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
@@ -104,7 +105,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     newArticle2 = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);

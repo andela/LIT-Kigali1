@@ -8,6 +8,7 @@ import { createArticle, signupUser, createComment } from '../mocks/db.json';
 
 let testToken, testComment, testArticle;
 describe('likeComment', () => {
+  const newArticle = { ...createArticle, body: JSON.stringify(createArticle.body)}
   beforeAll(async () => {
     await User.destroy({ where: { email: signupUser.email } });
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
@@ -23,7 +24,7 @@ describe('likeComment', () => {
     const res2 = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('authorization', testToken)
-      .send({ article: { ...createArticle } });
+      .send({ article: { ...newArticle } });
     testArticle = res2.body.article;
     const res3 = await request(app)
       .post(`${urlPrefix}/articles/${testArticle.slug}/comments`)

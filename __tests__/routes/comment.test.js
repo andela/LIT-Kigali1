@@ -13,6 +13,7 @@ let newArticle;
 let newComment;
 jest.setTimeout(50000);
 describe('comments', () => {
+  const newDraftJsArticle = { ...createArticle, body: JSON.stringify(createArticle.body)}
   beforeAll(async done => {
     await User.destroy({
       where: {
@@ -40,7 +41,7 @@ describe('comments', () => {
       .send({ user: { username: signupUser2.email, password: signupUser2.password } });
     loginUser2 = res2.body.user;
     const res3 = await Article.create({
-      ...createArticle,
+      ...newDraftJsArticle,
       slug: slugString(createArticle.title),
       userId: loginUser1.id
     });

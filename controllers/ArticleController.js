@@ -728,6 +728,12 @@ class ArticleController {
     let liked = false;
 
     const article = await Article.findOne({ where: { slug } });
+    if (!article) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No likes found'
+      });
+    }
 
     const likes = await Favorite.findAndCountAll({
       where: { articleId: article.id, state: 'like' },
@@ -768,6 +774,12 @@ class ArticleController {
     let disliked = false;
 
     const article = await Article.findOne({ where: { slug } });
+    if (!article) {
+      return res.status(404).send({
+        status: 404,
+        message: 'No dislikes found'
+      });
+    }
 
     const dislikes = await Favorite.findAndCountAll({
       where: { articleId: article.id, state: 'dislike' },

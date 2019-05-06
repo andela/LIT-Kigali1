@@ -8,10 +8,10 @@ const profile = {
     email: Joi.string()
       .email()
       .trim(),
-    bio: Joi.string(),
+    bio: Joi.string().allow(''),
     gender: Joi.string().max(6),
-    birthDate: Joi.date(),
-    image: Joi.string(),
+    birthDate: Joi.date().allow(''),
+    image: Joi.string().allow(''),
     cover: Joi.string()
   })
 };

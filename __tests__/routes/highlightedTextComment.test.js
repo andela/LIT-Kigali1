@@ -66,6 +66,7 @@ describe('highlightedTextComment', () => {
       .send({
         comment: {
           ...createComment,
+          anchorKey: 'bok6r',
           ...partialArticle
         }
       });
@@ -159,16 +160,17 @@ describe('highlightedTextComment', () => {
       .send({
         comment: {
           body: 'hello world',
-          highlightedText: 'pa',
-          startPoint: 8,
-          endPoint: 10
+          highlightedText: 'orem',
+          startPoint: 1,
+          endPoint: 5,
+          anchorKey: 'bok6r',
         }
       });
     expect(res.status).toBe(200);
     expect(res.body.status).toBe(200);
-    expect(res.body.comment.highlightedText).toBe('pa');
-    expect(res.body.comment.startPoint).toBe(8);
-    expect(res.body.comment.endPoint).toBe(10);
+    expect(res.body.comment.highlightedText).toBe('orem');
+    expect(res.body.comment.startPoint).toBe(1);
+    expect(res.body.comment.endPoint).toBe(5);
     expect(res.body.comment.body).toBe('hello world');
   });
 
@@ -186,7 +188,7 @@ describe('highlightedTextComment', () => {
     expect(res.body.comment.body).toBe('hello africa');
   });
 
-  test('should not update comment on highlighted text without authorization', async () => {
+  test('should not update comment on highlighted text without authorization', async (done) => {
     const res = await request(app)
       .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
       .send({
@@ -199,6 +201,7 @@ describe('highlightedTextComment', () => {
       });
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('No auth token');
+    done();
   });
 
   test('should not update comment on highlighted text without authorization', async () => {
@@ -216,7 +219,7 @@ describe('highlightedTextComment', () => {
     expect(res.body.message).toBe('Please provide both startPoint and endPoint');
   });
 
-  test('should not update comment on highlighted text without authorization', async () => {
+  test('should not update comment on highlighted text when it is not there', async () => {
     const res = await request(app)
       .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${comment.id}`)
       .set('authorization', user1.token)
@@ -225,14 +228,15 @@ describe('highlightedTextComment', () => {
           body: 'hello world',
           highlightedText: 'pa',
           startPoint: 7,
-          endPoint: 9
+          endPoint: 9,
+          anchorKey: 'bok6r'
         }
       });
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('The text you highlighted is not in the article');
   });
 
-  test('should not update comment on highlighted text without authorization', async () => {
+  test('should not update comment on highlighted text for an existing comment', async () => {
     const res = await request(app)
       .put(`${urlPrefix}/articles/${testArticle.slug}/comment-on-text/${user1.id}`)
       .set('authorization', user1.token)

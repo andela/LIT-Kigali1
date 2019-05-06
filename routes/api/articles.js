@@ -51,7 +51,7 @@ router.get(
 
 router.put(
   '/:slug',
-  celebrate({ body: articleValidator.createArticle }),
+  celebrate({ body: articleValidator.updateArticle }),
   verifyJwt(),
   fileParser.single('cover'),
   asyncHandler(ArticleController.updateArticle)
@@ -133,11 +133,11 @@ router
 router
   .route('/:articleSlug/comments/:commentId/like')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.likeComment))
-  .get(asyncHandler(FavoriteCommentController.getAllLikes));
+  .get(verifyJwt({ tokenRequired: false }), asyncHandler(FavoriteCommentController.getAllLikes));
 router
   .route('/:articleSlug/comments/:commentId/dislike')
   .post(verifyJwt(), asyncHandler(FavoriteCommentController.dislikeComment))
-  .get(asyncHandler(FavoriteCommentController.getAllDislikes));
+  .get(verifyJwt({ tokenRequired: false }), asyncHandler(FavoriteCommentController.getAllDislikes));
 
 router.post(
   '/:slug/report',

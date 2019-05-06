@@ -32,7 +32,8 @@ const highlightedTextComment = {
         .trim(),
       highlightedText: Joi.string().required(),
       startPoint: Joi.number().required(),
-      endPoint: Joi.number().required()
+      endPoint: Joi.number().required(),
+      anchorKey: Joi.string()
     })
     .required()
 };
@@ -45,7 +46,8 @@ const updateHighlightedTextComment = {
         .trim(),
       highlightedText: Joi.string(),
       startPoint: Joi.number().min(0),
-      endPoint: Joi.number().min(0)
+      endPoint: Joi.number().min(0),
+      anchorKey: Joi.string()
     })
     .required()
 };

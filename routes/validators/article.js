@@ -23,6 +23,26 @@ const createArticle = {
     .required(),
 };
 
+const updateArticle = {
+  article: Joi.object()
+    .keys({
+      title: Joi.string()
+        .trim(),
+      body: Joi.string()
+        .min(50),
+      description: Joi.string()
+        .trim(),
+      tagList: Joi.array()
+        .max(5)
+        .items(Joi.string().trim()),
+      status: Joi.string()
+        .trim()
+        .valid(['unpublished', 'published']),
+      cover: Joi.string(),
+    })
+    .required(),
+};
+
 const getArticlesQuery = {
   tag: Joi.string().trim(),
   author: Joi.string().trim(),
@@ -42,5 +62,6 @@ const getArticlesQuery = {
 
 export default {
   createArticle,
-  getArticlesQuery
+  getArticlesQuery,
+  updateArticle
 };

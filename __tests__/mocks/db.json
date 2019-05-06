@@ -45,9 +45,9 @@
     "tagList": ["test", "article"]
   },
   "partialArticle": {
-    "highlightedText": "ut commodo ipsum ipsum. Labore velit laborum cupidatat",
-    "startPoint": 41,
-    "endPoint":  95
+    "highlightedText": "Lorem ipsum",
+    "startPoint": 0,
+    "endPoint":  11
   },
   "createArticleTwo": {
     "title": "Test article",

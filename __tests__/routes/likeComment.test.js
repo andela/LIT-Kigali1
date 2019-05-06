@@ -8,7 +8,7 @@ import { createArticle, signupUser, createComment } from '../mocks/db.json';
 
 let testToken, testComment, testArticle;
 describe('likeComment', () => {
-  const newArticle = { ...createArticle, body: JSON.stringify(createArticle.body)}
+  const newArticle = { ...createArticle, body: JSON.stringify(createArticle.body) };
   beforeAll(async () => {
     await User.destroy({ where: { email: signupUser.email } });
     const encryptedPassword = bcrypt.hashSync(signupUser.password, 10);
@@ -185,9 +185,9 @@ describe('likeComment', () => {
       `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`
     );
 
-    expect(res.status).toBe(404);
-    expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('No likes found');
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.counts).toBe(0);
   });
 
   test('should get all likes for a comment', async () => {
@@ -223,9 +223,9 @@ describe('likeComment', () => {
       `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`
     );
 
-    expect(res.status).toBe(404);
-    expect(res.body.status).toBe(404);
-    expect(res.body.message).toBe('No dislikes found');
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe(200);
+    expect(res.body.counts).toBe(0);
   });
 
   test('should get all dislikes for a comment', async () => {

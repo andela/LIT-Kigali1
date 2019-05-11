@@ -193,7 +193,7 @@ describe('likeComment', () => {
   test('should get all likes for a comment', async () => {
     expect.assertions(5);
     await request(app)
-      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`)
       .set('authorization', testToken);
     const res = await request(app).get(
       `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/like`
@@ -231,7 +231,7 @@ describe('likeComment', () => {
   test('should get all dislikes for a comment', async () => {
     expect.assertions(5);
     await request(app)
-      .post(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
+      .get(`${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`)
       .set('authorization', testToken);
     const res = await request(app).get(
       `${urlPrefix}/articles/${testArticle.slug}/comments/${testComment.id}/dislike`

@@ -128,7 +128,6 @@ class FavoriteCommentController {
     const { currentUser } = req;
     const { queryPage = 1 } = req.query;
     let liked = false;
-
     const comments = await Comment.findOne({ where: { id: commentId } });
     if (!comments) {
       return res.status(404).send({

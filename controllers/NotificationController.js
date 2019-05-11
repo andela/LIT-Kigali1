@@ -22,7 +22,15 @@ class NotificationController {
 
     const notifications = await Notification.findAndCountAll({
       where: { userId: currentUser.id },
-      attributes: ['id', 'userId', 'notification', 'link', 'status'],
+      attributes: ['id', 'userId', 'involvedId', 'notification', 'link', 'status', 'createdAt'],
+      include: [
+        {
+          model: User,
+          as: 'involved',
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ],
+      order: [['createdAt', 'DESC']],
       offset: (page - 1) * limit,
       limit
     });
@@ -33,10 +41,14 @@ class NotificationController {
         .json({ status: 404, message: "You don't have any unread notification" });
     }
 
+    const unread = await Notification.count({
+      where: { userId: currentUser.id, status: 'unread' }
+    });
+
     return res.status(200).json({
       status: 200,
       notifications: notifications.rows,
-      notificationsCount: notifications.count,
+      notificationsCount: unread,
       pages: Math.ceil(notifications.count / limit),
       page
     });
@@ -54,8 +66,15 @@ class NotificationController {
     const { notificationId } = req.params;
 
     const notification = await Notification.findOne({
-      where: { userId: currentUser.id, id: notificationId, status: 'unread' },
-      attributes: ['id', 'userId', 'notification', 'link']
+      where: { userId: currentUser.id, id: notificationId },
+      attributes: ['id', 'userId', 'notification', 'link', 'createdAt'],
+      include: [
+        {
+          model: User,
+          as: 'involved',
+          attributes: ['username', 'firstName', 'lastName', 'image']
+        }
+      ]
     });
 
     if (!notification) {

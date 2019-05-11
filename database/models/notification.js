@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false
     },
+    involvedId: {
+      type: DataTypes.UUID,
+      allowNull: true
+    },
     notification: DataTypes.STRING,
     createdAt: {
       allowNull: false,
@@ -31,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Notification.associate = function(models) {
     Notification.belongsTo(models.User, { foreignKey: 'userId', as: 'owner' });
+    Notification.belongsTo(models.User, { foreignKey: 'involvedId', as: 'involved' });
   };
   return Notification;
 };

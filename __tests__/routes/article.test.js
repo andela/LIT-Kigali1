@@ -26,6 +26,8 @@ const fakeSlug = 'fake-slug';
 jest.setTimeout(30000);
 
 describe('articles', () => {
+  const newDraftJsArticle = { ...createArticle, body: JSON.stringify(createArticle.body)};
+  const newDraftJsArticle2 = { ...createArticleTwo, body: JSON.stringify(createArticle.body)};
   beforeAll(async done => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
@@ -68,13 +70,13 @@ describe('articles', () => {
     res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     testArticle = res.body.article;
 
     res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticleTwo });
+      .send({ article: newDraftJsArticle2 });
     testArticleTwo = res.body.article;
     done();
   });
@@ -117,7 +119,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     newArticle = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
@@ -199,7 +201,7 @@ describe('articles', () => {
     const res = await request(app)
       .put(`${urlPrefix}/articles/${fakeSlug}`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('Article not found');
   });
@@ -209,7 +211,7 @@ describe('articles', () => {
     const res = await request(app)
       .put(`${urlPrefix}/articles/${newArticle.slug}`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     expect(res.status).toBe(200);
     expect(res.body.article).toBeDefined();
   });
@@ -219,7 +221,7 @@ describe('articles', () => {
     const res = await request(app)
       .put(`${urlPrefix}/articles/${newArticle.slug}`)
       .set('Authorization', loginUser1.token)
-      .send({ article: { ...createArticle, title: 'new article slug' } });
+      .send({ article: { ...newDraftJsArticle, title: 'new article slug' } });
     newArticle.slug = res.body.article.slug || newArticle.slug;
     expect(res.status).toBe(200);
     expect(res.body.article).toBeDefined();

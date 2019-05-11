@@ -16,10 +16,9 @@ class CommentOnTextController {
     const {
       highlightedText,
       body, endPoint,
-      startPoint
+      startPoint, anchorKey
     } = req.body.comment;
     const { currentUser } = req;
-
     const article = await Article.findOne({
       where: {
         slug: articleSlug,
@@ -32,8 +31,9 @@ class CommentOnTextController {
         message: 'Article not found'
       });
     }
-    const findText = article.body.slice(startPoint, endPoint);
-    if (findText !== highlightedText) {
+    const bodyBlocks = JSON.parse(article.body).blocks;
+    const findText = bodyBlocks.find(res => highlightedText === res.text.slice(startPoint, endPoint) && res.key === anchorKey);
+    if (!findText) {
       return res.status(404).send({
         status: 404,
         message: 'The text you highlighted is not in the article'
@@ -45,7 +45,8 @@ class CommentOnTextController {
       userId: currentUser.id,
       highlightedText,
       startPoint,
-      endPoint
+      endPoint,
+      anchorKey,
     },
     {
       include: [{ model: User, as: 'author' }],
@@ -71,7 +72,7 @@ class CommentOnTextController {
    * @returns {object} comment
    */
   static async updateComment(req, res) {
-    const { endPoint, startPoint, highlightedText } = req.body.comment;
+    const { endPoint, startPoint, highlightedText, anchorKey } = req.body.comment;
     const { commentId } = req.params;
     const { currentUser } = req;
 
@@ -100,8 +101,9 @@ class CommentOnTextController {
           message: 'Please provide both startPoint and endPoint'
         });
       }
-      const findText = article.body.slice(startPoint, endPoint);
-      if (findText !== highlightedText) {
+      const bodyBlocks = JSON.parse(article.body).blocks;
+      const findText = bodyBlocks.find(res => highlightedText === res.text.slice(startPoint, endPoint) && res.key === anchorKey);
+      if (!findText) {
         return res.status(404).send({
           status: 404,
           message: 'The text you highlighted is not in the article'

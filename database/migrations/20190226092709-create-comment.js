@@ -14,13 +14,16 @@ module.exports = {
         allowNull: false
       },
       highlightedText: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       startPoint: {
         type: Sequelize.INTEGER
       },
       endPoint: {
         type: Sequelize.INTEGER
+      },
+      anchorKey: {
+        type: Sequelize.STRING,
       },
       userId: {
         type: Sequelize.UUID,

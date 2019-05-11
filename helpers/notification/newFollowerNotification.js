@@ -14,7 +14,8 @@ export default async (followee, follower) => {
   notificationObject.push({
     userId: followeeObject.id,
     notification: `${followerObject.username} started following you`,
-    link: `${FRONTEND_URL}/users/userId`
+    involvedId: `${followerObject.id}`,
+    link: `${FRONTEND_URL}/profiles/${followerObject.username}`
   });
 
   await inAppNotification(notificationObject);

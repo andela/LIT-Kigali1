@@ -6,11 +6,11 @@ import inAppNotification from './inAppNotification';
 dotenv.config();
 const { FRONTEND_URL } = process.env;
 
-export default async (author, title, slug) => {
+export default async (author, slug, title) => {
   const emails = [];
   const followersId = [];
   const action = 'published a new article!';
-  const subject = 'New Article';
+  const subject = title;
   const followers = await Follow.findAll({
     where: { followee: author.id },
     include: [
@@ -30,6 +30,7 @@ export default async (author, title, slug) => {
     emails.push(follower.email);
     followersId.push({
       userId: follower.id,
+      involvedId: author.id,
       notification: `${author.firstName} ${action} ${subject}`,
       link: `${FRONTEND_URL}/articles/${slug}`
     });

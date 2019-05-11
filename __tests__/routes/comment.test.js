@@ -13,6 +13,7 @@ let newArticle;
 let newComment;
 jest.setTimeout(50000);
 describe('comments', () => {
+  const newDraftJsArticle = { ...createArticle, body: JSON.stringify(createArticle.body) };
   beforeAll(async done => {
     await User.destroy({
       where: {
@@ -40,7 +41,7 @@ describe('comments', () => {
       .send({ user: { username: signupUser2.email, password: signupUser2.password } });
     loginUser2 = res2.body.user;
     const res3 = await Article.create({
-      ...createArticle,
+      ...newDraftJsArticle,
       slug: slugString(createArticle.title),
       userId: loginUser1.id
     });
@@ -63,8 +64,6 @@ describe('comments', () => {
       }
     });
   });
-
-  /* Create a comment test cases */
 
   test('CREATE - should return Bad Request', async done => {
     expect.assertions(2);
@@ -139,8 +138,6 @@ describe('comments', () => {
     done();
   });
 
-  /* View a articles' comment test cases */
-
   test('VIEW - should return Article not found', async done => {
     expect.assertions(3);
     const res = await request(app)
@@ -186,8 +183,6 @@ describe('comments', () => {
     expect(res.body.message).toBeDefined();
     done();
   });
-
-  /* Update a comment test cases */
 
   test('UPDATE - should return Bad Request', async done => {
     expect.assertions(2);
@@ -311,8 +306,6 @@ describe('comments', () => {
     expect(res.body.comment.body).toBe(commentBody);
     done();
   });
-
-  /* Delete a comment test cases */
 
   test('DELETE - should return No auth token', async done => {
     expect.assertions(3);

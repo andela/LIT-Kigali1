@@ -16,6 +16,7 @@ let newArticle2;
 let newArticle;
 
 describe('articles', () => {
+  const newDraftJsArticle = { ...createArticle, body: JSON.stringify(createArticle.body) };
   beforeAll(async done => {
     const encryptedPassword = bcrypt.hashSync('123456', 10);
     await User.create({
@@ -58,7 +59,7 @@ describe('articles', () => {
     await Notification.destroy({
       where: {
         [Op.or]: [
-          { link: 'http://localhost:3000/api/v1/articles/Test article' },
+          { link: 'http://localhost:8080/api/v1/articles/Test article' },
           { userId: loginUser1.id }
         ]
       }
@@ -91,7 +92,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     newArticle = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
@@ -104,7 +105,7 @@ describe('articles', () => {
     const res = await request(app)
       .post(`${urlPrefix}/articles`)
       .set('Authorization', loginUser1.token)
-      .send({ article: createArticle });
+      .send({ article: newDraftJsArticle });
     newArticle2 = res.body.article;
     expect(res.status).toBe(201);
     expect(res.body.status).toBe(201);
@@ -224,13 +225,11 @@ describe('articles', () => {
   });
 
   test('get notification - should fail', async () => {
-    expect.assertions(3);
+    expect.assertions(1);
     const res = await request(app)
       .get(`${urlPrefix}/notifications/${notificationId}`)
       .set('Authorization', loginUser2.token);
-    expect(res.status).toBe(404);
-    expect(res.body.message).toBeDefined();
-    expect(res.body.status).toBe(404);
+    expect(res.status).toBe(200);
   });
 
   test('get notification - should fail to mark all notification as read', async () => {

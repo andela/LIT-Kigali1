@@ -61,6 +61,7 @@ export default async (articleId, author, title, slug) => {
         userId: combinedId[i],
         action: 'reacted on this article!',
         notification: `${author.username} reacted on this article! '${title}'`,
+        involvedId: `${author.id}`,
         link: `${FRONTEND_URL}/articles/${slug}`
       });
     }

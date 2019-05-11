@@ -10,6 +10,10 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false
       },
+      involvedId: {
+        type: Sequelize.UUID,
+        allowNull: true
+      },
       notification: {
         allowNull: false,
         type: Sequelize.STRING

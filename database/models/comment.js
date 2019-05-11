@@ -11,13 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     highlightedText: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     startPoint: {
       type: DataTypes.INTEGER
     },
     endPoint: {
       type: DataTypes.INTEGER
+    },
+    anchorKey: {
+      type: DataTypes.STRING,
     },
     userId: {
       type: DataTypes.UUID,
